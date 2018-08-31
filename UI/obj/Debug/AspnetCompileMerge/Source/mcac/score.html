@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>个人收益</title>
+
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="css/score.css" rel="stylesheet" />
+    <link href="../lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+    <script src="js/template-web.js"></script>
+</head>
+<body>
+    <div class="Universal" id="show1">
+
+        <script type="text/template" id="tplData">
+
+            <div class="flex-h topDiv topDiv1">
+                <div class="flex1 flex-hc topDiv1"><p flex-hc><span>总积分</span></p><p><span style="font-size: 20px;">{{data.total.totalScore}}</span></p></div>
+                <div class="flex1 flex-hc topDiv1">
+                <p><a href="integral.html"><span>推荐获取积分：</span><span>{{data.total.recommonScore}}</span></a></p>
+                <p style="margin-top:8%;"><a href="integral-jl.html"><span>系统赠送积分：</span><span>{{data.total.sysgiveScore}}</span></a></p>
+                </div>
+            </div>
+            <div class="topDiv1">
+                <div class="divTxt"><p><span>产品直接收益：</span><span class="spanRed">{{data.total.productScore}}</span></p></div><div class="baseline"></div>
+                <a class="divTxt" href="member.html"><p><span>钻石积分：</span><span class="spanRed">{{data.total.firstScore}}</span><i class="iconfont">&#xe6a7;</i></p></a><div class="baseline"></div>
+                <a class="divTxt" href="member.html"><p><span>黄金积分：</span><span class="spanRed">{{data.total.secondScore}}</span><i class="iconfont">&#xe6a7;</i></p></a><div class="baseline"></div>
+                <div class="divTxt"><p><span>已提现积分：</span><span class="spanRed">{{data.total.yetUserScore}}</span></p></div><div class="baseline"></div>
+                <div class="divTxt"> <p><span>可提现积分：</span><span class="spanRed">{{data.total.totalScore-data.total.yetUserScore-data.total.sysDeduct}}</span></p></div>
+            </div>
+
+            <div class="divTime_1">
+                <div class="divTime"><p class="flex-h"><span class="flex1 flex-hc" id="yesterData"></span><span class="flex1 flex-hc" style="text-align:right">昨天</span></p></div>
+            </div>
+
+            <div class="flex-h" style="justify-content: space-around;">
+                <div class="flex-hc yesterdayDiv">
+                    <button class="layui-btn layui-btn-primary"><span style="color:red;">{{data.yesterday.totalScore}}</span> 总积分</button>
+                </div>
+                <div class="flex-hc yesterdayDiv">
+                    <p><span>产品直接收益：</span><span>{{data.yesterday.productScore}}</span></p>
+                    <p><span>推荐获取积分：</span><span>{{data.yesterday.recommonScore}}</span></p>
+                    <p><span>系统赠送积分：</span><span>{{data.yesterday.sysgiveScore}}</span></p>
+                    <p><span>钻石积分：</span><span>{{data.yesterday.firstScore}}</span></p>
+                    <p><span>黄金积分：</span><span>{{data.yesterday.secondScore}}</span></p>
+                </div>
+            </div>
+
+            <div class="sco_btn"><button class="layui-btn layui-btn-radius layui-btn-normal tiXian" style="height: 29px !important; line-height: 32px  !important;" onclick="txOn();">提现</button>  
+            <div class="clear"></div>
+            </div>
+            <br />
+            <div class="baseline"></div>
+
+        </script>
+
+    </div>
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
+<script>
+    tool.init();
+
+    var obj = {
+        getUserSR: function () {
+            $.ajax({
+                url: '/WeChat/Score/GetScoreDetail',
+                data: { token: store.get("token") },   //参数
+                type: 'get',
+                async: false,
+                success: function (json) {
+                    if (json.code === 0) {
+
+                        var result = template('tplData', { data: json.data });
+                        document.getElementById("show1").innerHTML = result;
+
+                        //昨天的时间
+                        $("#yesterData").text(yesterDay());                       
+                    }
+                    else {
+                        layer.msg(json.msg)
+                    }
+                },
+                error: function (msg) {
+                    layer.msg("网络异常");
+                }
+            })
+        }
+        //推荐获取积分
+        //recommon: function () {
+
+
+        //}
+    }
+    obj.getUserSR();
+
+    function txOn() {
+        location.href = "integral-tx.html";
+    }
+
+
+    function yesterDay() {
+        //昨天的时间
+        var day1 = new Date();
+        day1.setTime(day1.getTime() - 24 * 60 * 60 * 1000);
+        return   day1.getFullYear() + "年" + (day1.getMonth() + 1) + "月" + day1.getDate() + "日" + "  " + day1.getHours() + " : " + day1.getMinutes();
+    }
+</script>

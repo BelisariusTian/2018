@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+
+    <div class="layui-carousel" id="test10">
+        <div carousel-item="" id="imgList">
+        </div>
+    </div>
+
+    <script src="/lib/layui/layui.js"></script>
+    <script>
+        var id = getParameters("id").id;
+        layui.use(['layer','carousel','form'], function () {
+            var $ = layui.jquery;
+            var carousel = layui.carousel;
+
+
+            init();
+            //carousel.render({
+            //    elem: '#test10',
+            //    width: '778px',
+            //    height: '440px',
+            //    interval: 5000,
+            //});
+
+            function init() {
+                var fHtml = '';
+                $.get('/WeChat/Products/GetBanner', { token: store.get('token') }, function (res) {
+                    if (res.code == 0) {
+                        $('#imgList').empty();
+                        $.each(res.data, function (index, item) {
+                            fHtml += ' <div><img src="' + item.img_url + '" lay-data="' + item.link_address + '"></div>'
+                        })
+                        $('#imgList').html(fHtml);
+                        carousel.render({
+                            elem: '#test10',
+                            width: '778px',
+                            height: '440px',
+                            interval: 5000,
+                        });
+                    }
+
+                })
+            }
+        })
+    </script>
+</body>
+</html>

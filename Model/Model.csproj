@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{146958DE-D003-419B-A3E0-B472C89FBDC8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Model</RootNamespace>
+    <AssemblyName>Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="action.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="administrator.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="banner.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="config_rule.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="McacModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>McacModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="McacModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="McacModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>McacModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="MenuInfo.cs" />
+    <Compile Include="msg_log.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="order.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="product.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectEnum.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="role.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ServerInfo.cs" />
+    <Compile Include="SysEnum.cs" />
+    <Compile Include="system_log.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="system_msg_record.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TreeEntity.cs" />
+    <Compile Include="user.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_address.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_msg_record.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_product.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_score_record.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="wx_request_content.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="wx_request_rule.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="wx_user.cs">
+      <DependentUpon>McacModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="McacModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>McacModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="McacModel.edmx.diagram">
+      <DependentUpon>McacModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="McacModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>McacModel.Context.cs</LastGenOutput>
+      <DependentUpon>McacModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="McacModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>McacModel.edmx</DependentUpon>
+      <LastGenOutput>McacModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

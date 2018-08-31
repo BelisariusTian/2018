@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title> 问题提交  </title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="../lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="../lib/layui/layui.all.js"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+</head>
+<body>
+
+    <form action="" class="aq_form">
+        <div class="aq_one">
+            <div class="aq_title" >问题</div>
+            <!-- <input type="text" class="aq_input"> -->
+            <textarea class="aq_textarea_title" id="Q"></textarea>
+        </div>
+        <div class="aq_one">
+            <div class="aq_title">问题详细</div>
+            <textarea class="aq_textarea_address" id="A"></textarea>
+        </div>
+        <div class="submit_btn" onclick="subBtn();">提交</div>
+    </form>
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script>
+
+        tool.init();
+
+        //  提问
+        function subBtn() {
+            if ($("#Q").val() == "") {
+                layer.msg("请输入问题");
+                return;
+            }
+            if ($("#A")[0].value == "") {
+                layer.msg("请输入问题详细");
+                return;
+            }
+
+            $.post(
+                '/WeChat/UserCenter/UserApplyQuestion',
+                {
+                    title: $("#Q").val(), content: $("#A").val(), token: store.get('token')
+                }, function (json) {
+                    layer.msg(json.msg);
+                    location.href = "QA.html";
+                });
+
+        }
+
+    </script>
+
+</body>
+</html>

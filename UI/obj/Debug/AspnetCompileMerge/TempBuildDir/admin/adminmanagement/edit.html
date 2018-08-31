@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>修改用户</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="/css/menu.css" rel="stylesheet" />
+    <link href="/css/admin.css" rel="stylesheet" />
+    <script src="/Lib/layui/layui.all.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/jquery.unobtrusive-ajax.v324.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header" id="title">编辑管理员</div>
+                    <form class="layui-form" action="/admin/Edit" data-ajax="true" data-ajax-method="POST" data-ajax-success="AfterAction" id="form0" method="post">
+
+                        <input type="hidden" value="" name="id" id="id" />
+                        <input type="hidden" name="token" id="token" />
+                        <input type="hidden" name="username" id="username" />
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <label class="layui-form-label" id="usernamelab"></label><span class="layui-form-mid layui-word-aux">用户名不能修改</span>
+                            </div>
+                            
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" id="password" lay-verify="pass" value="" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填，请填写6到12位密码</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">真实姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="realname" id="realname" value="" placeholder="请输入人员姓名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <select name="sex" lay-filter="sex" id="sex">
+                                    <option value="0">未知</option>
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane="">
+                            <label class="layui-form-label">是否激活</label>
+                            <div class="layui-input-block">
+                                <input value="0" type="checkbox" id="state" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="激活|冻结">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-layout-admin">
+                            <div class="layui-input-block">
+                                <div class="layui-footer" style="left: 0;z-index:99999">
+                                    <button class="layui-btn" lay-submit="" lay-filter="AddUser">提交</button>
+                                    <button class="layui-hide" type="reset" id="reset">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    var layer = layui.layer;
+    var form = layui.form;
+
+    $(function () {
+        init();
+        form.on('submit(AddUser)', function (data) {
+
+            $("#token").val(store.get('token'));
+
+
+            if (typeof (data.field.open) != 'undefined') {
+                $('#state').val('0');
+            } else {
+                $('#state').val('1');
+            }
+
+            if (data.field.password.length == 0) {
+                layer.msg("请输入密码");
+                return false;
+            }
+            if (data.field.password.length < 6 || data.field.password.length > 12) {
+                layer.msg("用户密码格式不正确");
+                return false;
+            }
+            return true;
+        });
+        form.render();
+    })
+    
+
+    function AfterAction(data) {
+
+        window.parent.closeAll(data);
+    }
+    
+    function init() {
+
+        //获取参数
+        var obj = getParameters();
+        if (!obj.id || typeof (obj.id) == "undefined" || obj.id == null || obj.id == "") {
+            window.parent.close("ID错误");
+            return;
+        }
+
+        $.ajax({
+            url: '/admin/Detail',
+            data: { id: obj.id, token: store.get('token') },   //映射
+            type: 'get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+
+                    $("#id").val(json.data.id);
+                    $("#demo1").attr("src", json.data.userhead);
+                    $("#userhead").val(json.data.userhead);
+                    $("#usernamelab").text(json.data.username);
+                    $("#username").val(json.data.username);
+                    $("#password").val(json.data.password);
+                    $("#realname").val(json.data.realname);
+                    $("#tel").val(json.data.tel);
+                    $("#sex").val(json.data.sex);
+
+                    if (json.data.state == 0) {
+                        $("#state").attr("checked", "checked");
+                    }
+                    //渲染全部
+                    form.render();
+                }
+                else {
+                    layer.msg(json.data.msg)
+                }
+            },
+            error: function (msg) {
+                layer.msg("网络异常");
+            }
+        })
+    }
+</script>

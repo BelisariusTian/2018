@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title> 地址列表  </title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+</head>
+<body>
+
+
+    <div class="Universal">
+
+        <div class="ads_top">
+            <div class="ads_input"><input type="text" placeholder="请输入名称" /><a><i class="iconfont">&#xe704;</i></a></div>
+        </div>
+
+        <div class="ads_list" id="adList">
+            <script type="text/template" id="add">
+
+                {{each adList}}
+
+                <div class="ads_txt" id="" onclick="txAds({{$value.id}})">
+                    <p>{{$value.name}}</p>
+                    <p class="adst">{{$value.address}}</p>
+                    <div class="ads_btn">
+                        <a href="EidAddress.html?Id={{$value.id}}"><i class="iconfont">&#xe687;</i></a>
+                        <a onclick="DelAdds({{$value.id}})"><i class="iconfont">&#xe602;</i></a>
+                    </div>
+                </div>
+
+                {{/each}}
+
+                <div class="ad">
+                    <a href="address.html"><i class="iconfont">&#xe648;</i></a>
+                </div>
+
+            </script>
+        </div>
+    </div>
+
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script src="/lib/layui/layui.js"></script>
+    <script>
+
+        tool.init();
+
+        // 地址列表
+        $.ajax({
+            url: '/WeChat/UserCenter/GetUserAddressList',
+            data: { token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('add', { adList: json.data });
+                    document.getElementById("adList").innerHTML = result;
+                }
+                else {
+                    location.href = "address.html";
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+
+        //  删除地址
+        function DelAdds(id) {
+
+            layer.confirm('确定要删除？？', { icon: 3, title: '提示' }, function (index) {
+
+                layer.close(index);
+
+                $.get(
+                    '/WeChat/UserCenter/DelUserAddress',
+                    {
+                        id: id, token: store.get('token')
+                    }, function (json) {
+                        layer.msg(json.msg);
+                        location.reload();
+                    }
+                )
+
+            });
+
+           
+
+        }
+
+        function txAds(id) {
+            location.href = "integral-tx.html?Id=" + id;
+        }
+
+
+
+    </script>
+
+
+
+</body>
+</html >

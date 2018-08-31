@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加广告图</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <style>
+       .cover-img {
+            width: 400px;
+            height: 225px;
+            background: center no-repeat;
+            background-size: cover;
+            display: inline-block;
+            margin-right: 20px;
+            vertical-align: middle;
+        }
+        .layui-form-label {
+            width: 180px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="showBannerImg" style="text-align: center;">
+        <fieldset class="layui-elem-field " style="margin-top: 50px;">
+            <legend>图片</legend>
+            <div class="images">
+                <span id="logo-img" class="cover-img" style="background-image:url(/images/posterImg.png)"></span>
+                <div class="layui-btn layui-btn-primary" id="test">
+                    <p>上传图片</p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <form class="layui-form" style="margin-top:15px;">
+        <input type="hidden" name="img_url" id="img_url" value="" lay-verify="required|img" />
+        <input type="hidden" name="link_address" lay-verify="required" value="" />
+        <input type="hidden" name="remark" value="" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接产品</label>
+            <div class="layui-input-inline">
+                <select id="productList" lay-verify="required" lay-filter="pro" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接站外地址</label>
+            <div class="layui-input-inline">
+                <input type="url" id="url" autocomplete="off"  class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">与上一项两者必选一</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="text" name="sort" lay-verify="required|sort" autocomplete="off" placeholder="数字越小越靠前" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">必填，请输入排序数字</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否显示</label>
+            <div class="layui-input-inline">
+                <input value="0" type="checkbox" checked="" name="state" lay-skin="switch" lay-filter="switchTest" lay-text="yes|no">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" lay-submit class="layui-btn" lay-filter="AddBannner">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <!--<button class="layui-btn layui-btn-primary" type="button" onclick="javascript: history.go(-1)">返回</button>-->
+            </div>
+        </div>
+    </form>
+
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        layui.use(['layer', 'upload', 'form'], function () {
+            var layer = layui.layer, upload = layui.upload, form = layui.form, $ = layui.jquery;
+            var uploadurl = [];
+             //图片上传
+            var uploadins = upload.render({
+                elem: "#test",
+                url: "/UploadFile/UpImage",
+                data: {
+                    width: 800,
+                    height: 450,
+                    mode: "Cut"
+                },
+                headers: { token: store.get("token") },
+                done: function (res) {
+                    //上传完毕回调
+                    $("input[name='img_url']").val(res.data.OriginalPath);
+                    $("#logo-img").css({ "background-image": "url(" + res.data.OriginalPath + ")" });
+                    uploadurl.push(res.data.OriginalPath);
+                    uploadurl.push(res.data.ThumbnailPath);
+                },
+                error: function () {
+                    //请求异常回调
+                    layer.msg(res.msg);
+                }
+            });
+            //产品下拉框
+            initProduct();
+            function initProduct() {
+                var sHtml = '<option value="-1">直接选择或搜索选择</option>';
+                $("#productList").empty();
+                $.get("/product/GetProductList", { token: store.get("token") }, function (res) {
+                    if (res.code === 0) {
+                        $.each(res.data, function (index, item) {
+                            sHtml += '<option value="'+item.id+'">'+item.name+'</option>';
+                        })
+                        $("#productList").html(sHtml);
+                        form.render()
+                    } else {
+                        layer.msg("初始化产品列表失败")
+                    }
+                })
+            }
+            //监听产品下拉框
+            form.on('select(pro)', function (data) {
+                if (data.value!="-1") {
+                    var link = "/product.html?id=" + data.value;
+                    $("input[name='remark']").val(data.value);
+                    console.log(link);
+                    $('input[name="link_address"]').val(link);
+                }             
+            })
+            //监听站外链接
+            $("#url").on('blur', function () {
+                if ($("#url").val()!= "") {
+                    $("input[name='remark']").val("");
+                    $('input[name="link_address"]').val($("#url").val());
+                    $("#productList").find("option[value='-1']").attr("selected", true);
+                    form.render()
+                }
+            })
+
+            //监听提交
+            form.on('submit(AddBannner)', function (data) {
+                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                $.post("/Banner/AddBanner", { token: store.get("token"), data: JSON.stringify(data.field) }, function (res) {
+                    if (res.code == 0) {
+                        top.layer.msg('添加成功', { icon: 1 }, function (index) {
+                            var n = $("#img_url").val()
+                            console.log(uploadurl)
+                            uploadurl.removeByValue(n);
+                            uploadurl.notempty();
+                            if (uploadurl.length > 0) {
+                                $.post('/UploadFile/DeleteFileList', { list: uploadurl.join(',') }, function (res) {
+                                    console.log(res);
+                                })
+                            }
+                            location.href = "/admin/banner/index.html";
+                        });
+                    } else {
+                        top.layer.msg('添加失败', { icon: 2 });
+                    }
+                    //console.log(uploadurl);
+                })
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //自定义验证规则
+            form.verify({
+                img: function (value) {
+                    if (value == undefined || value.length == 0) {
+                        return '请上传图片'
+                    }
+                },
+                sort: function (value, item) {
+                    var re = /^[0-9]+$/;
+                    if (!re.test(value)) {
+                        return "排序数字只能输入正整数";
+                    }
+                }
+            });
+
+            
+
+        })
+    </script>
+</body>
+</html>

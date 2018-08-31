@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>推广链接</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+
+
+</head>
+<body>
+
+
+    <div class="Universal">
+
+        <div class="tgCont" id="ewmList">
+            <script type="text/template" id="ewm">
+
+                <img src="{{ewmList.qr}}" />
+                <p id="urText">{{ewmList.link}}</p>
+                <a class="btn" data-clipboard-target="#urText">复制链接</a>
+
+            </script>
+        </div>
+
+
+
+    </div>
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script src="../js/clipboard.min.js"></script>
+    <script>
+        tool.init();
+
+        //  二维码
+        $.ajax({
+            url: '/WeChat/UserCenter/GetUserQrCode',
+            data: {token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('ewm', { ewmList: json.data });
+                    document.getElementById("ewmList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+        var clipboard = new ClipboardJS('.btn');
+
+        clipboard.on('success', function (e) {
+            console.log(e);
+           
+        });
+
+        clipboard.on('error', function (e) {
+          
+        });
+
+    </script>
+
+</body>
+</html>

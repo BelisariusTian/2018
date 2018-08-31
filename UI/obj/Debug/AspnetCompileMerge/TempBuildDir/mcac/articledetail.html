@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>问答</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/leetool.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+</head>
+
+<body>
+    <!-- <div class="detail_title_bg"></div> -->
+    <div class="detail" id="QaList">
+
+        <script type="text/template" id="Qa">
+
+            <div class="detail_title_bg">
+                <div class="detail_title">
+                    {{QaList.title}}
+                </div>
+            </div>
+            <div class="detail_content">
+                <p>{{#QaList.content}}</p>
+
+            </div>
+
+        </script>
+
+    </div>
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  获取QA详细信息
+        $.ajax({
+            url: '/WeChat/UserCenter/GetSystemMsgDetail',
+            data: { id: queryString("Id"), token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('Qa', { QaList: json.data });
+                    document.getElementById("QaList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>

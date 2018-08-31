@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style=" margin:40px;">
+            <blockquote class="layui-elem-quote layui-card">
+                <div class="layui-form layui-col-space15">
+                    <div class="layui-inline">
+                        <a class="layui-btn " id="Add"><i class="layui-icon">&#xe608;</i> 添加</a>
+                    </div>
+                </div>
+            </blockquote>
+            <div class="layui-card">
+                <div class="layui-card-header">banner列表</div>
+                <div class="layui-card-body">
+                    <table id="BannerTable" lay-filter="banner"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        layui.use(["layer", "table"], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                table = layui.table,
+                form = layui.form;
+
+            //渲染表格
+            var tables = table.render({
+                elem: "#BannerTable",
+                cellMinWidth: 80,
+                url: "/Banner/GetBannerList",
+                where: { token: store.get('token') },
+                size: "lg",
+                page: true,
+                loading: true,
+                cols: [[
+                    { field: 'img_url', title: '缩略图', align: 'center', width: "10%", templet: "#showImage" },
+                    { field: 'link_address', title: '链接地址', align: 'center', width: "20%", templet: "#showUrl" },
+                    { field: 'productName', title: '链接产品', align: 'center', width: "20%" },
+                    { field: 'sort', title: '排序', sort: true, align: 'center', edit: 'text', width: "5%" },
+                    { field: 'add_time', title: '添加时间', sort: true, align: 'center', width: "10%" },
+                    { field: 'add_admin', title: '添加人', align: 'center', width: "10%" },
+                    { field: 'state', title: '是否显示', sort: true, align: 'center', templet: "#state", width: "10%" },
+                    { title: "操作", align: 'center', toolbar: '#toolbar', }
+                ]],
+                done: function (res, curr, count) {
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    console.log(res);
+                    //得到当前页码
+                    console.log(curr);
+                    store.set("banner_curr", curr);
+                    //得到数据总量
+                    currData = res.data;
+                    //showSelect(currData);
+                }
+            });
+            $("#btnSearch").click(function () {
+                var name = $("#keywords").val();
+                tables.reload({
+                    where: {
+                        name: name
+                    },
+                    page: {
+                        curr: 1
+                    }
+                });
+            });
+            table.on('edit(banner)', (obj) => {
+                var value = obj.value, //得到修改后的值
+                    data = obj.data,//得到所在行所有键值
+                    field = obj.field; //得到字段
+                if (isNaN(parseInt(value))) {
+                    return layer.msg("请输入数字");
+                }
+                $.get("/banner/ChangeSort", { sort: value, id: id, token: store.get('token') }, function (msg) {
+                    if (msg.code != 0) {
+                        layer.msg("修改失败", { icon: 5, time: 1000 }, function () {
+                            tables.reload(
+                                {
+                                    page: {
+                                        curr: store.get("banner_curr")
+                                    }
+                                });
+                        });
+                    }
+                })
+            });
+
+            form.on('checkbox(lockDemo)', function (obj) {
+                //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+                var state = obj.elem.checked ? 0 : 1;
+                ChangeState(this.value);
+            });
+
+            table.on('tool(banner)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                var tr = obj.tr;
+                switch (layEvent) {
+                    case "Edit":
+                        EditBanner(data.id);
+                        break;
+                    case "Delete":
+                        layer.confirm('真的要删除么', function (index) {
+                            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                            layer.close(index);
+                            DelBanner(data.id);
+                        });
+
+                        break;
+                    case "Detail":
+                        ShowBanner(data.id);
+                        break;
+                }
+            });
+            function EditBanner(id) {
+                var addBoxIndex = -1;
+                addBoxIndex = layer.open({
+                    type: 2,
+                    title: '修改',
+                    content: '/Banner/EditBanner?id=' + id,
+                    //btn: ['保存', '取消'],
+                    shade: false,
+                    //offset: ['100px'],
+                    area: ['100%', '100%'],
+                    zIndex: 19950924,
+                    maxmin: false,
+                    full: function (elem) {
+                        var win = window.top === window.self ? window : parent.window;
+                        $(win).on('resize', function () {
+                            var $this = $(this);
+                            elem.width($this.width()).height($this.height()).css({
+                                top: 0,
+                                left: 0
+                            });
+                            elem.children('div.layui-layer-content').height($this.height() - 95);
+                        });
+                    },
+                    success: function (layero, index) {
+                    },
+                    end: function () {
+                        tables.reload({
+                            page: {
+                                curr: store.get("banner_curr")
+                            }
+                        });
+                        addBoxIndex = -1;
+                    }
+                })
+            }
+            function DelBanner(id) {
+                $.get(
+                    '/banner/DelBanner',
+                    {
+                        id: id,
+                        token: store.get("token"),
+                    },
+                    function (msg) {
+                        if (msg.code === 0) {
+                            layer.msg("删除成功", { icon: 6, time: 500 }, function () {
+                                tables.reload({
+                                    page: {
+                                        curr: store.get("banner_curr")
+                                    }
+                                });
+                            })
+                        } else if (msg.code == 99) {
+                            layer.msg(msg.Message, {
+                                icon: 5,
+                                time: 1000
+                            });
+                        } else {
+                            layer.msg(msg.Message, {
+                                icon: 5,
+                                time: 1000
+                            });
+                        }
+                    });
+            };
+            function ShowBanner(id) {
+                layer.open({
+                    title: '广告图详情',
+                    type: 2,
+                    area: ['100%', '100%'],
+                    maxmin: false,
+                    content: '/admin/banner/detail.html?id=' + id
+                });
+            };
+            function ChangeState(id, e) {
+                $.get("/Banner/ChangeState", { token: store.get("token"), id: id }, (msg) => {
+                    if (msg.code != 0) {
+                        layer.msg("修改失败", { icon: 5, time: 1000 }, () => {
+                            tables.reload({
+                                page: {
+                                    curr: store.get("banner_curr")
+                                }
+                            });
+                        });
+                    }
+                })
+            };
+            $("#Add").on("click", function () {
+                location.href = "/admin/banner/add.html";
+            });
+        });
+    </script>
+    <script type="text/html" id="toolbar">
+        <!--<a class="layui-btn layui-btn-sm" lay-event="Edit">编辑</a>-->
+        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="Delete">删除</a>
+        <a class="layui-btn layui-btn-sm" lay-event="Detail">预览</a>
+    </script>
+    <script type="text/html" id="state">
+        <input type="checkbox" name="State" value="{{d.id}}" title="显示" lay-filter="lockDemo" {{ d.state == 0? 'checked' : '' }}>
+    </script>
+    <script type="text/html" id="showImage">
+        <img src="{{d.img_url}}" width="60" />
+    </script>
+    <script type="text/html" id="showUrl">
+        <a href="{{d.link_address}}" target="_blank">{{d.link_address}}</a>
+    </script>
+
+</body>
+</html>

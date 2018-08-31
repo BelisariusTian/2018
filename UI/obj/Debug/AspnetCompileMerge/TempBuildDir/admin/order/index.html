@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>已完成订单列表</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div style="margin: 0 auto; margin-top: 50px; width: 96%;">
+            <blockquote class="layui-elem-quote">
+                <form class="layui-form">
+                    <div style="display:flex">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" placeholder="支持模糊查询" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">订单编号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="number" autocomplete="off" placeholder="支持模糊查询" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">时间区间</label>
+                            <div style="display:flex">
+                                <input type="text" name="date" id="starttime" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+
+                                <span style="    width: 50px;text-align: center;height: 38px;line-height: 38px;font-size: 20px;">-</span>
+
+                                <input type="text" name="date" id="endtime" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" style="margin-left:20px;">
+                            <div class="layui-input-inline">
+                                <button type="submit" lay-submit class="layui-btn" lay-filter="search">查询</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                <!--<button class="layui-btn" style="background-color:#ff0000" lay-submit lay-filter="export">导出EXCEL</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </blockquote>
+            <div class="layui-card">
+                <div class="layui-card-header">订单列表</div>
+                <div class="layui-card-body">
+                    <table id="orderListTable" lay-filter="orderList"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        layui.use(["layer", "table", "laydate", "form"], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                table = layui.table,
+                laydate = layui.laydate,
+                form = layui.form;
+
+            laydate.render({
+                elem: '#starttime'
+            });
+            laydate.render({
+                elem: '#endtime'
+            });
+            //渲染表格
+            var tables = table.render({
+                elem: "#orderListTable",
+                cellMinWidth: 80,
+                url: "/order/GetOrderList",
+                where: {
+                    token: store.get('token'),
+                    name: $("input[name='name']").val(),
+                    number: $("input[name='number']").val(),
+                },
+                size: "lg",
+                page: true,
+                loading: true,
+                cols: [[
+                    { field: 'order_number', title: '订单编号', align: 'center', width: "12%", fixed: 'left', },
+                    { field: 'order_money', title: '订单金额', align: 'center', width: "6%", },
+                    { field: 'product_name', title: '产品名称', align: 'center', width: "6%" },
+                    { field: 'count', title: '产品数量', align: 'center', width: "6%" },
+                    { field: 'user_name', title: '用户名', align: 'center', width: "8%" },
+                    { field: 'order_state', title: '订单状态', align: 'center', width: "8%", sort: true },
+                    { field: 'pay_state', title: '支付状态', align: 'center', width: "10%" },
+                    { field: 'add_time', title: '下单时间', align: 'center', width: "10%" },
+                    { field: 'pay_time', title: '支付时间', align: 'center', width: "10%" },
+                    //{ field: 'pay_account', title: '付款账号', align: 'center', width: "15%" },
+                    { field: 'user_remark', title: '留言', align: 'center', width: "10%", event: 'show' },
+                    { field: 'admin_remark', title: '回复', align: 'center', width: "14%" ,edit: "text" },
+                    //{ title: "操作", align: 'center', toolbar: '#toolbar', fixed: 'right',  }
+                ]],
+                done: function (res, curr, count) {
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    console.log(res);
+                    //得到当前页码
+                    console.log(curr);
+                    store.set("order_curr", curr);
+                    //得到数据总量
+                    currData = res.data;
+                    //showSelect(currData);
+                }
+            });
+
+            form.on('submit(search)', function (data) {
+                tables.reload({
+                    where: {
+                        token: store.get('token'),
+                        name: $("input[name='name']").val(),
+                        number: $("input[name='number']").val(),
+                        day: $("#day").val()
+                    },
+                    page: {curr:1}
+                })
+            });
+
+            form.on('checkbox(pay_state)', function (obj) {
+                //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+                var state = obj.elem.checked ? 0 : 1;
+                ChangePayState(this.value);
+            });
+
+            table.on('tool(orderList)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                var tr = obj.tr;
+                switch (layEvent) {
+                    case "Detail":
+                        ShowOrderDetail(data.id);
+                        break;
+                    case "show":
+                        showdetail(data.user_remark);
+                        break;
+                }
+            });
+            function ShowOrderDetail(id) {
+                layer.open({
+                    title: '订单详情',
+                    type: 2,
+                    area: ['100%', '100%'],
+                    maxmin: false,
+                    content: '/admin/order/detail.html?id=' + id
+                });
+            };
+            function showdetail(remark) {
+                layer.open({
+                    title: '留言详情',
+                    type: 1,
+                    area: ['40%', '40%'],
+                    maxmin: false,
+                    content: "<p>"+remark+"<p>"
+                });
+            };
+
+            function ChangePayState(id, e) {
+                $.get("/order/ChangePayState", { token: store.get("token"), id: id, pay_state: e }, (msg) => {
+                    if (msg.code != 0) {
+                        layer.msg("修改失败", { icon: 5, time: 1000 }, () => {
+                            tables.reload({
+                                page: {
+                                    curr: store.get("order_curr")
+                                }
+                            });
+                        });
+                    }
+                })
+            };
+
+            form.on('submit(export)', function (data) {
+                data.field.token = store.get("token");
+                var day=1
+                layer.confirm('确认要导出订单Excel吗?',{
+                    icon: 3,
+                    title: '系统提示',
+                    btn: ["今天", "7天", "30天", "60天"],
+                    yes: function (index, layero) {
+                        //按钮【按钮一】的回调
+                        data.field.day = 1;
+                        top.layer.closeAll();
+                        location.href = "/order/exportExcel?" + Qs.stringify(data.field);
+                    }
+                    , btn2: function (index, layero) {
+                        //按钮【按钮二】的回调
+                        data.field.day = 7;
+                        top.layer.closeAll();
+                        location.href = "/order/exportExcel?" + Qs.stringify(data.field);
+                        return false 
+                    }
+                    , btn3: function (index, layero) {
+                        //按钮【按钮三】的回调
+                        data.field.day = 30;
+                        top.layer.closeAll();
+                        location.href = "/order/exportExcel?" + Qs.stringify(data.field);
+                        return false 
+                    }
+                    , btn4: function (index, layero) {
+                        data.field.day = 60;
+                        top.layer.closeAll();
+                        location.href = "/order/exportExcel?" + Qs.stringify(data.field);
+                        return false 
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+    <script type="text/html" id="toolbar">
+        <!--<a class="layui-btn layui-btn-sm" lay-event="Edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="Delete">删除</a>-->
+        <a class="layui-btn layui-btn-sm" lay-event="Detail">详情</a>
+    </script>
+    <script type="text/html" id="order_state">
+        <input type="checkbox" name="pay_state" value="{{d.id}}" lay-skin="switch" lay-text="等待支付|确认支付" lay-filter="order_state" {{ d.order_state == 1? 'checked' : '' }}>
+    </script>
+</body>
+</html>

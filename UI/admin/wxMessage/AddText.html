@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加文本回复</title>
+    <link href="/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="/css/menu.css" rel="stylesheet" />
+    <link href="/css/common.css" rel="stylesheet" />
+    <script src="/Lib/layui/layui.all.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/menu.js"></script>
+</head>
+<body>
+
+    <form class="layui-form layui-form-pane" >
+
+        <input type="hidden" name="PicUrl" id="PicUrl" value="" />
+        <input type="hidden" name="typeMsg" id="typeMsg" value="1" />
+        <input type="hidden" name="token" id="token" value="" />
+        <input type="hidden" name="RuleName" id="RuleName" value="" />
+        <input type="hidden" name="ResponseType" id="ResponseType" value="1" />
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">关键字</label>
+            <div class="layui-input-block">
+                <input type="text" name="keywords" id="keywords" autocomplete="off" placeholder="如：你好" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item  layui-form-text">
+            <label class="layui-form-label">内容或简介</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="ReqContent" id="ReqContent"></textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+
+        form.render(); //更新全部
+
+
+        //监听提交
+        form.on('submit(submit)', function (data) {
+
+            if (data.field.keywords.length == 0) {
+                layer.msg("请输入关键字");
+                return false
+            }
+
+
+            if (data.field.ReqContent.length == 0) {
+                layer.msg("请输入内容");
+                return false
+            }
+
+            data.field.token = store.get("token");
+            data.field.RuleName = "文本回复";
+
+            $.ajax({
+                url: '/WXMessage/AddKeyword',
+                data: data.field,
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                success: function (json) {
+                    parent.closeAll(json);
+                },
+                error: function (msg) {
+                    layer.msg("网络异常");
+                }
+            })
+            return false;
+        });
+    });
+
+</script>

@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的订单</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/leetool.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+
+
+</head>
+<body style="background:#f6f6f6;">
+
+    <div id="orxxList">
+        <script type="text/template" id="orxx">
+
+
+            <div class="Universal">
+                <div class="or_top">
+                    <img src="{{orxxList.product_img}}" alt="{{orxxList.name}}" />
+                </div>
+                <div class="or_txt">
+                    <div class="tp">
+                        <strong>{{orxxList.name}}</strong>
+                        <p>{{orxxList.product_introduct}}</p>
+                    </div>
+                    <div class="tt">
+                        <p>总算力：{{orxxList.Calculate_the_force}}</p>
+                        <p>周期：{{orxxList.period_time}}/天</p>
+                        <p>总收益：{{orxxList.total_score}}积分</p>
+                        <p>价格：<span>{{orxxList.price}}/元</span></p>
+                    </div>
+                </div>
+                <!--<div class="num_txt">
+                    <p class="gmsl">购买数量：</p>
+                    <div class="number"><a>-</a><p>1</p><a>+</a></div>
+                </div>-->
+
+            </div>
+
+
+
+            <div class="ft_height"></div>
+            <div class="footer ord">
+                <div class="rd rd-xx" style="display:flex;">
+                    <div class="sltxt"><p>总价格：{{orxxList.price}}/元</p> </div>
+                    <div class="sytxt">
+                        {{ if orxxList.add_time2<0 }}
+                                {{ if orxxList.order_state==4  }}
+                                <p>已完成</p>
+                                {{ else  }}
+                                <p>已经过期</p>
+                                {{/if}}
+                        {{/if}}
+
+                        {{ if orxxList.order_state==2  }}
+                        <p>已经过期</p>
+                        {{/if}}
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </script>
+    </div>
+
+
+
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  获取订单详细信息
+        $.ajax({
+            url: '/WeChat/UserCenter/GetOrderDetail',
+            data: { id: queryString("Id"), token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('orxx', { orxxList: json.data });
+                    document.getElementById("orxxList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+
+    </script>
+
+</body>
+</html>

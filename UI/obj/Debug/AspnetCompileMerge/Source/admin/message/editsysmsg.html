@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <script src="/ueditor/ueditor.config.js"></script>
+    <script src="/ueditor/ueditor.all.js"></script>
+    <script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+<body>
+    <div class="container" style="padding-top:20px;padding-right:20px;">
+        <form class="layui-form" lay-filter="addRoleForm">
+            <div class="layui-form-item">
+                <input type="hidden" name="id" value="" />
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="title1" value="" />
+                    <input type="text" name="title" lay-verify="required|checkName" autocomplete="off" placeholder="请输入名称" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">内容</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" class="layui-textarea" id="content" name="content"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input type="number" name="sort" id="sort" placeholder="请输入序号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="editform">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        var id = getParameters("id").id;
+        layui.use(['form', 'layedit', 'laydate', 'layedit'], function () {
+            var form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate, $ = layui.jquery, layedit = layui.layedit;
+            //自定义验证规则
+            form.verify({
+                checkName: function (value) {
+                    var mm = "";
+                    if ($("input[name='title1']").val() != value) {
+                        $.ajax({
+                            url: "/SystemMsg/Checktitle",
+                            type: 'get',
+                            async: false,
+                            data: {
+                                token: store.get("token"),
+                                name: value,
+                                type: type
+                            },
+                            success: function (res) {
+                                if (res.code !== 0) {
+                                    mm = res.msg;
+                                }
+                            }
+                        })
+                    }
+                    if (mm != "") {
+                        return mm;
+                    }
+                },
+            });
+
+            //监听提交
+            form.on('submit(editform)', function (data) {
+                console.log(JSON.stringify(data.field));
+                var index = layer.load(1);
+                $.post("/SystemMsg/EditSysMsg", { token: store.get("token"), data: JSON.stringify(data.field) }, function (res) {
+                    layer.close(index);
+                    if (res.code == 0) {
+                        layer.msg('修改成功', { icon: 1 }, function (index) {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    } else {
+                        top.layer.msg('修改失败', { icon: 2 });
+                    }
+                    //console.log();
+                })
+                return false;
+            });
+
+          
+            //layedit.build('content');
+            init(id);
+            function init(id) {
+                $.get("/SystemMsg/EditSysMsg", { token: store.get('token'), id: id }, function (res) {
+                    if (res.code == 0) {
+                        $("#sort").val(res.data.sort);
+                        $("#content").val(res.data.content);
+                        $("input[name='title']").val(res.data.title);
+                        $("input[name=id]").val(res.data.id);
+                        $("input[name='title1']").val(res.data.title);
+                        activity_detailUE = UE.getEditor('content', {
+                            initialFrameHeight: 500,//设置编辑器高度
+                            scaleEnabled: true
+                        });
+                    }
+                    else {
+                        layer.msg(res.msg, { icon: 5 }, function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        })
+                    }
+                })
+            }
+        });
+    </script>
+</body>
+</html>

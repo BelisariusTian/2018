@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>个人收益</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+    <script>
+        var id;
+        $(function(){
+            tool.init();
+
+            id=tool.QS('id');
+
+            getdata();
+        })
+
+        function getdata(){
+            $.ajax({
+                url:'/WeChat/UserCenter/UserTeamDetail',
+                data:{token:store.get('token'),id:id},
+                datatype:'JSON',
+                type:'GET',
+                success:function(result){
+                    if(result.code==0){
+                        var temp=template('temp',result.data);
+                        document.getElementById('info').innerHTML=temp;
+                    }
+                },error:function(e){
+                    layer.msg();
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="my_income_info" id="info">
+        <script type="text/template" id="temp">
+            <div class="my_head_div">
+                <img src="{{wx_head_protrait}}" alt="">
+            </div>
+            <div class="my_info">
+                <div class="head_space"></div>
+                <div class="my_info_div">
+                    <div class="first_div">
+                        <p class="p1">总返回收益</p>
+                        <p class="p2">{{total_score}}积分</p>
+                    </div>
+                    <div class="second_div">
+                        <p class="p1">
+                            {{nickname}}
+                            <span class="time">加入时间</span>
+                        </p>
+                        <p class="p2">{{add_time}}</p>
+                    </div>
+                    <div class="third_div">
+                        <p>购买金额&nbsp;&nbsp;{{total_pay}}元</p>
+                    </div>
+                    <div class="fourth_div">
+                        <p>总收益&nbsp;{{total_score}}积分</p>
+                    </div>
+                </div>
+            </div>
+        </script>
+    </div>
+
+    <!-- <div style="width: 90%;margin: 0 auto;">
+         <div class="pr_list">
+                 <div class="pr_img"><img src="images/index_pr1.png" /></div>
+                 <div class="pr_txt">
+                     <strong>测试产品</strong>
+                     <p>kcsdnv</p>
+                     <p>bhfjgfhj</p>
+                 </div>
+             </div>
+    </div> -->
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

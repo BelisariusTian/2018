@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0711d9aac23741d08fa00e2cfc2a7256" Name="Diagram1">
+        <EntityTypeShape EntityType="mcaaModel.action" Width="1.5" PointX="6" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.administrator" Width="1.5" PointX="6" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.banner" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.config_rule" Width="1.5" PointX="2.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.msg_log" Width="1.5" PointX="10.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.order" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.product" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.role" Width="1.5" PointX="8.25" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.system_log" Width="1.5" PointX="10.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.system_msg_record" Width="1.5" PointX="8.25" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.user" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.user_address" Width="1.5" PointX="5.25" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.user_msg_record" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.user_product" Width="1.5" PointX="8.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.user_score_record" Width="1.5" PointX="7.5" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.wx_request_content" Width="1.5" PointX="13" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.wx_request_rule" Width="1.5" PointX="10.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="mcaaModel.wx_user" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <AssociationConnector Association="mcaaModel.FK_SYSTEM_M_REFERENCE_ADMINIST" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_USER_MSG_REFERENCE_ADMINIST" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_ORDER_REFERENCE_PRODUCT" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_order_user" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_USER_SCO_REFERENCE_ORDER" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_USER_PRO_REFERENCE_PRODUCT" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_user_address_user" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_user_msg_record_user" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_user_product_user" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_user_score_record_user" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_user_wx_user" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_USER_SCO_REFERENCE_USER_ADD" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.FK_wx_request_content_wx_request_rule" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.admin_role" ManuallyRouted="false" />
+        <AssociationConnector Association="mcaaModel.role_action" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

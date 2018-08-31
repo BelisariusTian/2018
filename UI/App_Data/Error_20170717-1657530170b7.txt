@@ -1,0 +1,17 @@
+ExecptionMessage:MessageHandler中Execute()过程发生错误：基础提供程序在 Open 上失败。
+Senparc.Weixin.MP
+   在 Senparc.Weixin.MP.MessageHandlers.MessageHandler`1.Execute()
+   在 UI.Controllers.WeixinController.Post(PostModel postModel) 位置 f:\工作文件夹\城大项目\UI\Controllers\WeiXinController.cs:行号 93
+========= InnerException =========
+基础提供程序在 Open 上失败。
+System.Data.Entity
+   在 System.Data.EntityClient.EntityConnection.OpenStoreConnectionIf(Boolean openCondition, DbConnection storeConnectionToOpen, DbConnection originalConnection, String exceptionCode, String attemptedOperation, Boolean& closeStoreConnectionOnFailure)
+   在 System.Data.EntityClient.EntityConnection.Open()
+   在 System.Data.Objects.ObjectContext.EnsureConnection()
+   在 System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   在 System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+   在 System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   在 WXCommonService.MessageHandlers.CustomMessageHandler.CustomMessageHandler.OnEvent_SubscribeRequest(RequestMessageEvent_Subscribe requestMessage) 位置 f:\工作文件夹\城大项目\WXCommonService\MessageHandlers\CustomMessageHandler\CustomMessageHandler_Events.cs:行号 233
+   在 Senparc.Weixin.MP.MessageHandlers.MessageHandler`1.OnEventRequest(IRequestMessageEventBase requestMessage)
+   在 WXCommonService.MessageHandlers.CustomMessageHandler.CustomMessageHandler.OnEventRequest(IRequestMessageEventBase requestMessage) 位置 f:\工作文件夹\城大项目\WXCommonService\MessageHandlers\CustomMessageHandler\CustomMessageHandler.cs:行号 246
+   在 Senparc.Weixin.MP.MessageHandlers.MessageHandler`1.Execute()

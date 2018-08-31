@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title> 详细说明  </title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="../lib/layui/css/layui.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/leetool.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+</head>
+<body style="background:#f6f6f6;">
+
+    <div class="xx_txt" id="txList">
+
+        <script type="text/template" id="tx">
+
+            <p>时间：{{txList.add_time}}</p>
+            <p>积分：{{txList.score}}</p>
+            <p>地址：{{txList.address}}</p>
+            {{if txList.state==1}}
+            <p>状态：<span>失败</span></p>
+            <p>理由：</p>
+            <p>{{txList.}}每个阶段的发展都是以技术作为基石，以此带来的人机交互更为直观，也更趋势与人的自然交互，同时会扩展更多的使用场景，会覆盖全年龄段的所有人。</p>
+            {{else txList.state==0}}
+            <p>状态：<span>成功</span></p>
+            {{/if}}
+
+        </script>
+
+       
+    </div>
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+    <script src="../lib/layui/layui.js"></script>
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  获取提现详细信息
+        $.ajax({
+            url: '/WeChat/Score/GetApplyDetail',
+            data: { id: queryString("Id"), token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('tx', { txList: json.data });
+                    document.getElementById("txList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>登录</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <style>
+        .line {
+            margin-top: 9%;
+            overflow: hidden;
+            height: 800px;
+            *position: absolute;
+        }
+
+        .login_bg {
+            width: 100%;
+            height: 100%;
+            min-height: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            background-image: url(/images/main_bg.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/images/main_bg.png', sizingMethod='scale');
+        }
+
+        .line table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+    </style>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/Lib/layui/layui.js"></script>
+    <script src="/js/gt.js"></script>
+    <script src="/js/store.js"></script>
+    <script>
+        if (top.location.pathname.toString().toLowerCase().indexOf('login') < 0) {
+            top.location.href = "/admin/login.html";
+        }
+        var captchaObj,
+            layer = layui.layer;
+        $(function () {
+            //当浏览器窗口高度小于一定时，固定container高度
+            $(window).resize(function () {
+                var browserHeight = $(window).height();
+                if (browserHeight <= 500) {
+                    $(".login_bg").css("height", "500px");
+
+                } else {
+                    $(".login_bg").css("height", "100%");
+                }
+            });
+            showAnimateLine()
+            var handlerEmbed = function (data) {
+                captchaObj = data;
+                $("#embed-submit").click(function (e) {
+                    var validate = captchaObj.getValidate();
+                    if (!validate) {
+                        $("#notice")[0].className = "show";
+                        setTimeout(function () {
+                            $("#notice")[0].className = "hide";
+                        }, 2000);
+                        e.preventDefault();
+                    }
+                });
+                // 将验证码加到id为captcha的元素里，同时会有三个input的值：geetest_challenge, geetest_validate, geetest_seccode
+                captchaObj.appendTo("#embed-captcha");
+                captchaObj.onReady(function () {
+                    $("#wait")[0].className = "hide";
+                });
+                captchaObj.onSuccess(function () {
+                    $('button').removeClass('layui-btn-disabled');
+                });
+                captchaObj.onError(function () {
+                    layer("出现了一点小错误，请稍后重试");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                });
+                // 更多接口参考：http://www.geetest.com/install/sections/idx-client-sdk.html
+            };
+
+            $.ajax({
+                // 获取id，challenge，success（是否启用failback）
+                url: "/Login/GetCaptcha?t=" + (new Date()).getTime(), // 加随机数防止缓存
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    // 使用initGeetest接口
+                    // 参数1：配置参数
+                    // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                    initGeetest({
+                        gt: data.gt,
+                        challenge: data.challenge,
+                        product: "float", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+                        offline: !data.success, // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+                        new_captcha: data.new_captcha,
+                        width: '100%'
+                        // 更多配置参数请参见：http://www.geetest.com/install/sections/idx-client-sdk.html#config
+                    }, handlerEmbed);
+                }
+            });
+
+        });
+        
+        function showAnimateLine() {
+            var speed = 6;
+            function Marquee() {
+
+                if (document.getElementById("line").offsetWidth - document.getElementById("line").scrollLeft <= 0) {
+                    document.getElementById("line").scrollLeft -= document.getElementById("line1").offsetWidth;
+                }
+                else {
+                    document.getElementById("line").scrollLeft++;
+                }
+            }
+            setInterval(Marquee, speed);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="login_bg">
+        <div class="line" id="line" name="line">
+            <table>
+                <tr>
+                    <td id="line1" name="line1" valign="top">
+                        <img src="/images/line.png" style="opacity:0.2;">
+                    </td>
+                    <td id="line2" name="line2" valign="top">
+                        <img src="/images/line.png" style="margin-left:-3px;opacity:0.2;">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="beg-login-box" style="position: fixed;top: 0px;left: 50%;margin: 13% auto 0 auto;margin-left: -225px;box-shadow: 0 0 50px rgb(0, 140, 158);">
+            <header>
+                <h1>后台登录</h1>
+            </header>
+            <div class="beg-login-main">
+                <div class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="beg-login-icon">
+                            <i class="layui-icon">&#xe612;</i>
+                        </label>
+                        <input type="text" name="userName" lay-verify="userName" autocomplete="off" placeholder="这里输入登录名" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="beg-login-icon">
+                            <i class="layui-icon">&#xe642;</i>
+                        </label>
+                        <input type="password" name="password" lay-verify="password" autocomplete="off" placeholder="这里输入密码" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <div id="embed-captcha"></div>
+                        <p id="wait" class="show">正在加载验证码......</p>
+                        <p id="notice" class="hide">请先拖动验证码到相应位置</p>
+                    </div>
+                    <div class="layui-form-item">
+
+                        <button style="width: 270px;" type="submit" class="layui-btn layui-btn-primary layui-btn-big layui-btn-disabled" lay-submit lay-filter="login">
+                            <i class="layui-icon">&#xe650;</i> 登录
+                        </button>
+
+                        <div class="beg-clear"></div>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <p>
+                    亮金技术 © 2018 <a target="_blank" style="color: #80d6ac;" href="http://www.ljinnet.com">www.ljinnet.com</a>
+                </p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        layui.use(['layer', 'form'], function () {
+            var form = layui.form;
+            form.on('submit(login)', function (data) {
+                if (data.field.userName == "") {
+                    layer.msg("请输入账号");
+                    return false;
+                }
+                if (data.field.password == "") {
+                    layer.msg("请输入密码");
+                    return false;
+                }
+                $.post("/login/userlogin", data.field, function (res) {
+                    console.log(res);
+                    if (res.code === 0) {
+                        store.set("token", res.data.token);
+                        location.href = "index.html";
+                    } else {
+                        layer.alert(res.msg);
+                        captchaObj.reset();
+                    }
+                });
+                return true;
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

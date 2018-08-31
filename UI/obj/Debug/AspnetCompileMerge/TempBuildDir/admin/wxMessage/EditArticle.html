@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加文本关键字</title>
+    <link href="/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="/css/menu.css" rel="stylesheet" />
+    <link href="/css/common.css" rel="stylesheet" />
+    <script src="/Lib/layui/layui.all.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <script src="../../Immortal/plugin/template-web.js"></script>
+</head>
+<body>
+
+    <form class="layui-form layui-form-pane" style="margin-top:2%;" id="my_form">
+        <script type="text/template" id="tplForm">
+
+            <input type="hidden" name="RId" id="RId" value="{{data.RId}}" />
+            <input type="hidden" name="token" id="token" value="" />
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">关键字</label>
+                <div class="layui-input-block">
+                    <input type="text" name="ReqKeywords" id="ReqKeywords" autocomplete="off" placeholder="如：你好" class="layui-input" value="{{data.ReqKeywords}}">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left: 13%;">
+                <button class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </script>
+</form>
+</body>
+</html>
+<script>
+    //获取参数
+    var obj = getParameters();
+
+    var eldest = {
+        init: () => {
+            if (!obj.id || typeof (obj.id) == "undefined" || obj.id == null || obj.id == "") {
+                window.parent.closeSub("ID错误");
+                return;
+            }
+     
+            $.ajax({
+                url: '/WXMessage/GetRuleDataID',
+                data: { id: obj.id, token: store.get('token') },   //映射
+                type: 'get',
+                async: false,
+                success: function (json) {
+                    if (json.code === 0) {
+                      
+                        //渲染模板
+                        var result = template('tplForm', { data: json.data });
+                        document.getElementById('my_form').innerHTML = result;
+
+                    } else {
+                        layer.msg(json.msg)
+                    }
+                },
+                error: function (msg) {
+                    layer.msg("网络异常");
+                }
+            })
+
+        }
+    }
+    eldest.init();
+
+    layui.use(['form'], function () {
+        var form = layui.form;
+
+        form.render(); //更新全部
+
+        //监听提交
+        form.on('submit(submit)', function (data) {
+ 
+            if (data.field.ReqKeywords.length == 0) {
+                layer.msg("请输入关键字");
+                return false
+            }
+
+            data.field.token = store.get("token");
+
+            $.ajax({
+                url: '/WXMessage/EditAloneKeyword',
+                data: data.field,
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                success: function (json) {
+                    parent.closeAll(json);
+                },
+                error: function (msg) {
+                    layer.msg("网络异常");
+                }
+            })
+            return false;
+        });
+    });
+
+</script>

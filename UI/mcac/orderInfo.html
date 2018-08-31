@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title> 订单信息  </title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="../lib/layui/css/layui.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/leetool.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+</head>
+<body>
+
+    <div id="orxxList">
+        <script type="text/template" id="orxx">
+
+            <div class="Universal">
+                <div class="ord_txt">
+                    <div class="rt_top"><p><i class="iconfont">&#xe613;</i>  <span id="fz">交易信息</span></p></div>
+                    <div class="rt_title">购买信息</div>
+                    <div class="rtcon">
+                        <input type="hidden" name="id" value="{{orxxList.id}}" />
+                        <input type="hidden" name="add_time2" value="{{orxxList.add_time2}}" />
+                        <p>总算力：{{orxxList.Calculate_the_force}}</p>
+                        <p>周期：{{orxxList.period_time}}天</p>
+                        <p>总收益：{{orxxList.total_score}}积分</p>
+                        <p>价格：<span>{{orxxList.price}}元</span></p>
+                        <p>购买数量：<span>{{orxxList.count}}个</span></p>
+                        <div class="ortb">
+                            <p>总价格：<span>￥{{orxxList.order_money}}/元</span></p>
+                        </div>
+
+                    </div>
+
+                    <div class="rt_title">待转账信息</div>
+                    <div class="rtcon">
+                        <p>银行卡号：<span>{{orxxList.bank_account}}</span></p>
+                        <p>开户人：{{orxxList.bank_user}}</p>
+                        <p>开户行：{{orxxList.bank_bankaddress}}</p>
+                        <p>转账金额：<span>￥{{orxxList.order_money}}/元</span></p>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="ft_height"></div>
+            <div class="footer ord">
+                <div class="rd rd-xx" style="display:flex;">
+
+                    {{ if orxxList.pay_state==0 }}
+                    <div class="sltxt"><p> 订单状态：待支付（<span id="times"></span>） </p> </div>
+                    {{ /if}}
+                    {{ if orxxList.pay_state==1 }}
+                    <div class="sltxt"><p> 订单状态：已付款 </p> </div>
+                    {{ /if}}
+
+                    <div class="sytxt"><p id="bh">已支付</p> </div>
+                </div>
+            </div>
+
+        </script>
+    </div>
+
+
+
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  获取订单详细信息
+        $.ajax({
+            url: '/WeChat/Orders/OrderDetail',
+            data: { id: queryString("oid"), token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('orxx', { orxxList: json.data });
+                    document.getElementById("orxxList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+
+        $("#bh").click(function () {
+            var time = $("input[name='add_time2']").val();
+
+            if (time >= 0 && time <= 1800) {
+                layer.prompt({ title: '请填写你的付款账号', formType: 3 }, function (text, index) {
+                    layer.close(index);
+                    $.post(
+                        '/WeChat/Orders/UserAffirmPay',
+                        {
+                            id: $("input[name='id']").val(), pay_address: text, token: store.get('token')
+                        }, function (json) {
+                            layer.msg(json.msg);
+                        }
+
+                    )
+
+                });
+            } else {
+                layer.msg("已过期");
+            }
+        })
+
+        //var index = setInterval(function () {
+        //    var str = $('#times').html();
+        //    var strs = str.split("：");//分割分和秒
+        //    var f = parseInt(strs[0]);
+        //    var s = parseInt(strs[1]);
+        //    s--;
+        //    if (s == 0) {
+        //        f--;
+        //        s = 60;
+        //    }
+        //    if (f < 0) {
+        //        clearInterval(index);
+        //        $('#times').html("00：00");
+        //        $("#fz").text(0);
+        //    } else {
+        //        var rs = (f < 10 ? "0" + f : f) + "：" + (s < 10 ? "0" + s : s);
+        //        $('#times').html(rs);
+        //        $("#fz").text(f);
+        //    }
+        //}, 1000);
+        var index1 = setInterval(function () {
+            var time = $("input[name='add_time2']").val();
+            var msg = "已过期";
+            var msg2 = "已过期";
+            if (time >= 0 && time <= 1800) {
+                var minutes = Math.floor(time / 60);
+                var seconds = Math.floor(time % 60);
+                msg = `本次交易将于${minutes}分钟${seconds}秒之后过期,请及时确认转账`;
+                msg2 = `${minutes}:${seconds}`
+            } else {
+                clearInterval(index1);
+                $("#bh").on("click", function (event) {
+                    layer.msg("已过期");
+                    event.preventDefault();
+                });
+                ChangeOrderState();
+            }
+            document.getElementById("fz").innerHTML = msg;
+            document.getElementById("times").innerHTML = msg2;
+            $("input[name='add_time2']").val(time - 1);
+        }, 1000);
+
+        function ChangeOrderState() {
+            $.get("/orders/ChangeOrderStateWhenTimeout", { token: store.get('token'), id: $("input[name='id']").val() }, function (res) {
+                if (res.code != 0) {
+                    layer.msg(res.msg);
+                }
+            })
+        }
+
+    </script>
+
+</body>
+</html>

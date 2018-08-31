@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/css/menu.css" rel="stylesheet" />
+    <script src="~/Lib/layui/layui.all.js"></script>
+    <script>
+        var jQuery = $ = layui.jquery, layer = layui.layer;
+    </script>
+    <script src="~/js/jquery.unobtrusive-ajax.v324.js"></script>
+    <script src="~/js/menu.js"></script>
+    @RenderSection("head",false)
+</head>
+<body>
+    <div class="layui-container" style="margin-top: 20px;">
+        @RenderBody()
+    </div>
+</body>
+</html>

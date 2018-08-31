@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>图文消息</title>
+    <link href="/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="/css/menu.css" rel="stylesheet" />
+    <link href="/css/common.css" rel="stylesheet" />
+    <script src="/Lib/layui/layui.all.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <script src="../../Immortal/plugin/template-web.js"></script>
+    <script>
+        //获取参数
+        var obj = getParameters();
+    </script>
+</head>
+
+
+<body layadmin-themealias="default">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style=" margin:40px;">
+            <blockquote class="layui-elem-quote layui-card">
+
+                <!--<div class="layui-form layui-col-space15">-->
+                    <div class="layui-inline">
+                        <a class="layui-btn layui-btn-normal addCategory_btn" id="btnAdd" onclick="active.Add(obj.rId)">添加</a>
+                    </div>
+                <!--</div>-->
+
+                <!--<div class="layui-form layui-col-space15">-->
+                    <div class="layui-inline" style="margin-left: 75%;">
+                        <a class="layui-btn search_btn" onclick="history.go(-1)">上一页</a>
+                    </div>
+                <!--</div>-->
+            </blockquote>
+            <div class="layui-card">
+                <div class="layui-card-header" id="keywordsShow"></div>
+                <div class="layui-card-body">
+                    <table id="dataList" lay-filter="dataList"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $("#keywordsShow").text("关键字：" + obj.keywords);
+
+    var table = layui.table; //获取table模块
+    var form = layui.form; //获取form模块
+    var laydate = layui.laydate; //日期选择
+    var tableIns, searchData = { token: store.get('token'), rId: obj.rId }; //table 和搜索数据
+    var jQuery = $ = layui.jquery, layer = layui.layer;
+
+    var active = { //定义一个变量来装方法
+        Add: (rId) => {
+
+            var len = $("tbody>tr").length;
+            if (len >= 8) {
+                
+                return layer.msg("图文数据最多添加八条");
+            }
+
+            layer.open({
+                title: "添加图文内容",
+                type: 2,
+                area: ['50%', '100%'],
+                content: '/admin/wxMessage/AddArticleSub.html?rId=' + rId,
+                end: function () {
+
+                }
+            });
+        }
+    };
+
+    form.render(); //更新全部
+    //加载数据
+    tableIns = table.render({
+        url: '/WXMessage/GetRuleTeletext', //请求地址
+        method: 'post', //请求方式
+        where: searchData,
+        cols: [
+            [
+                { field: 'ReqTitle', width: 300, title: '标题' }
+                , { field: 'PicUrl', width: 150, title: '图片', event: 'setSign', templet: '#tplPicUrl' }
+                , { field: 'ReqContent', width: 300, title: '内容' }
+                , { field: 'DetailUrl', width: 350, title: '链接' }
+                , { field: 'Sort', width: 100, title: '排序' }
+                , { field: 'sign', title: '操作', width: 300, toolbar: '#titleTpl' }
+            ]
+        ],
+        initSort: { //初始排序
+            field: 'AddTime', //排序字段，对应 cols 设定的各字段名
+            type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+        },
+        elem: '#dataList', //要渲染的容器
+        id: 'dataList', //容器id，方便取数据
+        height: "full", //高度将始终铺满，无论浏览器尺寸如何。这是一个特定的语法格式，其中 full 是固定的，而 差值 则是一个数值，这需要你来预估，比如：表格容器距离浏览器顶部和底部的距离“和”
+        //width: 1140, //默认最大宽度
+        loading: false, //是否显示加载条
+        skin: 'row', //line （行边框风格） row （列边框风格）  nob （无边框风格）
+        even: true, //开启隔行背景
+        //page: true, //是否显示分页
+        //limits: [10, 20, 30],
+        //limit: 10, //每页默认显示的数量
+        //done: function (res, curr, count) {
+        //    if (res.code <= -6) {
+        //        layer.msg(res.msg, {
+        //            icon: 2,
+        //            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        //        }, function () {
+        //            location.href = "/admin/login.html";
+        //        });
+        //    }
+        //}
+    });
+
+
+    //搜索事件
+    form.on("submit(btnSearch)", function (data) {
+
+        searchData.search = data.field.search;
+        reloadTable(tableIns, searchData);
+        return false;
+    });
+
+
+
+
+    //监听工具条
+    table.on('tool(dataList)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'del') {
+
+            Delete(data.Id)
+
+        } else if (obj.event === 'edit') {
+        
+            Edit(data.Id);
+
+        }  else if (obj.event === 'setSign') {
+
+            layer.photos({
+                photos: {
+                    "title": data.keywords, //相册标题
+                    "id": 123, //相册id
+                    "start": 0, //初始显示的图片序号，默认0
+                    "data": [   //相册包含的图片，数组格式
+                        {
+                            "alt": data.keywords,
+                            "pid": 666, //图片id
+                            "src": data.PicUrl, //原图地址
+                            "thumb": data.PicUrl //缩略图地址
+                        }
+                    ]
+                }
+                , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
+        } 
+
+    });
+
+
+    //子窗体需要调用本窗体的方法
+    function closeAll(data) {
+    
+        if (data.code == 0) {
+            layer.closeAll();
+            layer.msg(data.msg, function () {
+                setTimeout(function () { reloadTable(tableIns, searchData); }, 1000);
+            });
+        } else {
+            layer.msg(data.msg);
+        }
+    }
+
+    function closeSub(msg) {
+        layer.msg(msg, function () {
+            layer.closeAll();
+        });
+
+    }
+
+
+    function reloadTable(obj, data) {
+        obj.reload({
+            url: `/WXMessage/GetRuleTeletext`, //请求地址
+            method: 'post', //请求方式
+            where: data
+        });
+    }
+
+    function Edit(obj) {
+        var obj = {
+            title: "添加图文内容",
+            type: 2,
+            area: ['50%', '100%'],
+            content: '/admin/wxMessage/EditArticleSub.html?id=' + obj,
+            end: function () {
+                //setTimeout(function () { reloadTable(tableIns, searchData); }, 2000);
+            }
+        }
+        layer.open(obj);
+    }
+
+    function Delete(obj) {
+        //询问框
+        layer.confirm('您确定要删除这条数据 ？', {
+            btn: ['是的', '不是'] //按钮
+        }, function () {
+            $.post('/WXMessage/DelTeletext', { id: obj, token: store.get('token') }, function (data) {
+                if (data.code == 0) {
+                    layer.msg(data.msg, function () {
+                        reloadTable(tableIns, searchData);
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            });
+        });
+    }
+</script>
+
+<script type="text/html" id="tplPicUrl">
+    <img src="{{d.PicUrl}}" alt="图片" style="max-width: 100%;  max-height: 100%;" />
+</script>
+
+
+<script type="text/html" id="titleTpl">
+    <a href="javascript:;" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>

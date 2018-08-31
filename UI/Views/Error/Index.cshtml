@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>抱歉，出错了~</title>
+    <link href="~/Lib/layui/css/layui.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #F2F2F2;
+        }
+        #info {
+            text-align: left;
+            padding: 10px;
+            display: none;
+            color: red;
+            font-size: 18px;
+            background: #333;
+            word-break: break-word;
+        }
+
+        #cxy {
+            cursor: pointer;
+        }
+    </style>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            var i = 0;
+            $("#cxy").click(function () {
+                i++;
+                if (i > 2) {
+                    $("#info").show(200);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="layui-container" style=" margin-top:10%;">
+        <div class="layui-row">
+           <div class="layui-form">
+              <div class="layui-form-item layui-col-xs12">
+                  <h2> <stong style="font-size: 36px;">发生了一个错误，系统已记录。</stong> </h2>
+              </div>
+               <div  class="layui-form-item layui-col-xs12" id="cxy">
+                   <p style="font-size: 20px;margin-top:15px;">请您稍后重试~</p>
+               </div>
+               <div  class="layui-form-item layui-col-xs12" id="info">
+                   @Html.Raw(ViewBag.ErrorInfo)
+               </div>
+
+               <div  class="layui-form-item layui-col-xs12">
+                   <a href="javascript:history.back();" class="layui-btn layui-btn-danger">返回上一页</a>
+                   <a href="javascript:history.go(0);" class="layui-btn layui-btn-primary">刷新</a>
+               </div>
+           </div>
+            
+        </div>
+    </div>
+</body>
+</html>

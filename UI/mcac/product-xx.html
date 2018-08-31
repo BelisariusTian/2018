@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>产品详细</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/leetool.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+
+</head>
+<body style="background:#f6f6f6;">
+
+    <div id="prxxList">
+        <script type="text/template" id="prxx">
+
+            <div class="Universal">
+                <div class="or_top">
+                    <input type="hidden" value="{{prxxList.id}}" id="prID"/>
+                    <img src="{{prxxList.product_img}}" alt="{{prxxList.name}}" />
+                </div>
+                <div class="or_txt">
+                    <div class="tp">
+                         <strong>{{prxxList.name}}</strong>
+                        <p>{{prxxList.product_introduct}}</p>
+                    </div>
+                    <div class="tt">
+                        <p>总算力：{{prxxList.Calculate_the_force}}</p>
+                        <p>周期：{{prxxList.period_time}} 天</p>
+                        <p>总收益：{{prxxList.total_score}}积分</p>
+                        <p>价格：<span>{{prxxList.price}} 元</span></p>
+                        <input type="hidden" value="{{prxxList.price}}" id="valu" />
+                    </div>
+                </div>
+                <div class="num_txt">
+                    <p class="gmsl">购买数量：</p>
+                    <div class="number"><a id="reduce">-</a><p id="num">1</p><a id="plus">+</a></div>
+                </div>
+
+            </div>
+
+
+            <div class="ft_height"></div>
+            <div class="footer ord">
+                <div class="rd rd-xx" style="display:flex;">
+                    <div class="sltxt"><p>总价格：<span class="mon">{{prxxList.price}}</span> 元</p> </div>
+                    <div class="sytxt"><button id="render">立即购买</button> </div>
+                </div>
+            </div>
+
+        </script>
+    </div>
+   
+
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  获取产品详细信息
+        $.ajax({
+            url: '/WeChat/Products/GetProductDetailInfo',
+            data: { id: queryString("Id"), token: store.get('token')},
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('prxx', { prxxList: json.data });
+                    document.getElementById("prxxList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+        //  加
+
+        $("#plus").click(function () {
+            var nu = $("#num").text();
+            nu++;
+            $("#num").text(nu);
+
+            var money = $("#valu").val();
+            var relust = money * nu;
+            $(".mon").text(relust);
+
+        });
+
+        // 减
+        $("#reduce").click(function () {
+
+            var nu = $("#num").text();
+            if (nu != 1) {
+                nu--;
+                $("#num").text(nu);
+
+                var money = $("#valu").val();
+                var relust = money * nu;
+                $(".mon").text(relust);
+            }
+
+
+        });
+
+       //  购买
+        $("#render").click(function () {
+
+            var data = {
+                product_id: $("#prID").val(),
+                count: $("#num").text(),
+                order_money: $(".mon").text()
+            }
+            console.log(JSON.stringify(data));
+
+            $.post('/wechat/orders/addorder', { token: store.get('token'), data: JSON.stringify(data)}, function (result) {
+                if (result.code == -8) {
+                    tool.oauth2(); //如果未授权的话，则跳转到授权页面
+                    return;
+                }
+
+                if (result.code == 0) {//订单添加成功后
+
+
+                    var Total = $(".mon").text();
+                    if (Total >= 20000) {  //  价格超过 20000，手动转账付款
+                        location = "orderInfo.html?oid=" + result.data.order_id;
+                    } else {
+                        //调用活动支付接口，
+                        $.ajax({
+                            type: "Get",
+                            url: '/TenPayV3/JsApi',
+                            data: { orderNo: result.data.order_id, token: store.get('token') },
+                            async: false,
+                            success: function (data) {
+                                if (data.result == 0) {
+                                    var entity = data.data;
+
+                                    WeixinJSBridge.invoke('getBrandWCPayRequest', {
+                                        "appId": entity.appId, //公众号名称，由商户传入
+                                        "timeStamp": entity.timeStamp, //时间戳
+                                        "nonceStr": entity.nonceStr, //随机串
+                                        "package": entity.package,//扩展包
+                                        "signType": "MD5", //微信签名方式:MD5
+                                        "paySign": entity.paySign //微信签名
+                                    }, function (res) {
+                                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                            if (entity.category == "0") {
+                                                //支付成功后的操作
+                                                layer.closeAll();
+                                                layer.msg('支付成功', {}, function () {
+                                                    location.href = "me-order.html";
+                                                });
+                                            }
+                                        } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                                            layer.closeAll();
+                                            layer.msg('您已取消支付!');
+                                            return;
+
+                                            //$.each(res, function (k, v) {
+                                            //    errorMsg += 'K:' + k + ' V:' + v;
+                                            //});
+                                            //errorMsg += " 微信商户统一下单ID:" + entity.prepay_id;
+                                            //alert(errorMsg);
+
+                                        } else {
+
+                                            var errorMsg = '';
+                                            $.each(res, function (k, v) {
+                                                errorMsg += 'K:' + k + ' V:' + v;
+                                            });
+                                            layer.alert("请联系管理员 !" + errorMsg);
+
+                                        }
+                                        // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                                        //因此微信团队建议，当收到ok返回时，向商户后台询问是否收到交易成功的通知，若收到通知，前端展示交易成功的界面；若此时未收到通知，商户后台主动调用查询订单接口，查询订单的当前状态，并反馈给前端展示相应的界面。
+                                    });
+                                } else {
+                                    layer.alert(data.msg);
+                                    return;
+                                }
+                            }
+                        });
+                    }
+
+
+                } else {
+                    layer.msg(result.msg);
+                }
+            })
+
+        
+
+        });
+
+
+
+
+    </script>
+
+</body>
+</html>

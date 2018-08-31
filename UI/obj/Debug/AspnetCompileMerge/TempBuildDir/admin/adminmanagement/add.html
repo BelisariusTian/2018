@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加管理员</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <style>
+        .cover-content .cover-img {
+            width: 180px;
+            height: 200px;
+            background: center no-repeat;
+            background-size: cover;
+            display: inline-block;
+            margin-right: 20px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header" id="title">添加管理员</div>
+                    <form id="adminForm" class="layui-form">
+
+                        <input type="hidden" name="role_id" value="" />
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">头像</label>
+                            <div class="cover-content">
+                                <input type="hidden" name="head_protrait" id="head_protrait" lay-verify="img">
+                                <span id="logo-img" class="cover-img" style="background-image:url(/images/posterImg.png)"></span>
+                                <a class="layui-btn layui-btn-danger" id="sel_pic_img">+添加头像</a>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">登录账号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="login_account" lay-verify="required|checkAccount" autocomplete="off" placeholder="请输入登录账号" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">登录密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="login_pwd" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">重复密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="login_pwd2" lay-verify="required|checkPwd" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">账号名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" lay-verify="required|checkName" placeholder="请输入账号名称" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="sort" placeholder="请输入数字" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <div class="layui-footer" style="left: 0;z-index:99999">
+                                    <button class="layui-btn" lay-submit="" lay-filter="addadmin">提交</button>
+                                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                                    <button class="layui-btn layui-btn-primary" type="button" onclick="javascript: history.go(-1)">返回</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="/lib/layui/layui.js"></script>
+<script>
+    var roleid = getParameters("roleid")
+    layui.use(['form', 'layer', 'upload'], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var upload = layui.upload;
+        var $ = layui.jquery;
+        var uploadurl = [];
+
+        $("input[type='hidden'][name='role_id']").val(roleid.roleid);
+        console.log($("input[type='hidden'][name='role_id']").val())
+
+        //自定义验证规则
+        form.verify({
+            checkAccount: function (value) {
+                var mm = "";
+                $.ajax({
+                    url: "/admin/checkAccount",
+                    type: 'get',
+                    async: false,
+                    data: {
+                        token: store.get("token"),
+                        name: value,
+                    },
+                    success: function (res) {
+                        if (res.code !== 0) {
+                            mm = res.msg;
+                        }
+                    }
+                })
+                if (mm != "") {
+                    return mm;
+                }
+            },
+            checkName: function (value) {
+                var mm = "";
+                $.ajax({
+                    url: "/admin/checkName",
+                    type: 'get',
+                    async: false,
+                    data: {
+                        token: store.get("token"),
+                        name: value,
+                    },
+                    success: function (res) {
+                        if (res.code !== 0) {
+                            mm = res.msg;
+                        }
+                    }
+                })
+                if (mm != "") {
+                    return mm;
+                }
+            },
+            checkPwd: function (value) {
+                var pwd = $("input[name='login_pwd']").val();
+                if (pwd != value) {
+                    return '两次密码不一致'
+                }
+            },
+            img: function (value) {
+                if (value == undefined || value.length == 0) {
+                    return '请上传头像'
+                }
+            }
+        });
+
+        function check(url, name) {
+            var res = false;
+            $.ajax({
+                url: url,
+                type: 'get',
+                async: false,
+                data: {
+                    token: store.get("token"),
+                    name: name,
+                },
+                success: function (res) {
+                    if (res.code === 0) {
+                        res = true;
+                    }
+                }
+            })
+            return res;
+        }
+
+        form.on('submit(addadmin)', function (data) {
+            console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            $.post("/admin/AddAdmin", { token: store.get("token"), data: JSON.stringify(data.field) }, function (res) {
+                if (res.code == 0) {
+                    top.layer.msg('添加成功', { icon: 1 }, function (index) {
+                        var n = $("#head_protrait").val()
+                        uploadurl.removeByValue(n);
+                        uploadurl.notempty();
+                        if (uploadurl.length > 0) {
+                            $.post('/UploadFile/DeleteFileList', { list: uploadurl.join(',') }, function (res) {
+                                console.log(res);
+                            })
+                        }
+                        location.href = "/admin/adminmanagement/index.html";
+                    });
+                } else {
+                    top.layer.msg('添加失败', { icon: 2 });
+                }
+                console.log(uploadurl);
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#sel_pic_img', //绑定元素
+            url: '/UploadFile/UpImage', //上传接口
+            data: {
+                width: 800,
+                height: 450,
+                mode: "Cut"
+            },
+            headers: { token: store.get("token") },
+            done: function (res) {
+                //上传完毕回调
+                $("#head_protrait").val(res.data.OriginalPath);
+                $("#logo-img").css({ "background-image": "url(" + res.data.OriginalPath + ")" });
+                uploadurl.push(res.data.OriginalPath);
+                uploadurl.push(res.data.ThumbnailPath);
+            },
+            error: function () {
+                //请求异常回调
+                layer.msg(res.msg);
+            }
+        });
+
+        Array.prototype.removeByValue = function (val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) {
+                    this.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        Array.prototype.notempty = function () {
+            return this.filter(t => t != undefined && t !== null && t !== "");
+        }
+    });
+</script>

@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>消息详细信息</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <style>
+        .show_list {
+            margin-bottom:10px;
+        }
+        .show_item {
+            display:flex;
+            justify-content:flex-start;
+        }
+        .show_item_content {
+            padding-left:20px;
+        }
+        .show_item_name {
+            font-size:22px;
+            font-weight:600;
+
+        }
+        .show_item_time {
+            font-size:18px;
+            margin-left:15px;
+        }
+        .show {
+            border: 1px solid #808080;
+            margin:10px auto;
+            width: 40%;
+            padding: 20px 2%;
+            border-radius: 3%;
+            box-shadow: 5px 2px 6px #000;
+            height:900px;
+        }
+        .show_contains {
+            /*border:1px solid red;*/
+            width:100%;
+            height:90%;
+            overflow:auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="show">
+        <div class="show_contains" id="show_contains">
+        </div>
+        <!--回复-->
+        <form class="layui-form">
+            <div class="layui-block" style="margin-top:20px;">
+                <div class="layui-input-inline" style="width:90%">
+                    <input type="hidden" name="user_id" value="" />
+                    <input type="hidden" name="msg_pid" value="" />
+                    <input type="text" class="layui-input" id="va"name="msg_content"  value="" />
+                </div>
+                <a class="layui-btn" id="reply_btn" lay-submit lay-filter="btnReply">回复</a>
+            </div>
+        </form>
+    </div>
+
+
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        var id = getParameters("id").id;
+        layui.use(["layer", "form", "laytpl"], function () {
+            var $ = layui.jquery, form = layui.form, laytpl = layui.laytpl;
+            init(id);
+            function init(id) {
+                $.get("/usermsg/GetUseMsgLink", { token: store.get('token'), id: id }, function (res) {
+                    render(res.data);
+                })
+            };
+            function render(data) {
+                var getTpl = $("#show_containsT").html, view = $("#show_contains");
+                laytpl(getTpl).render(data, function (html) {
+                    view.html = html;
+                })
+            }
+
+            $("#reply_btn").on("click", function () {
+                var va = $("#va").val();
+                if (va.length == 0 || va.trim().length==0) {
+                    layui.msg("回复内容不能为空");
+                    return;
+                }
+                $.get("/")
+            })
+        })
+    </script>
+    <script type="text/html" id="show_containsT">
+        {{#  layui.each(d.data, function(index, item){ }}
+        <div class="show_list">
+            <div class="show_item">
+                <p class="show_item_name">{{item.user_name}}</p><span class="show_item_time">{{item.add_time}}</span>
+            </div>
+            <p class="show_item_content">{{item.msg_content}}</p>
+        </div>
+        {{#  }); }}
+        {{#  if(d.data.length === 0){ }}
+        无数据
+        {{#  } }}
+    </script>
+</body>
+</html>

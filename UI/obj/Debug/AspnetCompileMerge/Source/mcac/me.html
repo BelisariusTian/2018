@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人中心</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="../lib/layui/css/layui.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+
+
+</head>
+<body>
+
+    <div class="Universal">
+
+        <div class="me_bg">
+            <div class="me_top">
+                <div class="sz_kf">
+                    <!--<a><i class="iconfont">&#xe62d;</i> 设置</a>-->
+                    <a class="kf" href="QA.html">客服  <i class="iconfont">&#xe67e;</i></a>
+                    <div class="clear"></div>
+                </div>
+                <div class="me_info">
+                    <div class="me_txt" id="usList">
+                        <script type="text/template" id="us">
+
+                            <div class="mt_img"><img src="{{usList.wx_head_protrait}}" /></div>
+                            <div class="mt_tt">
+                                <p><strong>{{usList.nickname}}</strong></p>
+                                <!--<p>管理员</p>-->
+                            </div>
+                            <!--<div class="mt_sy"><p>已收益<span>2569.00</span></p></div>-->
+
+                        </script>
+                    </div>
+
+                    <div class="me_nav">
+                        <a href="me-order.html">
+                            <i class="iconfont">&#xe63b;</i>
+                            <p>我的订单</p>
+                        </a>
+                        <a href="tx-Record.html">
+                            <i class="iconfont">&#xe61f;</i>
+                            <p>提现记录</p>
+                        </a>
+                        <a href="myunder.html">
+                            <i class="iconfont">&#xe685;</i>
+                            <p>我的团队</p>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="grzx_nav">
+            <a href="Extension.html"><div class="mor"><i class="iconfont">&#xe678;</i>  推广二维码</div><div class="rr"><i class="iconfont">&#xe6a7;</i></div></a>
+            <a href="articlelist.html"><div class="mor"><i class="iconfont" style="font-size:20px;">&#xe613;</i>  系统公告</div><div class="rr"><i class="iconfont">&#xe6a7;</i></div></a>
+            <a href="address-lb.html"><div class="mor"><i class="iconfont" style="font-size:20px;">&#xe62c;</i>  地址管理</div><div class="rr"><i class="iconfont">&#xe6a7;</i></div></a>
+        </div>
+
+    </div>
+
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  获取产品详细信息
+        $.ajax({
+            url: '/WeChat/UserCenter/GetUserInfo',
+            data: {token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('us', { usList: json.data });
+                    document.getElementById("usList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+    </script>
+
+
+
+</body >
+</html >

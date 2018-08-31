@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <script src="/ueditor/ueditor.config.js"></script>
+    <script src="/ueditor/ueditor.all.js"></script>
+    <script src="/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <style>
+        .cover-content .cover-img {
+            width: 400px;
+            height: 225px;
+            background: center no-repeat;
+            background-size: cover;
+            display: inline-block;
+            margin-right: 20px;
+            vertical-align: middle;
+        }
+
+        .layui-form-label {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header" id="title">添加产品</div>
+                    <form id="adminForm" class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">封面</label>
+                            <div class="cover-content">
+                                <input type="hidden" name="product_img" id="product_img" lay-verify="img">
+                                <input type="hidden" name="id" value="" />
+                                <span id="logo-img" class="cover-img" style="background-image:url(/images/posterImg.png)"></span>
+                                <a class="layui-btn layui-btn-danger" id="sel_pic_img">+添加封面</a>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" lay-verify="required|checkAccount" autocomplete="off" placeholder="请输入产品名称" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">总收益（积分）</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="total_score" readonly autocomplete="off" placeholder="算力*24*周期" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(积分)必填</div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">周期(运行多少天）</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="period_time" lay-verify="required" autocomplete="off" placeholder="请输入整数" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(天)*必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">算力(每小时产生多少积分)</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="Calculate_the_force" lay-verify="required" autocomplete="off" placeholder="请输入整数" class="layui-input" onblur="showTotalScore()">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(积分)*必填</div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">价格</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="price" lay-verify="required" autocomplete="off" placeholder="请输入产品价格" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(元)必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">一级推荐奖励(积分)</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="first_level_referral_bonuses" lay-verify="required" autocomplete="off" placeholder="请输入整数" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">二级推荐奖励(积分)</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="second_level_referral_bonuses" lay-verify="required" autocomplete="off" placeholder="请输入整数" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">一级每日收益奖励(比率)</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="first_level_earnings_bonuses" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(%)必填</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">二级每日收益奖励(比率)</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="second_level_earnings_bonuses" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">(%)必填</div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="sort" placeholder="请输入数字" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">产品总数量</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="product_count" placeholder="请输入数字" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">产品介绍</label>
+                            <div class="layui-input-block" style=" margin-left:230px!important">
+                                <textarea id="product_introduct" name="product_introduct" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <div class="layui-footer" style="left: 0;z-index:99999">
+                                    <button class="layui-btn" lay-submit="" lay-filter="editproduct">提交</button>
+                                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                                    <!--<button class="layui-btn layui-btn-primary" type="button" onclick="javascript: history.go(-1)">返回</button>-->
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/layui/layui.js"></script>
+    <script>
+        var id = getParameters("id").id;
+        var showTotalScore;
+        layui.use(['form', 'layer', 'upload'], function () {
+            var layer = layui.layer;
+            var form = layui.form;
+            var upload = layui.upload;
+            var $ = layui.jquery;
+            var uploadurl = [];
+            //initUE();
+            //自定义验证规则
+            form.verify({
+                checkName: function (value) {
+                    var mm = "";
+                    $.ajax({
+                        url: "/product/CheckProductName",
+                        type: 'get',
+                        async: false,
+                        data: {
+                            token: store.get("token"),
+                            name: value,
+                        },
+                        success: function (res) {
+                            if (res.code !== 0) {
+                                mm = res.msg;
+                            }
+                        }
+                    })
+                    if (mm != "") {
+                        return mm;
+                    }
+                },
+                img: function (value) {
+                    if (value == undefined || value.length == 0) {
+                        return '请上传产品封面'
+                    }
+                }
+            });
+
+            showTotalScore =function(val) {
+                var zq = $("input[name='period_time']").val();
+                var suanli = $("input[name='Calculate_the_force']").val();
+                var ts = zq * 1.0 * suanli * 24;
+                $("input[name='total_score']").val(ts)
+            }
+
+
+            form.on('submit(editproduct)', function (data) {
+                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                $.post("/product/EditProduct", { token: store.get("token"), data: JSON.stringify(data.field) }, function (res) {
+                    if (res.code == 0) {
+                        top.layer.msg('修改成功', { icon: 1 }, function (index) {
+                            var n = $("#product_img").val()
+                            uploadurl.removeByValue(n);
+                            uploadurl.notempty();
+                            if (uploadurl.length > 0) {
+                                $.post('/UploadFile/DeleteFileList', { list: uploadurl.join(',') }, function (res) {
+                                    console.log(res);
+                                })
+                            }
+                            location.href = "/admin/product/index.html";
+                        });
+                    } else {
+                        top.layer.msg('修改失败', { icon: 2 });
+                    }
+                    //console.log(uploadurl);
+                })
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#sel_pic_img', //绑定元素
+                url: '/UploadFile/UpImage', //上传接口
+                data: {
+                    width: 800,
+                    height: 450,
+                    mode: "Cut"
+                },
+                headers: { token: store.get("token") },
+                done: function (res) {
+                    //上传完毕回调
+                    $("#product_img").val(res.data.OriginalPath);
+                    $("#logo-img").css({ "background-image": "url(" + res.data.OriginalPath + ")" });
+                    uploadurl.push(res.data.OriginalPath);
+                    uploadurl.push(res.data.ThumbnailPath);
+                },
+                error: function () {
+                    //请求异常回调
+                    layer.msg(res.msg);
+                }
+            });
+
+            Array.prototype.removeByValue = function (val) {
+                for (var i = 0; i < this.length; i++) {
+                    if (this[i] == val) {
+                        this.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            Array.prototype.notempty = function () {
+                return this.filter(t => t != undefined && t !== null && t !== "");
+            }
+
+            //初始化富文本编辑器
+            function initUE() {
+               product_introductUE = UE.getEditor('product_introduct', {
+                    initialFrameHeight: 400,//设置编辑器高度
+                    scaleEnabled: true
+                })
+            }
+
+            init(id);
+            function init(id) {
+                $.get('/product/EditProduct', { token: store.get("token"), id: id }, function (res) {
+                    if (res.code === 0) {
+                        BindDataToInput(res.data);
+                    }
+                    else {
+                        layer.msg(res.msg, { icon: 5 });
+                    }
+                })
+            }
+            function BindDataToInput(data) {
+                var inputList = $("input");
+                $.each(inputList, function (index, item) {
+                    var name = item.name;
+                    if (data[name] != null || data[name] != undefined) {
+                        $("input[name='" + name + "']").val(data[name]);
+                    }
+                });
+                $("#logo-img").css({ "background-image": "url(" + data["product_img"] + ")" });
+              
+            }
+        });
+    </script>
+</body>
+</html>

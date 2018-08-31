@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title> 积分记录  </title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="../lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="../lib/layui/layui.all.js"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+</head>
+<body>
+
+    <div class="Universal">
+            <!--<div class="jf_top">
+                <div class="jf_txt">
+                    <p>姓名</p><input type="text"/>
+                </div>
+            </div>-->
+
+            <div class="jl_list" id="jl_list">
+            </div>
+
+            <div class="jl_list" id="jl_listt"></div>    
+
+    </div>
+
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
+<script>
+    var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+    var flow = layui.flow;
+
+    layui.use('flow', function () {
+
+         //一级用户购买赠送
+        flow.load({
+            elem: '#jl_list' //指定列表容器
+            , done: function (page, next) { //到达临界点（默认滚动触发），触发下一页
+                var lis = [];
+                //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                $.get('/WeChat/Score/GetUserSR?token=' + store.get("token") + '&page=' + page +'&day=0&remark=1',function (res) {
+                    //假设你的列表返回在data集合中
+                    layui.each(res.data, function (index, item) {
+                  
+                 var  strVar = "<div class=\"jl_txt\">\n";
+                 strVar += "                    <p>" + item.add_time+"<\/p>\n";
+                 strVar += "                    <p class=\"t\">" + item.source_name+"<\/p>\n";
+                 strVar += "                    <strong>您获得" + item.score+"推荐积分<\/strong>\n";
+                        strVar += "                    <div class=\"clear\"><\/div>\n";
+                        strVar += "                <\/div>\n";
+
+                        lis.push(strVar);
+
+                       });
+
+                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                    next(lis.join(''), page < res.pages);
+                });
+            }
+        });
+
+
+        //二级用户购买赠送
+        flow.load({
+            elem: '#jl_listt' //指定列表容器
+            , done: function (page, next) { //到达临界点（默认滚动触发），触发下一页
+                var lis = [];
+                //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+                $.get('/WeChat/Score/GetUserSR?token=' + store.get("token") + '&page=' + page + '&day=0&remark=7', function (res) {
+                    //假设你的列表返回在data集合中
+                    layui.each(res.data, function (index, item) {
+
+                        var strVar = "<div class=\"jl_txt\">\n";
+                        strVar += "                    <p>" + item.add_time + "<\/p>\n";
+                        strVar += "                    <p class=\"t\">" + item.source_name + "<\/p>\n";
+                        strVar += "                    <strong>您获得" + item.score + "推荐积分<\/strong>\n";
+                        strVar += "                    <div class=\"clear\"><\/div>\n";
+                        strVar += "                <\/div>\n";
+
+                        lis.push(strVar);
+
+                    });
+
+                    //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                    //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                    next(lis.join(''), page < res.pages);
+                });
+            }
+        });
+
+
+    });
+
+</script>

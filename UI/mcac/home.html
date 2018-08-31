@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>MCAC互联网生态链</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <link href="../lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+    <title></title>
+</head>
+<body>
+
+    <div class="Universal">
+
+        <div class="layui-carousel" id="car_banner">
+            <script type="text/template" id="bann">
+                <div id="slider" carousel-item>
+                    {{each baList}}
+                    <div>
+                        <!--<a href="{{$value.link_address}}"><img src="{{$value.img_url}}" alt="" /></a>-->
+                        <a href="{{$value.link_address}}"><img src="{{$value.img_url}}" style="width:100%;height:100%" alt="" /></a>
+                    </div>
+                    {{/each}}
+                </div>
+            </script>
+
+
+        </div>
+
+
+        <div class="index_pr" id="prodList">
+            <script type="text/template" id="prod">
+
+                {{each prodList}}
+                <div class="pr_list">
+                    <div class="pr_img"><img src="{{$value.product_img}}" /></div>
+                    <div class="pr_txt">
+                        <strong>{{$value.name}}</strong>
+                        <p>{{$value.Calculate_the_force}}</p>
+                        <p>{{$value.price}}</p>
+                        <a href="product-xx.html?Id={{$value.id}}" class="pr_btn">点击购买</a>
+                    </div>
+                </div>
+
+                {{/each}}
+
+            </script>
+
+        </div>
+
+    </div>
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+
+    <script src="js/touchslider.dev.js" type="text/javascript"></script>
+    <!--<script src="../lib/layui/layui.all.js"></script>-->
+    <script src="js/template-web.js"></script>
+    <script src="/lib/layui/layui.js"></script>
+    <script>
+        layui.use(['layer', 'carousel'], function () {
+            var layer = layui.layer, carousel = layui.carousel, $ = layui.jquery;
+
+            tool.init();
+
+            init();
+
+            function init() {
+                $.ajax({
+                    url: '/WeChat/Products/GetBanner',
+                    data: { token: store.get('token') },
+                    type: 'Get',
+                    //async: false,
+                    success: function (json) {
+                        if (json.code === 0) {
+                            var result = template('bann', { baList: json.data });
+                            document.getElementById("car_banner").innerHTML = result;
+                            var renders = carousel.render({
+                                elem: '#car_banner',
+                                width: '100%', //设置容器宽度
+                                height: '200px',
+                                autoplay: true,
+                                interval: 3000,
+                                arrow: 'none'
+                                //anim: 'updown' //切换动画方式
+                            });
+                        }
+                        else {
+                            document.getElementById("sg").innerHTML = json.msg;
+                        }
+                    },
+                    error: function (msg) {
+                        layer.alert("error");
+                    }
+                })
+
+                //  首页-产品
+                $.ajax({
+                    url: '/WeChat/Products/GetProductList',
+                    data: { token: store.get('token') },
+                    type: 'Get',
+                    //async: false,
+                    success: function (json) {
+                        if (json.code === 0) {
+                            var result = template('prod', { prodList: json.data });
+                            document.getElementById("prodList").innerHTML = result;
+
+                        }
+                        else {
+                            document.getElementById("prg").innerHTML = json.msg;
+                        }
+                    },
+                    error: function (msg) {
+                        layer.alert("error");
+                    }
+                })
+            }
+
+
+
+        })
+    </script>
+
+</body>
+</html>

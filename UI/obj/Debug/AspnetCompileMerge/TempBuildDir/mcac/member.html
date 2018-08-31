@@ -1,0 +1,247 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>会员积分</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+    <script>
+        var list=[];
+        $(function () {
+            tool.init();
+
+            $('.member_select a').touchStart(function(e){
+                var num=this.dataset.num;
+                $('.member_select a').removeClass('on');
+                this.className = "on";
+                $('#data').html('');
+                getData(num);
+            })
+
+            getData(1);
+        })
+
+        function getData(lv, keyword) {
+            var url = "";
+            if (lv == 1) {
+                url = "/WeChat/Score/UserFirstChildScore";
+            }
+            else {
+                url = "/WeChat/Score/UserSecondChildScore";
+            }
+            $.ajax({
+                url: url,
+                dataType: 'JSON',
+                data: { token: store.get('token') },
+                type: 'GET',
+                success: function (result) {
+                    if (result.code == 0) {
+                        if (result.data.length == 0) {
+                            $('.search_content_div')[0].style.opacity = 0;//无数据时隐藏
+                            $('#nodata').show();
+                        } else {
+                            $('.search_content_div')[0].style.opacity = 1;
+                            $('#nodata').hide();
+                        }
+
+                        var temp = template('temp', { data: result.data });
+                        document.getElementById('name').innerHTML=temp;
+
+                        list=result.data;
+
+                        $('.name').click(function(e){
+                            $('.name').removeClass('on');
+                            this.className="name on";
+                            var id=this.dataset.id;
+                            var resultlist=list.find(function(n){
+                                return n.id==id;
+                            })
+                            $('#data').html('');
+                            if (resultlist.recodeList.length == 0) {
+                                $('tfoot').show();
+                                return;
+                            } else {
+                                $('tfoot').hide();
+                            }
+
+                            var str;
+                            $.each(resultlist.recodeList,function(index,item){
+                                str+="<tr><td>"+item.time+"</td><td>"+item.score+"</td></tr>";
+                            })
+                            $('#data').html(str);
+                            // console.log(resultlist);
+                        })
+                    }
+                },
+                error: function (e) {
+                    layer.msg(e);
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <div class="search_bg">
+        <!-- <div class="search_content_div">
+            <input type="text" placeholder="请输入名称">
+            <img src="./images/search.png" alt="">
+        </div>
+        <div class="search_space"></div> -->
+        <!-- <div class="ads_top">
+            <div class="ads_input">
+                <input type="text" placeholder="请输入名称" />
+                <a>
+                    <i class="iconfont">&#xe704;</i>
+                </a>
+            </div>
+        </div> -->
+        <div class="member_select">
+            <a class="on" data-num="1">钻石</a>
+            <a data-num="2">黄金</a>
+        </div>
+    </div>
+
+    <div class="search_content_div">
+        <div class="name_div" id="name">
+            <script type="text/template" id="temp">
+            {{each data}}
+            <div class="name" data-id="{{$value.id}}">
+                {{$value.name}}
+            </div>
+            {{/each}}
+        </script>
+            <!-- <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div>
+            <div class="name">
+                王五
+            </div> -->
+        </div>
+        <table class="search_content">
+            <thead>
+                <tr>
+                    <td>日期</td>
+                    <td>返回积分</td>
+                </tr>
+            </thead>
+            <tbody id="data">
+                <!-- <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>2018-05-01</td>
+                    <td>20</td>
+                </tr> -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" style="border:none;">暂无数据</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="nodata" id="nodata">
+        ————————暂无数据————————
+    </div>
+
+    <!-- <div class="search_content">
+        <script type="text/template" id="scroe">
+            {{each data}}
+                <div class="member">
+                    <p class="p1">{{$value.name}}</p>
+                    <p class="p2">2018-02-03</p>
+                    <p class="p3">返回积分20</p>
+                </div>
+            {{/each}}
+        </script>
+    </div> -->
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>我的团队</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+    <script>
+        $(function () {
+            tool.init();
+
+            getdata();
+        })
+
+        function getdata() {
+            $.ajax({
+                url: "/WeChat/UserCenter/UserTeam",
+                data: { token: store.get('token') },
+                dataType: "JSON",
+                type: 'GET',
+                success: function (result) {
+                    if (result.code == 0) {
+                        var temp = template('temp', result.data);
+                        document.getElementsByTagName('body')[0].innerHTML = temp;
+
+                        $('.lvone_one').click(function (e) {
+                            var id = this.dataset.id;
+                            location.href = "myincomedetail.html?id="+id;
+                        })
+
+                        var lvoneH = $('.lvone_content')[1].offsetHeight;
+                        if (lvoneH > 150) {
+                            $('.lvone_content')[1].className = 'lvone_content hide';
+                            $('.more')[1].style.opacity = 1;
+
+                            $('.more').click(function (e) {
+                                $('.lvone_content')[1].className = "lvone_content";
+                                $('.more')[1].style.opacity = 0;
+                            })
+                        }
+
+                        var lvoneH1 = $('.lvone_content')[0].offsetHeight;
+                        if (lvoneH1 > 150) {
+                            $('.lvone_content')[0].className = 'lvone_content hide';
+                            $('.more')[0].style.opacity = 1;
+
+                            $('.more').click(function (e) {
+                                $('.lvone_content')[0].className = "lvone_content";
+                                $('.more')[0].style.opacity = 0;
+                            })
+                        }
+                    } else {
+                        layer.msg(result.msg);
+                    }
+                },
+                error: function (e) {
+                    layer.msg(e);
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <script type="text/template" id="temp">
+    <div class="under_top">
+        <img src="./images/under_top.png" alt="">
+        <div class="under_top_div">
+            <p class="p1">{{nickname}}</p>
+            <p class="p2">团队总人数:{{totalCount}}</p>
+        </div>
+    </div>
+
+    <div class="lvone">
+        <div class="lvone_title">
+            <img src="./images/lvone.png" alt="">
+            <p class="p1">钻石</p>
+        </div>
+        <div class="lvone_content">
+            {{each user_first}}
+            {{if $value.isbuy==1}}
+            <div class="lvone_one on" data-id="{{$value.id}}">
+                {{$value.nickname}}
+            </div>
+            {{else}}
+            <div class="lvone_one" data-id="{{$value.id}}">
+                {{$value.nickname}}
+            </div>
+            {{/if}}
+            {{/each}}
+             <!--<div class="lvone_one">
+                李先生
+            </div>
+            <div class="lvone_one on">
+                李先生
+            </div>
+            <div class="lvone_one">
+                李先生
+            </div>
+            <div class="lvone_one">
+                李先生
+            </div>
+            <div class="lvone_one">
+                李先生
+            </div>
+            <div class="lvone_one">
+                李先生
+            </div>
+            <div class="lvone_one">
+                李先生
+            </div>
+            <div class="lvone_one">
+                李先生
+            </div>--> 
+        </div>
+        <div class="more">查看更多</div>
+    </div>
+
+    <div class="crack"></div>
+
+    <div class="lvone">
+        <div class="lvtwo_title">
+            <img src="./images/lvtwo.png" alt="">
+            <p class="p1">黄金</p>
+        </div>
+        <div class="lvone_content">
+                {{each user_second}}
+                {{if $value.isbuy==1}}
+                <div class="lvone_one on lvtwo_one" data-id="{{$value.id}}">
+                    {{$value.nickname}}
+                </div>
+                {{else}}
+                <div class="lvone_one lvtwo_one" data-id="{{$value.id}}">
+                    {{$value.nickname}}
+                </div>
+                {{/if}}
+                {{/each}}
+             <!--<div class="lvone_one lvtwo_one">
+                李先生
+            </div>
+            <div class="lvone_one on lvtwo_one">
+                李先生
+            </div>
+            <div class="lvone_one lvtwo_one">
+                李先生
+            </div>
+            <div class="lvone_one lvtwo_one">
+                李先生
+            </div>
+            <div class="lvone_one lvtwo_one">
+                李先生
+            </div>
+            <div class="lvone_one lvtwo_one">
+                李先生
+            </div>
+            <div class="lvone_one lvtwo_one">
+                李先生
+            </div>
+            <div class="lvone_one lvtwo_one">
+                李先生
+            </div>--> 
+        </div>
+        <div class="more">查看更多</div>
+    </div>
+
+<div class="ft_height"></div>
+<div class="footer">
+    <div class="footer_nav">
+        <a href="index.html">
+            <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+            <p>首页</p>
+        </a>
+        <a href="equipment.html">
+            <i class="iconfont">&#xe61e;</i>
+            <p>设备</p>
+        </a>
+        <a href="score.html">
+            <i class="iconfont">&#xe620;</i>
+            <p>积分</p>
+        </a>
+        <a href="me.html">
+            <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+            <p>我的</p>
+        </a>
+    </div>
+</div>
+</script>
+</body>
+
+</html>

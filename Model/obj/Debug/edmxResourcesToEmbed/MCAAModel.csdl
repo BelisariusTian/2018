@@ -1,0 +1,569 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="mcaaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="mcaaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="action" EntityType="mcaaModel.action" />
+    <EntitySet Name="administrator" EntityType="mcaaModel.administrator" />
+    <EntitySet Name="banner" EntityType="mcaaModel.banner" />
+    <EntitySet Name="config_rule" EntityType="mcaaModel.config_rule" />
+    <EntitySet Name="msg_log" EntityType="mcaaModel.msg_log" />
+    <EntitySet Name="order" EntityType="mcaaModel.order" />
+    <EntitySet Name="product" EntityType="mcaaModel.product" />
+    <EntitySet Name="role" EntityType="mcaaModel.role" />
+    <EntitySet Name="system_log" EntityType="mcaaModel.system_log" />
+    <EntitySet Name="system_msg_record" EntityType="mcaaModel.system_msg_record" />
+    <EntitySet Name="user" EntityType="mcaaModel.user" />
+    <EntitySet Name="user_address" EntityType="mcaaModel.user_address" />
+    <EntitySet Name="user_msg_record" EntityType="mcaaModel.user_msg_record" />
+    <EntitySet Name="user_product" EntityType="mcaaModel.user_product" />
+    <EntitySet Name="user_score_record" EntityType="mcaaModel.user_score_record" />
+    <EntitySet Name="wx_request_content" EntityType="mcaaModel.wx_request_content" />
+    <EntitySet Name="wx_request_rule" EntityType="mcaaModel.wx_request_rule" />
+    <EntitySet Name="wx_user" EntityType="mcaaModel.wx_user" />
+    <AssociationSet Name="FK_SYSTEM_M_REFERENCE_ADMINIST" Association="mcaaModel.FK_SYSTEM_M_REFERENCE_ADMINIST">
+      <End Role="administrator" EntitySet="administrator" />
+      <End Role="system_msg_record" EntitySet="system_msg_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_MSG_REFERENCE_ADMINIST" Association="mcaaModel.FK_USER_MSG_REFERENCE_ADMINIST">
+      <End Role="administrator" EntitySet="administrator" />
+      <End Role="user_msg_record" EntitySet="user_msg_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ORDER_REFERENCE_PRODUCT" Association="mcaaModel.FK_ORDER_REFERENCE_PRODUCT">
+      <End Role="product" EntitySet="product" />
+      <End Role="order" EntitySet="order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_order_user" Association="mcaaModel.FK_order_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="order" EntitySet="order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_SCO_REFERENCE_ORDER" Association="mcaaModel.FK_USER_SCO_REFERENCE_ORDER">
+      <End Role="order" EntitySet="order" />
+      <End Role="user_score_record" EntitySet="user_score_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_PRO_REFERENCE_PRODUCT" Association="mcaaModel.FK_USER_PRO_REFERENCE_PRODUCT">
+      <End Role="product" EntitySet="product" />
+      <End Role="user_product" EntitySet="user_product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_address_user" Association="mcaaModel.FK_user_address_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_address" EntitySet="user_address" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_msg_record_user" Association="mcaaModel.FK_user_msg_record_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_msg_record" EntitySet="user_msg_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_product_user" Association="mcaaModel.FK_user_product_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_product" EntitySet="user_product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_score_record_user" Association="mcaaModel.FK_user_score_record_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_score_record" EntitySet="user_score_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_wx_user" Association="mcaaModel.FK_user_wx_user">
+      <End Role="wx_user" EntitySet="wx_user" />
+      <End Role="user" EntitySet="user" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_SCO_REFERENCE_USER_ADD" Association="mcaaModel.FK_USER_SCO_REFERENCE_USER_ADD">
+      <End Role="user_address" EntitySet="user_address" />
+      <End Role="user_score_record" EntitySet="user_score_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_wx_request_content_wx_request_rule" Association="mcaaModel.FK_wx_request_content_wx_request_rule">
+      <End Role="wx_request_rule" EntitySet="wx_request_rule" />
+      <End Role="wx_request_content" EntitySet="wx_request_content" />
+    </AssociationSet>
+    <AssociationSet Name="admin_role" Association="mcaaModel.admin_role">
+      <End Role="administrator" EntitySet="administrator" />
+      <End Role="role" EntitySet="role" />
+    </AssociationSet>
+    <AssociationSet Name="role_action" Association="mcaaModel.role_action">
+      <End Role="action" EntitySet="action" />
+      <End Role="role" EntitySet="role" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="action">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="url" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="http_method" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="action_icon" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="action_name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="Int32" Nullable="false" />
+    <Property Name="pid" Type="Int32" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="del_flag" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="mod_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="add_admin" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="role" Relationship="mcaaModel.role_action" FromRole="action" ToRole="role" />
+  </EntityType>
+  <EntityType Name="administrator">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="login_account" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="login_pwd" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="head_protrait" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="del_flag" Type="Int32" Nullable="false" />
+    <Property Name="mod_time" Type="DateTime" Precision="3" />
+    <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="last_login_time" Type="DateTime" Precision="3" />
+    <Property Name="last_login_IP_address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="system_msg_record" Relationship="mcaaModel.FK_SYSTEM_M_REFERENCE_ADMINIST" FromRole="administrator" ToRole="system_msg_record" />
+    <NavigationProperty Name="user_msg_record" Relationship="mcaaModel.FK_USER_MSG_REFERENCE_ADMINIST" FromRole="administrator" ToRole="user_msg_record" />
+    <NavigationProperty Name="role" Relationship="mcaaModel.admin_role" FromRole="administrator" ToRole="role" />
+  </EntityType>
+  <EntityType Name="banner">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="img_url" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="link_address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="thumbnail_url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="del_flag" Type="Int32" Nullable="false" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="add_time" Type="DateTime" Precision="3" />
+    <Property Name="add_admin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="config_rule">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="value" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="add_admin" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="msg_log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="send_name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="receive_name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="send_id" Type="Int32" />
+    <Property Name="receive_id" Type="Int32" />
+    <Property Name="msg_content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="msg_error_log" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="order">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="product_id" Type="Int32" Nullable="false" />
+    <Property Name="count" Type="Int32" Nullable="false" />
+    <Property Name="order_money" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="pay_state" Type="Int32" Nullable="false" />
+    <Property Name="order_state" Type="Int32" Nullable="false" />
+    <Property Name="pay_account" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="order_number" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="refund_number" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="pay_time" Type="DateTime" Precision="3" />
+    <Property Name="user_remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="admin_remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="wx_order_num" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="product" Relationship="mcaaModel.FK_ORDER_REFERENCE_PRODUCT" FromRole="order" ToRole="product" />
+    <NavigationProperty Name="user" Relationship="mcaaModel.FK_order_user" FromRole="order" ToRole="user" />
+    <NavigationProperty Name="user_score_record" Relationship="mcaaModel.FK_USER_SCO_REFERENCE_ORDER" FromRole="order" ToRole="user_score_record" />
+  </EntityType>
+  <EntityType Name="product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="period_time" Type="Int32" Nullable="false" />
+    <Property Name="Calculate_the_force" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+    <Property Name="total_score" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="mod_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="unit" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="first_level_referral_bonuses" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+    <Property Name="second_level_referral_bonuses" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+    <Property Name="first_level_earnings_bonuses" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+    <Property Name="second_level_earnings_bonuses" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+    <Property Name="product_img" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="product_introduct" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="del_flag" Type="Int32" Nullable="false" />
+    <Property Name="product_count" Type="Int32" Nullable="false" />
+    <Property Name="product_sold_count" Type="Int32" Nullable="false" />
+    <Property Name="product_inventory_count" Type="Int32" Nullable="false" />
+    <Property Name="add_admin" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="order" Relationship="mcaaModel.FK_ORDER_REFERENCE_PRODUCT" FromRole="product" ToRole="order" />
+    <NavigationProperty Name="user_product" Relationship="mcaaModel.FK_USER_PRO_REFERENCE_PRODUCT" FromRole="product" ToRole="user_product" />
+  </EntityType>
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="role_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="role_icon" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="mod_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="add_admin" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="del_flag" Type="Int32" Nullable="false" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="administrator" Relationship="mcaaModel.admin_role" FromRole="role" ToRole="administrator" />
+    <NavigationProperty Name="action" Relationship="mcaaModel.role_action" FromRole="role" ToRole="action" />
+  </EntityType>
+  <EntityType Name="system_log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="type" Type="Int32" Nullable="false" />
+    <Property Name="content" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="page_url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="add_name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ip_address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="system_msg_record">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type" Type="Int32" Nullable="false" />
+    <Property Name="admin_id" Type="Int32" />
+    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="mod_time" Type="DateTime" Precision="3" />
+    <Property Name="del_flag" Type="Int32" Nullable="false" />
+    <Property Name="read_count" Type="Int32" />
+    <NavigationProperty Name="administrator" Relationship="mcaaModel.FK_SYSTEM_M_REFERENCE_ADMINIST" FromRole="system_msg_record" ToRole="administrator" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="tel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="sex" Type="Int32" Nullable="false" />
+    <Property Name="pid" Type="Int32" Nullable="false" />
+    <Property Name="total_score" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="usable_score" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="yet_use_score" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="total_pay" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="total_product_count" Type="Int32" Nullable="false" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="isbuy" Type="Int32" Nullable="false" />
+    <Property Name="qr_code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="order" Relationship="mcaaModel.FK_order_user" FromRole="user" ToRole="order" />
+    <NavigationProperty Name="user_address" Relationship="mcaaModel.FK_user_address_user" FromRole="user" ToRole="user_address" />
+    <NavigationProperty Name="user_msg_record" Relationship="mcaaModel.FK_user_msg_record_user" FromRole="user" ToRole="user_msg_record" />
+    <NavigationProperty Name="user_product" Relationship="mcaaModel.FK_user_product_user" FromRole="user" ToRole="user_product" />
+    <NavigationProperty Name="user_score_record" Relationship="mcaaModel.FK_user_score_record_user" FromRole="user" ToRole="user_score_record" />
+    <NavigationProperty Name="wx_user" Relationship="mcaaModel.FK_user_wx_user" FromRole="user" ToRole="wx_user" />
+  </EntityType>
+  <EntityType Name="user_address">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="del_flag" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="user" Relationship="mcaaModel.FK_user_address_user" FromRole="user_address" ToRole="user" />
+    <NavigationProperty Name="user_score_record" Relationship="mcaaModel.FK_USER_SCO_REFERENCE_USER_ADD" FromRole="user_address" ToRole="user_score_record" />
+  </EntityType>
+  <EntityType Name="user_msg_record">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="msg_type" Type="Int32" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="msg_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="admin_id" Type="Int32" />
+    <Property Name="msg_pid" Type="Int32" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="isread" Type="Int32" Nullable="false" />
+    <Property Name="read_count" Type="Int32" Nullable="false" />
+    <Property Name="remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="administrator" Relationship="mcaaModel.FK_USER_MSG_REFERENCE_ADMINIST" FromRole="user_msg_record" ToRole="administrator" />
+    <NavigationProperty Name="user" Relationship="mcaaModel.FK_user_msg_record_user" FromRole="user_msg_record" ToRole="user" />
+  </EntityType>
+  <EntityType Name="user_product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="product_id" Type="Int32" Nullable="false" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="end_time" Type="DateTime" Precision="3" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="order_id" Type="Int32" />
+    <NavigationProperty Name="product" Relationship="mcaaModel.FK_USER_PRO_REFERENCE_PRODUCT" FromRole="user_product" ToRole="product" />
+    <NavigationProperty Name="user" Relationship="mcaaModel.FK_user_product_user" FromRole="user_product" ToRole="user" />
+  </EntityType>
+  <EntityType Name="user_score_record">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="score" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+    <Property Name="type" Type="Int32" Nullable="false" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="source_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="source_id" Type="Int32" />
+    <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="order_id" Type="Int32" />
+    <Property Name="rollout_address_id" Type="Int32" />
+    <Property Name="admin_remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="order" Relationship="mcaaModel.FK_USER_SCO_REFERENCE_ORDER" FromRole="user_score_record" ToRole="order" />
+    <NavigationProperty Name="user" Relationship="mcaaModel.FK_user_score_record_user" FromRole="user_score_record" ToRole="user" />
+    <NavigationProperty Name="user_address" Relationship="mcaaModel.FK_USER_SCO_REFERENCE_USER_ADD" FromRole="user_score_record" ToRole="user_address" />
+  </EntityType>
+  <EntityType Name="wx_request_content">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="req_title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="req_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="detail_url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="pic_url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="media_url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="rule_id" Type="Int32" Nullable="false" />
+    <Property Name="type_msg" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="wx_request_rule" Relationship="mcaaModel.FK_wx_request_content_wx_request_rule" FromRole="wx_request_content" ToRole="wx_request_rule" />
+  </EntityType>
+  <EntityType Name="wx_request_rule">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="rule_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="req_keywords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="request_type" Type="Int32" Nullable="false" />
+    <Property Name="response_type" Type="Int32" Nullable="false" />
+    <Property Name="sort" Type="Int32" Nullable="false" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="wx_request_content" Relationship="mcaaModel.FK_wx_request_content_wx_request_rule" FromRole="wx_request_rule" ToRole="wx_request_content" />
+  </EntityType>
+  <EntityType Name="wx_user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="gzh_openid" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="unionid" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="xcx_openid" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="groupid" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="nickname" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="wx_head_protrait" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="sex" Type="Int32" Nullable="false" />
+    <Property Name="city" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="language" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="add_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="state" Type="Int32" Nullable="false" />
+    <Property Name="unsubscribe_time" Type="DateTime" Precision="3" />
+    <Property Name="province" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="user" Relationship="mcaaModel.FK_user_wx_user" FromRole="wx_user" ToRole="user" />
+  </EntityType>
+  <Association Name="FK_SYSTEM_M_REFERENCE_ADMINIST">
+    <End Type="mcaaModel.administrator" Role="administrator" Multiplicity="0..1" />
+    <End Type="mcaaModel.system_msg_record" Role="system_msg_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="administrator">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="system_msg_record">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_MSG_REFERENCE_ADMINIST">
+    <End Type="mcaaModel.administrator" Role="administrator" Multiplicity="0..1" />
+    <End Type="mcaaModel.user_msg_record" Role="user_msg_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="administrator">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_msg_record">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ORDER_REFERENCE_PRODUCT">
+    <End Type="mcaaModel.product" Role="product" Multiplicity="1" />
+    <End Type="mcaaModel.order" Role="order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="order">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_order_user">
+    <End Type="mcaaModel.user" Role="user" Multiplicity="1" />
+    <End Type="mcaaModel.order" Role="order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="order">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_SCO_REFERENCE_ORDER">
+    <End Type="mcaaModel.order" Role="order" Multiplicity="0..1" />
+    <End Type="mcaaModel.user_score_record" Role="user_score_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="order">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_score_record">
+        <PropertyRef Name="order_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_PRO_REFERENCE_PRODUCT">
+    <End Type="mcaaModel.product" Role="product" Multiplicity="1" />
+    <End Type="mcaaModel.user_product" Role="user_product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_product">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_address_user">
+    <End Type="mcaaModel.user" Role="user" Multiplicity="1" />
+    <End Type="mcaaModel.user_address" Role="user_address" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_address">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_msg_record_user">
+    <End Type="mcaaModel.user" Role="user" Multiplicity="0..1" />
+    <End Type="mcaaModel.user_msg_record" Role="user_msg_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_msg_record">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_product_user">
+    <End Type="mcaaModel.user" Role="user" Multiplicity="1" />
+    <End Type="mcaaModel.user_product" Role="user_product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_product">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_score_record_user">
+    <End Type="mcaaModel.user" Role="user" Multiplicity="1" />
+    <End Type="mcaaModel.user_score_record" Role="user_score_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_score_record">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_wx_user">
+    <End Type="mcaaModel.wx_user" Role="wx_user" Multiplicity="1" />
+    <End Type="mcaaModel.user" Role="user" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="wx_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_SCO_REFERENCE_USER_ADD">
+    <End Type="mcaaModel.user_address" Role="user_address" Multiplicity="0..1" />
+    <End Type="mcaaModel.user_score_record" Role="user_score_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_address">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_score_record">
+        <PropertyRef Name="rollout_address_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_wx_request_content_wx_request_rule">
+    <End Type="mcaaModel.wx_request_rule" Role="wx_request_rule" Multiplicity="1" />
+    <End Type="mcaaModel.wx_request_content" Role="wx_request_content" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="wx_request_rule">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="wx_request_content">
+        <PropertyRef Name="rule_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="admin_role">
+    <End Type="mcaaModel.administrator" Role="administrator" Multiplicity="*" />
+    <End Type="mcaaModel.role" Role="role" Multiplicity="*" />
+  </Association>
+  <Association Name="role_action">
+    <End Type="mcaaModel.action" Role="action" Multiplicity="*" />
+    <End Type="mcaaModel.role" Role="role" Multiplicity="*" />
+  </Association>
+</Schema>

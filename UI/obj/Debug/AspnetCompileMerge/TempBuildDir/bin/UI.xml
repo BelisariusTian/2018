@@ -1,0 +1,1655 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UI</name>
+    </assembly>
+    <members>
+        <member name="M:UI.Areas.WeChat.Controllers.OrdersController.AddOrder">
+            <summary>
+            生成订单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.OrdersController.UserAffirmPay(System.Int32,System.String)">
+            <summary>
+            Users the affirm pay.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="pay_address">The pay address.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.OrdersController.DelOrder(System.Int32)">
+            <summary>
+            订单id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.OrdersController.OrderDetail(System.String)">
+            <summary>
+            订单详情
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.OrdersController.ChangeId(System.String)">
+            <summary>
+            转换  加密后string 类型到int
+            </summary>
+            <param name="bid">The bid.</param>
+            <returns>转换后的id</returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.OrdersController.ChangeOrderStateWhenTimeout(System.Int32)">
+            <summary>
+            订单到期
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Areas.WeChat.Controllers.ProductsController">
+            <summary>
+            首页 及产品页
+            </summary>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ProductsController.GetBanner">
+            <summary>
+            获取轮播图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ProductsController.GetProductList(System.Int32,System.Int32)">
+            <summary>
+            首页产品
+            </summary>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ProductsController.GetProductDetailInfo(System.Int32)">
+            <summary>
+            产品详细信息
+            </summary>
+            <param name="id">产品id</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ProductsController.ProductCache(System.String)">
+            <summary>
+            产品缓存
+            </summary>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Areas.WeChat.Controllers.ScoreController">
+            <summary>
+            前端用户积分
+            </summary>
+            <seealso cref="T:System.Web.Mvc.Controller" />
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.GetUserSR(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            用户获取赠送积分和推荐购买积分
+            </summary>
+            <param name="day"></param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <param name="type">The type.</param>
+            <param name="remark">The remark.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.GetScoreDetail">
+            <summary>
+            积分页数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.UserFirstChildScore">
+            <summary>
+            一级用户的返回积分记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.UserSecondChildScore">
+            <summary>
+            二级用户返回积分记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.UserApplyForScore(System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            用户申请提现
+            </summary>
+            <param name="address"></param>
+            <param name="score"></param>
+            <param name="adds_id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.UserApplyPage">
+            <summary>
+            获取提现页面数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.UserApplyRecord(System.Int32,System.Int32)">
+            <summary>
+            用户提现记录列表
+            </summary>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.ScoreController.GetApplyDetail(System.Guid)">
+            <summary>
+            某个提现的个体
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Areas.WeChat.Controllers.UserCenterController">
+            <summary>
+            
+            </summary>
+            <seealso cref="T:UI.Areas.WeChat.Controllers.WeiXinBaseController" />
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetUserAddressList">
+            <summary>
+            获取用户地址列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.AddUserAddress(System.String,System.String)">
+            <summary>
+            添加地址
+            </summary>
+            <param name="address">The address.</param>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.EditUserAddress(System.Nullable{System.Int32})">
+            <summary>
+            Edits the user address.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.EditUserAddress(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Edits the user address.
+            </summary>
+            <param name="address">The address.</param>
+            <param name="name">The name.</param>
+            <param name="id">The identifier.</param>
+            <param name="state">The state.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.DelUserAddress(System.Int32)">
+            <summary>
+            Deletes the user address.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetSystemQAMsg">
+            <summary>
+            系统QA
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetSystemNoticeMsg">
+            <summary>
+            系统公告
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetSystemMsgDetail(System.Int32)">
+            <summary>
+            Gets the system MSG detail.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.SystemMsgCache(System.String)">
+            <summary>
+            产品缓存
+            </summary>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.UserProduct(System.Int32)">
+            <summary>
+            用户产品
+            </summary>
+            <param name="state">产品状态</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetUserQrCode">
+            <summary>
+            获取用户二维码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetUserOrder">
+            <summary>
+            用户订单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetOrderDetail(System.Int32)">
+            <summary>
+            订单详情
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.GetUserInfo">
+            <summary>
+            Gets the user information.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.UserTeam">
+            <summary>
+            获取用户下级用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.UserTeamDetail(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.UserCenterController.UserApplyQuestion(System.String,System.String)">
+            <summary>
+            用户提问接口
+            </summary>
+            <param name="title">问题</param>
+            <param name="content">详情</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Areas.WeChat.Controllers.WeiXinBaseController">
+            <summary>
+            微信端数据父类
+            </summary>
+            <seealso cref="T:UI.Controllers.WebController" />
+        </member>
+        <member name="F:UI.Areas.WeChat.Controllers.WeiXinBaseController.AppId">
+            <summary>
+            微信公众号AppId
+            </summary>
+        </member>
+        <member name="F:UI.Areas.WeChat.Controllers.WeiXinBaseController.Secret">
+            <summary>
+            微信公众号Secret
+            </summary>
+        </member>
+        <member name="F:UI.Areas.WeChat.Controllers.WeiXinBaseController.DomainUrl">
+            <summary>
+            网站域名
+            </summary>
+        </member>
+        <member name="P:UI.Areas.WeChat.Controllers.WeiXinBaseController.UserInfo">
+            <summary>
+            当前授权登录的微信用户
+            </summary>
+            <value>
+            The user information.
+            </value>
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.WeiXinBaseController.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            在调用操作方法前调用。
+            </summary>
+            <param name="filterContext">有关当前请求和操作的信息。</param>
+        </member>
+        <member name="T:UI.Areas.WeChat.Controllers.WXUserController">
+            <summary>
+            微信用户相关接口
+            </summary>
+            <seealso cref="T:UI.Areas.WeChat.Controllers.WeiXinBaseController" />
+        </member>
+        <member name="M:UI.Areas.WeChat.Controllers.WXUserController.GetNowUserInfo">
+            <summary>
+            获取当前用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.WXMenuController">
+            <summary>
+            
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="F:UI.Controllers.WXMenuController.AppId">
+            <summary>
+            微信公众号AppId
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.WXMenuController.Secret">
+            <summary>
+            微信公众号Secret
+            </summary>
+        </member>
+        <member name="M:UI.Controllers.WXMenuController.GetMenu">
+            <summary>
+            获取微信菜单数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMenuController.CreateMenuFromJson(System.String)">
+            <summary>
+            使用Json数据更新菜单
+            </summary>
+            <param name="fullJson">json数据</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.WXMessageController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.GetAttentionData">
+            <summary>
+            获取数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.AddAttention(Model.wx_request_content)">
+            <summary>
+            添加关注时回复
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.GetKeywords(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取关键字数据
+            </summary>
+            <param name="search">The search.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.GetKeywordData(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取关键字和回复内容数据
+            </summary>
+            <param name="search">The search.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.GetDataID">
+            <summary>
+            根据ID获取回复内容数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.GetRuleDataID">
+            <summary>
+            根据ID获取关键字数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.AddAloneKeyword(Model.wx_request_rule)">
+            <summary>
+            只添加关键字
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.EditAloneKeyword(Model.wx_request_rule)">
+            <summary>
+            修改关键字
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.AddKeyword(Model.wx_request_content)">
+            <summary>
+            添加关键字回复
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.EditKeyword(Model.wx_request_content)">
+            <summary>
+            修改关键字与回复
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.DelAll">
+            <summary>
+            删除关键字与下面图文
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.DelKeyword">
+            <summary>
+            删除关键字
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.GetRuleTeletext">
+            <summary>
+            获取某个关键字下面的图文
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.AddTeletext(Model.wx_request_content)">
+            <summary>
+            添加图文
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.EditTeletext(Model.wx_request_content)">
+            <summary>
+            修改内容图文
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXMessageController.DelTeletext">
+            <summary>
+            删除图文数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.AdminController">
+            <summary>
+            
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="M:UI.Controllers.AdminController.GetAdminList">
+            <summary>
+            获取管理员
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.GetNowLoginAdminInfo">
+             <summary>
+            获取当前登录管理员
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.AddAdmin(Model.administrator)">
+            <summary>
+            添加管理员
+            </summary>
+            <param name="administrator">The administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.CheckAccount(System.String)">
+            <summary>
+            检查账号
+            </summary>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.CheckName(System.String)">
+            <summary>
+            检查名称
+            </summary>
+            <param name="name">The account.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.EditAdmin(Model.administrator)">
+            <summary>
+            修改管理员信息.
+            </summary>
+            <param name="administrator">The administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.EditAdmin(System.Int32)">
+            <summary>
+            获取管理员详细信息
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.UpdateUserPwd(System.String,System.String)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="login_pwd">The login password.</param>
+            <param name="newPwd">The new password.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.DelAdmin(System.Int32,System.Int32)">
+            <summary>
+            删除管理员
+            </summary>
+            <param>The administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.GetMenu">
+            <summary>
+            获取菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.AdminController.GetMenuTree(System.Collections.Generic.List{Model.action})">
+            <summary>
+            生成菜单树
+            </summary>
+            <param name="actionList">The action list.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.BannerController">
+            <summary>
+            
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="M:UI.Controllers.BannerController.GetBannerList">
+            <summary>
+            获取广告图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.BannerController.CheckBannerName(System.String)">
+            <summary>
+            检查名称
+            </summary>
+            <param name="name">检查名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.BannerController.AddBanner(Model.banner)">
+            <summary>
+            添加banner图
+            </summary>
+            <param name="banner">The Banner.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.BannerController.EditBanner(Model.banner)">
+            <summary>
+            修改角色信息.
+            </summary>
+            <param name="banner">The Banner.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.BannerController.EditBanner(System.Int32)">
+            <summary>
+            Edits the banner.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.BannerController.ChangeState(System.Int32)">
+            <summary>
+            Changes the state.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.BannerController.ChangeSort(System.Int32,System.Int32)">
+            <summary>
+            修改排序
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="sort">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.BannerController.DelBanner(System.Int32)">
+            <summary>
+            删除角色
+            </summary>
+            <param>The administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.BaseController">
+            <summary>
+            后台基类
+            </summary>
+            <seealso cref="T:UI.Controllers.WebController" />
+        </member>
+        <member name="M:UI.Controllers.BaseController.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            在调用操作方法前调用。
+            </summary>
+            <param name="filterContext">有关当前请求和操作的信息。</param>
+        </member>
+        <member name="T:UI.Controllers.ConfigAndRuleController">
+            <summary>
+            
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="M:UI.Controllers.ConfigAndRuleController.GetConfig_ruleList(System.Int32,System.Int32)">
+            <summary>
+            获取配置或规则
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ConfigAndRuleController.CheckConfig_ruleName(System.String)">
+            <summary>
+            检查名称
+            </summary>
+            <param name="name">检查名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ConfigAndRuleController.AddConfig_rule(Model.config_rule)">
+            <summary>
+            添加配置或规则
+            </summary>
+            <param name="config_rule">The config_rule.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ConfigAndRuleController.EditConfig_rule(System.Int32,System.String,System.Int32,System.String)">
+            <summary>
+            修改配置或规则信息.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ConfigAndRuleController.DelConfig_rule(System.Int32)">
+            <summary>
+            删除配置或规则
+            </summary>
+            <param>The administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.GetOrderList(System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取订单列表
+            </summary>
+            <param name="name">The name.</param>
+            <param name="number">The number.</param>
+            <param name="starttime">The starttime.</param>
+            <param name="endtime">The endtime.</param>
+            <param name="pay_state">State of the pay.</param>
+            <param name="order_state">State of the order.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.ChangePayState(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            修改订单状态
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="order_state"></param>
+            <param name="day"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.EditRemark(System.Int32,System.String)">
+            <summary>
+            修改订单备注
+            </summary>
+            <param name="id"></param>
+            <param name="remark"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.AfterChangePayState(System.Int32)">
+            <summary>
+             修改完支付状态后的操作
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.EditProductCount(System.Int32,System.Int32)">
+            <summary>
+            修改产品个数
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="count">The count.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.AddUserScore(System.Int32,Model.order)">
+            <summary>
+            给上级添加积分记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.GetPendingOrderList(System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取未处理订单
+            </summary>
+            <param name="name">The name.</param>
+            <param name="order_number">The order number.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <param name="day">The day.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.OrderCache(System.String,System.Int32)">
+            <summary>
+            Orders the cache.
+            </summary>
+            <param name="name">缓存名称</param>
+            <param name="day">多少天以内的数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.Menu_Order">
+            <summary>
+            菜单页 订单信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OrderController.ExportExcel(System.Int32)">
+            <summary>
+            导出EXCEL
+            </summary>
+            <param name="day"></param>
+        </member>
+        <member name="T:UI.Controllers.ProductController">
+            <summary>
+            产品
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="M:UI.Controllers.ProductController.GetProductList(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取产品
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ProductController.CheckProductName(System.String)">
+            <summary>
+            检查名称
+            </summary>
+            <param name="name">检查名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ProductController.AddProduct(Model.product)">
+            <summary>
+            添加产品
+            </summary>
+            <param name="product">The Product.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ProductController.EditProduct(Model.product)">
+            <summary>
+            修改产品信息.
+            </summary>
+            <param name="product">The Product.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ProductController.EditProduct(System.Int32)">
+            <summary>
+            获取
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ProductController.EditProductByFiled(System.String,System.String,System.Int32)">
+            <summary>
+            根据字段修改产品信息
+            </summary>
+            <param name="field">The field.</param>
+            <param name="value">The value.</param>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.ProductController.DelProduct(System.Int32)">
+            <summary>
+            删除产品
+            </summary>
+            <param>The administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.RoleController">
+            <summary>
+            角色控制器
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="M:UI.Controllers.RoleController.GetRoleList(System.Int32,System.Int32)">
+            <summary>
+            获取角色列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.AddRole(Model.role)">
+            <summary>
+            添加角色员
+            </summary>
+            <param name="role">The role.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.GetActionList(System.String)">
+            <summary>
+            根据权限id获取权限集合
+            </summary>
+            <param name="actionList">The action list.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.GetMenuActionList">
+            <summary>
+            获取菜单权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.CheckRoleName(System.String)">
+            <summary>
+            检查名称
+            </summary>
+            <param name="name">检查名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.EditRole(Model.role)">
+            <summary>
+            修改角色信息.
+            </summary>
+            <param name="role">The role.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.EditRole(System.String,System.String,System.Int32)">
+            <summary>
+            修改角色
+            </summary>
+            <param name="field">The field.</param>
+            <param name="value">The value.</param>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.EditRoleAction">
+            <summary>
+            Edits the role.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.GetMenuActionListAndRoleActionList(System.Int32)">
+            <summary>
+            当前用户权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.RoleController.DelRole(System.Int32)">
+            <summary>
+            删除角色
+            </summary>
+            <param>The administrator.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemLogController.GetData(System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets the data.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="time">The time.</param>
+            <param name="type">The type.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemMsgController.GetSysQAList(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取系统消息
+            </summary>
+            <param name="name">The name.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemMsgController.AddSysMsg(Model.system_msg_record)">
+            <summary>
+            添加一条QA或系统消息
+            </summary>
+            <param name="smr">The SMR.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemMsgController.CheckTitle(System.String,System.Int32)">
+            <summary>
+            Checks the title.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemMsgController.DelSysMsg(System.Int32)">
+            <summary>
+            删除QA或
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemMsgController.EditSystemMsg(System.Int32,System.String,System.String)">
+            <summary>
+            修改字段值
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="filed">The filed.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemMsgController.EditSysMsg(Model.system_msg_record)">
+            <summary>
+            提交修改
+            </summary>
+            <param name="smr">The SMR.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.SystemMsgController.EditSysMsg(System.Int32)">
+            <summary>
+            获取修改数据
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.UserMsgController.GetUserMsgList(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            消息列表
+            </summary>
+            <param name="name">The name.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <param name="day">多少天之内的数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.UserMsgController.ReplyUseMsg(Model.user_msg_record)">
+            <summary>
+            管理员回复
+            </summary>
+            <param name="umr">The umr.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.UserMsgController.ChangeReadState(System.Int32)">
+            <summary>
+            Changes the state of the read.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.UserMsgController.GetUseMsgLink(System.Int32)">
+            <summary>
+            获取用户问题及回复
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.ErrorController">
+            <summary>
+            错误视图控制器
+            </summary>
+            <seealso cref="T:System.Web.Mvc.Controller" />
+        </member>
+        <member name="M:UI.Controllers.ErrorController.Index">
+            <summary>
+            错误页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.HomeController">
+            <summary>
+            后台首页控制器
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="M:UI.Controllers.HomeController.LogOut">
+            <summary>
+            退出登录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.HomeController.ExcuateCalculate_earnings">
+            <summary>
+            手工结算
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.LoginController">
+            <summary>
+            登录控制器
+            </summary>
+            <seealso cref="T:UI.Controllers.WebController" />
+        </member>
+        <member name="M:UI.Controllers.LoginController.Verification">
+            <summary>
+            验证验证码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.LoginController.UserLogin(System.String,System.String)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="userName">用户名</param>
+            <param name="password">用户密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.LoginController.UnLock(System.String,System.String)">
+             <summary>
+            解锁
+             </summary>
+            <param name="name"></param>
+            <param name="pwd"></param>
+             <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.LoginController.GetCaptcha">
+            <summary>
+            获取滑动验证码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.OAuth2Controller">
+            <summary>
+            微信授权登录控制器
+            </summary>
+            <seealso cref="T:UI.Controllers.WebController" />
+        </member>
+        <member name="F:UI.Controllers.OAuth2Controller.appId">
+            <summary>
+            公众号appid
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.OAuth2Controller.secret">
+            <summary>
+            公众号secret
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.OAuth2Controller.domain">
+            <summary>
+            网站域名
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.OAuth2Controller.wxOpenAppId">
+            <summary>
+            小程序appid
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.OAuth2Controller.wxOpenAppSecret">
+            <summary>
+            小程序secret
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.OAuth2Controller.Component_Appid">
+            <summary>
+            开放平台appid
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.OAuth2Controller.Component_Secret">
+            <summary>
+            开放平台secret
+            </summary>
+        </member>
+        <member name="M:UI.Controllers.OAuth2Controller.Index(System.String,System.Int32)">
+            <summary>
+            公众号授权入口
+            </summary>
+            <param name="goUrl">要授权的url地址</param>
+            <param name="pid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OAuth2Controller.UserInfoCallback(System.String,System.String,System.String)">
+            <summary>
+            公众号授权回调
+            </summary>
+            <param name="code">The code.</param>
+            <param name="state">The state.</param>
+            <param name="goUrl">要跳转的url地址</param>
+            <returns>跳转的url地址会带上Token</returns>
+        </member>
+        <member name="M:UI.Controllers.OAuth2Controller.GetWXConfig">
+            <summary>
+            获取公众号JSSDK注册信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OAuth2Controller.DecodeEncryptedData(System.String,System.String,System.String)">
+            <summary>
+            解密用户数据（获取用户token）
+            </summary>
+            <param name="sessionId">会话ID</param>
+            <param name="encryptedData">要解密的数据</param>
+            <param name="iv">解密向量</param>
+            <returns>返回Token</returns>
+        </member>
+        <member name="M:UI.Controllers.OAuth2Controller.QRLogin(System.String)">
+             <summary>
+            扫码授权入口
+             </summary>
+             <param name="goUrl">要授权的url地址</param>
+             <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.OAuth2Controller.QRLoginCallback(System.String,System.String,System.String)">
+            <summary>
+            扫码授权回调
+            </summary>
+            <param name="code">The code.</param>
+            <param name="state">The state.</param>
+            <param name="goUrl">要跳转的url地址.</param>
+            <returns></returns>
+        </member>
+        <member name="T:UI.Controllers.TenPayV3Controller">
+            <summary>
+            微信支付等相关操作控制器
+            </summary>
+            <seealso cref="T:System.Web.Mvc.Controller" />
+        </member>
+        <member name="F:UI.Controllers.TenPayV3Controller.AppId">
+            <summary>
+            微信公众号AppId
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.TenPayV3Controller.Secret">
+            <summary>
+            微信公众号Secret
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.TenPayV3Controller.DomainUrl">
+            <summary>
+            网站域名
+            </summary>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.JsApi(System.String)">
+            <summary>
+            订单支付操作
+            </summary>
+            <param name="orderNo">加密后的订单号</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.PayNotifyUrl">
+            <summary>
+            支付成功后回调通知
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.PaySuccess(System.Int32)">
+            <summary>
+            Pays the success.
+            </summary>
+            <param name="id">The identifier.</param>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.EditProductCount(System.Int32,System.Int32)">
+            <summary>
+            修改产品个数
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="count">The count.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.AddUserScore(System.Int32,Model.order)">
+            <summary>
+            给上级添加积分记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.SendTemplateMsg(Model.order)">
+            <summary>
+            发送微信模板消息
+            </summary>
+            <param name="order"></param>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.OrderQuery">
+            <summary>
+            订单查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.CloseOrder">
+            <summary>
+            关闭订单接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.Refund">
+            <summary>
+            退款申请接口
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.SendRedPack">
+            <summary>
+            目前支持向指定微信用户的openid发放指定金额红包
+            注意total_amount、min_value、max_value值相同
+            total_num=1固定
+            单个红包金额介于[1.00元，200.00元]之间
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.SendGroupRedPack">
+            <summary>
+            目前支持向指定微信用户的openid发放指定金额红包
+            注意total_amount、min_value、max_value值相同
+            total_num=1固定
+            单个红包金额介于[1.00元，200.00元]之间
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.OrderQuery(System.String,System.String@)">
+            <summary>
+            查询订单
+            </summary>
+            <param name="orderno">订单号</param>
+            <param name="transaction_id">微信统一下单单号</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.ChangeId(System.String)">
+            <summary>
+            转换  加密后string 类型到int
+            </summary>
+            <param name="bid">The bid.</param>
+            <returns>转换后的id</returns>
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.GetTimeStamp">
+            <summary>  
+            获取时间戳  
+            </summary>  
+            <returns></returns>  
+        </member>
+        <member name="M:UI.Controllers.TenPayV3Controller.SaveSyslog(System.String,Model.SysLogType,System.String)">
+            <summary>
+            保存日志
+            </summary>
+            <param name="content">日志内容.</param>
+            <param name="logType">SysLogType 枚举</param>
+            <param name="userName">记录人名称</param>
+        </member>
+        <member name="P:UI.Controllers.PayEntity.goodsId">
+            <summary>
+            商品ID
+            </summary>
+        </member>
+        <member name="P:UI.Controllers.PayEntity.userId">
+            <summary>
+            下单用户ID
+            </summary>
+        </member>
+        <member name="P:UI.Controllers.PayEntity.category">
+            <summary>
+            商品类别 0 课程
+            </summary>
+        </member>
+        <member name="P:UI.Controllers.PayEntity.prepay_id">
+            <summary>
+            微信统一下单订单号
+            </summary>
+        </member>
+        <member name="P:UI.Controllers.PayEntity.orderNo">
+            <summary>
+            商户订单号
+            </summary>
+        </member>
+        <member name="T:UI.Controllers.UploadFileController">
+            <summary>
+            文件上传控制器
+            </summary>
+            <seealso cref="T:UI.Controllers.WebController" />
+        </member>
+        <member name="M:UI.Controllers.UploadFileController.UpImage(System.Web.HttpPostedFileBase,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            上传图片
+            </summary>
+            <param name="file">文件</param>
+            <param name="width">缩略图宽度</param>
+            <param name="height">缩略图高度</param>
+            <param name="mode">生成缩略图的方式 
+            HW 指定高宽缩放（可能变形）
+            W 指定宽，高按比例  
+            H 指定高，宽按比例
+            Cut 指定高宽裁减（不变形）
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.UploadFileController.UpVideoOrAudio(System.Web.HttpPostedFileBase)">
+            <summary>
+            上传音频或视频
+            </summary>
+            <param name="file">文件</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.UploadFileController.UpFile(System.Web.HttpPostedFileBase,System.Int32)">
+            <summary>
+            通用
+            </summary>
+            <param name="file">文件</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.UploadFileController.DeleteFile(System.String)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="path">The path.</param>
+        </member>
+        <member name="M:UI.Controllers.UploadFileController.DeleteFileList(System.String)">
+            <summary>
+            批量删除
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="T:UI.Controllers.WebController">
+            <summary>
+            Web请求基类
+            </summary>
+            <seealso cref="T:System.Web.Mvc.Controller" />
+        </member>
+        <member name="P:UI.Controllers.WebController.CallBack">
+            <summary>
+            jsonp回调方法
+            </summary>
+            <value>
+            The call back.
+            </value>
+        </member>
+        <member name="P:UI.Controllers.WebController.nowManager">
+            <summary>
+            Gets or sets the now manager.
+            </summary>
+            <value>
+            当前登录的管理员
+            </value>
+        </member>
+        <member name="P:UI.Controllers.WebController.RequestParams">
+            <summary>
+            所有请求参数集
+            </summary>
+            <value>
+            The request parameters.
+            </value>
+        </member>
+        <member name="M:UI.Controllers.WebController.Initialize(System.Web.Routing.RequestContext)">
+            <summary>
+            对调用构造函数时可能不可用的数据进行初始化。
+            </summary>
+            <param name="requestContext">HTTP 上下文和路由数据。</param>
+        </member>
+        <member name="M:UI.Controllers.WebController.Json(System.Object,System.String,System.Text.Encoding)">
+            <summary>
+            创建一个将指定对象序列化为 JavaScript 对象表示法 (JSON) 格式的 <see cref="T:System.Web.Mvc.JsonResult" /> 对象。
+            </summary>
+            <param name="data">要序列化的 JavaScript 对象图。</param>
+            <param name="contentType">内容类型（MIME 类型）。</param>
+            <param name="contentEncoding">内容编码。</param>
+            <returns>
+            将指定对象序列化为 JSON 格式的 JSON 结果对象。
+            </returns>
+        </member>
+        <member name="M:UI.Controllers.WebController.Json(System.Object,System.String,System.Text.Encoding,System.Web.Mvc.JsonRequestBehavior)">
+            <summary>
+            创建 <see cref="T:System.Web.Mvc.JsonResult" /> 对象，该对象使用内容类型、内容编码和 JSON 请求行为将指定对象序列化为 JavaScript 对象表示法 (JSON) 格式。
+            </summary>
+            <param name="data">要序列化的 JavaScript 对象图。</param>
+            <param name="contentType">内容类型（MIME 类型）。</param>
+            <param name="contentEncoding">内容编码。</param>
+            <param name="behavior">JSON 请求行为</param>
+            <returns>
+            将指定对象序列化为 JSON 格式的结果对象。
+            </returns>
+        </member>
+        <member name="M:UI.Controllers.WebController.Json(System.Enum)">
+            <summary>
+            Jsons the specified code.
+            </summary>
+            <param name="code">返回枚举</param> 
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WebController.Json(System.Enum,System.String,System.Int32)">
+            <summary>
+            Jsons the specified code.
+            </summary>
+            <param name="code">状态枚举</param>
+            <param name="msg">返回消息</param>
+            <param name="count">总条数</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WebController.Json``1(System.Enum,``0,System.String,System.Int32)">
+            <summary>
+            Jsons the specified code.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="code">状态枚举</param>
+            <param name="data">返回数据</param>
+            <param name="msg">返回消息</param>
+            <param name="count">总条数.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WebController.SaveSyslog(System.String,Model.SysLogType,System.String)">
+            <summary>
+            保存日志
+            </summary>
+            <param name="content">日志内容.</param>
+            <param name="logType">SysLogType 枚举</param>
+            <param name="userName">记录人名称</param>
+        </member>
+        <member name="T:UI.Controllers.WeixinController">
+            <summary>
+            微信验证、发送消息控制器
+            </summary>
+            <seealso cref="T:System.Web.Mvc.Controller" />
+        </member>
+        <member name="F:UI.Controllers.WeixinController.Token">
+            <summary>
+            与微信公众账号后台的Token设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.WeixinController.EncodingAESKey">
+            <summary>
+            与微信公众账号后台的EncodingAESKey设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="F:UI.Controllers.WeixinController.AppId">
+            <summary>
+            与微信公众账号后台的AppId设置保持一致，区分大小写。
+            </summary>
+        </member>
+        <member name="M:UI.Controllers.WeixinController.Get(Senparc.Weixin.MP.Entities.Request.PostModel,System.String)">
+            <summary>
+            微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url填写如：http://sdk.weixin.senparc.com/weixin
+            </summary>
+        </member>
+        <member name="M:UI.Controllers.WeixinController.Post(Senparc.Weixin.MP.Entities.Request.PostModel)">
+            <summary>
+            用户发送消息后，微信平台自动Post一个请求到这里，并等待响应XML。
+            PS：此方法为简化方法，效果与OldPost一致。
+            v0.8之后的版本可以结合Senparc.Weixin.MP.MvcExtension扩展包，使用WeixinResult，见MiniPost方法。
+            </summary>
+        </member>
+        <member name="T:UI.Controllers.WXUserController">
+            <summary>
+            微信用户管理控制器
+            </summary>
+            <seealso cref="T:UI.Controllers.BaseController" />
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetData(System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            分页获取用户数据
+            </summary>
+            <param name="page">第几页</param>
+            <param name="limit">多少条</param>
+            <param name="searchKey">搜索关键字</param>
+            <param name="state">用户状态</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetUserList(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取用户
+            </summary>
+            <param name="name">The name.</param>
+            <param name="page">The page.</param>
+            <param name="limit">The limit.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.ChangeState(System.Int32)">
+            <summary>
+            Changes the state.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.ChangeBuyState(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetUser_ScoreList(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets the user score list.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="name"></param>
+            <param name="type"></param>
+            <param name="day"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetUser_ChildList(System.Int32)">
+            <summary>
+            获取下级用户列表
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetUserChild(System.Int32)">
+            <summary>
+            Gets the user child.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetUserProductList(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets the user product list.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="state"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetUserRelation">
+            <summary>
+            Gets the user relation.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetParentLink(System.Int32)">
+            <summary>
+            用户关系链
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetChild(System.Collections.Generic.List{Model.user},Model.user)">
+            <summary>
+            递归获取用户关系链
+            </summary>
+            <param name="user_list"></param>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.Menu_UserCount">
+            <summary>
+            主页面菜单会员数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.GetWeekNumber(System.DateTime)">
+            <summary>
+            是第几个星期
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.Menu_Score">
+            <summary>
+            主页菜单积分统计数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.Menu_UserCountLink">
+            <summary>
+            用户ECHART图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.ExportExcel(System.String)">
+            <summary>
+            导出用户EXCEL
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.CacheUser(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.CacheUserScoreRecord(System.String,System.Int32)">
+            <summary>
+            用户积分记录缓存
+            </summary>
+            <param name="name"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.UserApplyScoreList(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            用户提现申请表
+            </summary>
+            <param name="name"></param>
+            <param name="day"></param>
+            <param name="page"></param>
+            <param name="limit"></param>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.AfterApplySuccess(System.Int32,System.Guid)">
+            <summary>
+            用户提现成功后
+            </summary>
+            <param name="id">用户id</param>
+            <param name="sid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.ChangeUserApplyState(System.Guid,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI.Controllers.WXUserController.AddUserScoreRecord">
+            <summary>
+            添加用户积分记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UI.QuartzJob.MyJobScheduler">
+            <summary>
+            定时任务触发器
+            </summary>
+        </member>
+        <member name="T:UI.Models.CheckAdminLogin">
+            <summary>
+            检查是否登录
+            </summary>
+            <seealso cref="T:System.Web.Mvc.ActionFilterAttribute" />
+        </member>
+        <member name="M:UI.Models.CheckAdminLogin.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            在调用操作方法前调用。
+            </summary>
+            <param name="filterContext">有关当前请求和操作的信息。</param>
+        </member>
+        <member name="P:UI.Models.BaseApiResponse.msg">
+            <summary>
+            响应消息
+            </summary>
+        </member>
+        <member name="P:UI.Models.BaseApiResponse.code">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:UI.Models.BaseApiResponse.data">
+            <summary>
+            响应数据
+            </summary>
+        </member>
+        <member name="P:UI.Models.BaseApiResponse.count">
+            <summary>
+            数据总条数
+            </summary>
+        </member>
+    </members>
+</doc>

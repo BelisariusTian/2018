@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>管理员管理</title>
+    <link href="/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="/css/menu.css" rel="stylesheet" />
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/menu.js"></script>
+    <style>
+        .showImg {
+            display: flex;
+            align-items: center;
+        }
+        .showImg_img {
+            width: 180px;
+            height: 200px;
+            border-radius: 5px;
+        }
+        .showImg_p {
+            text-align: center;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        .showImg_div {
+            box-shadow: 5px 2px 6px #000;
+            border-radius: 5px;
+            margin-left: 20px;
+        }
+            .showImg_div:hover {
+                box-shadow: 5px 2px 6px #808080;
+                cursor:pointer;
+            }
+        .delSpan {
+            position: relative;
+            top: 103px;
+            right: 25px;
+        }
+        .layui-icon{
+            font-size:18px!important;
+        }
+    </style>
+    <script>
+        var glayer;
+        var $;
+        var GetData1;
+        function toAdminDetail(id, rid, maxrid) {
+            if (maxrid > rid) {
+                layer.msg("您没有权限查看此信息")
+            } else {
+                location.href = '/admin/adminmanagement/detail.html?aid=' + id;
+            }
+        }
+        function delAdmin(id, rid, maxrid) {
+            if (maxrid > rid) {
+                layer.msg("您没有权限删除此信息")
+            } else {
+                layer.confirm('确定删除该管理员么', {
+                    btn: ['是的', '不是'] //按钮
+                }, function () {
+                    $.get('/admin/DelAdmin', { id: id, role_id: rid, token: store.get('token') }, function (data) {
+                        if (data.code == 0) {
+                            layer.msg(data.msg, { icon: 7, time: 500 }, function () {
+                                location.href = "/admin/adminmanagement/index.html";
+                            });
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    });
+                }, function () {
+                    return;
+                });
+            }
+        }
+    </script>
+</head>
+
+<body layadmin-themealias="default">
+    <div id="adminList"style="padding-bottom:20px">
+    
+    </div>
+
+
+    <script src="/lib/layui/layui.js"></script>
+    <script>
+        layui.use(["layer","form", 'element'], function () {
+             $ = layui.jquery;
+            var element = layui.element;
+             layer = layui.layer;
+            glayer = layer;
+            GetData();
+            function GetData() {
+                var sHtml = '';
+                $.get("/admin/GetAdminList", { token: store.get("token") }, function (res) {
+                    if (res.code === 0) {
+                        ShowAdmin(res.data,res.count);
+                    }
+                    else {
+                        layer.msg(res.msg)
+                    }
+                })
+            }
+
+            function ShowAdmin(data,admin_role_maxsort) {
+                var aHtml = '';
+                var roleCount = data.length;
+                if (data != undefined && roleCount > 0) {
+                    $.each(data, function (index, item) {
+                        var dHtml = '';
+                        if (item.adminList != undefined && item.adminList.length > 0) {
+                            for (var i = 0; i < item.adminList.length; i++) {
+                                dHtml += '<div class="showImg_div" onclick="toAdminDetail(' + item.adminList[i].admin_id + ',' + item.role_id + ',' + admin_role_maxsort+')">';
+                                dHtml += '<img class="showImg_img" src = "' + item.adminList[i].admin_headimg + '" />';
+                                dHtml += '<p class="showImg_p">' + item.adminList[i].admin_name + '</p>';
+                                dHtml += '</div >';
+                                dHtml += '<span class="delSpan" onclick="delAdmin(' + item.adminList[i].admin_id + ',' + item.role_id + ',' + admin_role_maxsort+')"><i class="layui-icon">&#xe640;</i></span>';
+                            }
+                        }
+                        aHtml += ' <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">';
+                        aHtml += '<legend> ' + item.role_name + '  </legend >';
+                        aHtml += '</fieldset > ';
+                        aHtml += ' <div class="showImg">';
+                        aHtml += dHtml;
+                        if (item.sort != 1 && item.sort > admin_role_maxsort) {
+                            aHtml += '<div class="showImg_div">';
+                            aHtml += ' <a class="layui-btn layui-btn-primary layui-btn-fluid" href = "add.html?roleid=' + item.role_id + '"><i class="layui-icon">&#xe608;</i> 添加</a>';
+                            aHtml += '</div >';
+                        }   
+                        aHtml += ' </div>';
+                    })
+                }
+                else {
+                    aHtml += '<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">';
+                    aHtml +='<legend> 暂无任何管理员信息</legend > ';
+                    aHtml += '</fieldset >';
+                    aHtml +='<div style="width: 216px; margin: 0 auto;">';
+                    aHtml += ' <a class="layui-btn layui-btn-fluid" href="add.html?roleid=2"> <i class="layui-icon">&#xe608;</i> 添加</a>';
+                    aHtml +='</div>';
+                }
+                $('#adminList').html(aHtml);
+            }
+
+        });
+    </script>
+</body>
+
+</html>

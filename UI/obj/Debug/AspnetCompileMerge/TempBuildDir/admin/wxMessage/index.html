@@ -1,0 +1,471 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>关注时回复</title>
+    <link href="/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="/css/menu.css" rel="stylesheet" />
+    <link href="/css/common.css" rel="stylesheet" />
+    <script src="/Lib/layui/layui.all.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/menu.js"></script>
+</head>
+
+<body>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>只能选择其一</legend>
+    </fieldset>
+
+
+    <form class="layui-form" id="myForm">
+
+        <div class="layui-tab layui-tab-card" style="height: 500px;">
+            <ul class="layui-tab-title">
+                <li class="layui-this" onclick="obj.skip(1)">文本</li>
+                <li onclick="obj.skip(2)">图片</li>
+                <li onclick="obj.skip(3)">图文</li>
+                <li onclick="obj.skip(4)">语音</li>
+            </ul>
+
+            <input type="hidden" name="typeMsg" id="typeMsg" value="1" />
+            <input type="hidden" name="token" id="token" value="" />
+            <input type="hidden" name="requstType" id="requstType" value="" />
+            <input type="hidden" name="PicUrl" id="PicUrl" value="" />
+            <input type="hidden" name="RId" id="RId" value="1" />
+
+            <div class="layui-tab-content" style="height: 100px;">
+
+                <div class="layui-tab-item layui-show">
+
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">内容：</label>
+
+                        <div class="layui-input-block">
+                            <textarea rows="18" style="width:50%" name="ReqContent" id="ReqContent" placeholder="请输入关注时回复的文字" class="layui-textarea" lay-verify="ReqContent" autocomplete="off"></textarea><br />
+                            <label> 最多1000个字符</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="layui-tab-item">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">图片：</label>
+
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn layui-btn-primary" id="test1"> <i class="layui-icon">&#xe608;</i>上传</button>
+                            <div class="layui-upload-list">
+                                <img class="layui-upload-img" src="" width="550" height="350" style="margin-left: 7%;" id="imgShow" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="layui-tab-item">
+                    <button type="button" onclick="addTeletext()" class="layui-btn layui-btn-primary">  <i class="layui-icon">&#xe654;</i>添加图文</button>
+
+                    <table   id="test" lib="aaa"   lay-filter="test"></table>
+
+                </div>
+
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">语音标题：</label>
+                        <div class="layui-input-block">
+                            <textarea rows="2" style="width:50%" name="ReqTitle" id="ReqTitle" placeholder="请输入语音标题" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">语音链接：</label>
+
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn layui-btn-primary" id="test2"> <i class="layui-icon">&#xe608;</i>选择文件</button>
+                        </div>
+
+                        <div class="layui-input-block">
+                            <textarea rows="2" style="width:50%" name="MediaUrl" id="MediaUrl" placeholder="*支持mp3格式，可以填写网上的链接，也可以本地上传！" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">语音描述：</label>
+                        <div class="layui-input-block">
+                            <textarea rows="2" style="width:50%" name="Remark" id="Remark" placeholder="请输入语音描述" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="layui-form-item" id="showDiv">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    var obj = {
+        typeMsg: 1,
+        requstType: 1
+        , skip: (val) => {
+            obj.typeMsg = val;
+
+            if (val == 3) {
+                $("#showDiv").hide();
+            } else {
+                $("#showDiv").show();
+
+            }
+            obj.getAttentionData();
+
+        }
+        , getAttentionData: () => {
+            $.ajax({
+                url: '/WXMessage/GetAttentionData',
+                data: { token: store.get("token"), typeMsg: obj.typeMsg, requstType: obj.requstType },
+                type: 'post',
+                async: false,
+                success: function (json) {
+
+                    if (json.code === 0) {
+                        var data = json.data[0];
+                        //$("#RId").val(data.RId);
+                        if (obj.typeMsg == 1) {
+                            // var data = json.data[0];
+                            $("#ReqContent").val(data.ReqContent);
+
+                            $("#PicUrl").val("");
+                            $("#imgShow").attr("src", "");
+
+                        } else if (obj.typeMsg == 2) {
+                            //   var data = json.data[0];
+                            $("#PicUrl").val(data.PicUrl);
+                            $("#imgShow").attr("src", data.PicUrl);
+
+                            $("#ReqContent").val("");
+
+                        } else if (obj.typeMsg == 4) {
+                            //  var data = json.data[0];
+                            $("#ReqTitle").val(data.ReqTitle);
+                            $("#MediaUrl").val(data.MediaUrl);
+                            $("#Remark").val(data.Remark);
+
+                            $("#ReqContent").val("");
+                            $("#PicUrl").val("");
+                            $("#imgShow").attr("src", "");
+
+                        } else if (obj.typeMsg == 3) {
+
+                            $("#ReqTitle").val("");
+                            $("#MediaUrl").val("");
+                            $("#Remark").val("");
+                            $("#ReqContent").val("");
+                            $("#PicUrl").val("");
+                            $("#imgShow").attr("src", "");
+
+                            //加载数据
+                            reloadTable(tableIns, searchData);
+
+                        }
+
+                    } else {
+
+                        if (obj.typeMsg == 1) {
+                            $("#ReqContent").val("");
+
+                        } else if (obj.typeMsg == 2) {
+                            $("#PicUrl").val("");
+                            $("#imgShow").attr("src", "");
+
+                        } else if (obj.typeMsg == 4) {
+                            $("#ReqTitle").val("");
+                            $("#MediaUrl").val("");
+                            $("#Remark").val("");
+
+                        } else if (obj.typeMsg == 3) {
+                            //加载数据
+                            reloadTable(tableIns, searchData);
+                        }
+                    }
+
+                },
+                error: function (msg) {
+                    layer.msg("网络异常");
+                }
+            })
+        }
+    }
+
+    obj.getAttentionData();
+    var tableIns, searchData = { token: store.get("token"), typeMsg: 3, requstType: obj.requstType }; //table 和搜索数据
+
+    var table = layui.table;
+    layui.use(['form', 'upload', 'table'], function () {
+        var form = layui.form
+            , upload = layui.upload;
+        //form.render(); //更新全部
+
+        //加载数据
+        tableIns = table.render({
+            url: '/WXMessage/GetAttentionData', //请求地址
+            method: 'post' //请求方式
+            , where: searchData
+            , cols: [[
+                { field: 'ReqTitle', width: 300, title: '标题' }
+                , { field: 'PicUrl', width: 250, title: '图片', event: 'setSign', templet: '#tplPicUrl' }
+                , { field: 'ReqContent', width: 300, title: '内容' }
+                , { field: 'DetailUrl', width: 300, title: '链接' }
+                , { field: 'Sort', width: 250, title: '排序' }
+                , { field: 'sign', title: '操作', width: 200, toolbar: '#barDemo' }
+            ]]
+            , initSort: { //初始排序
+                field: 'AddTime', //排序字段，对应 cols 设定的各字段名
+                type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+            },
+            elem: '#test', //要渲染的容器
+            id: 'test', //容器id，方便取数据
+            height: "full", //高度将始终铺满，无论浏览器尺寸如何。这是一个特定的语法格式，其中 full 是固定的，而 差值 则是一个数值，这需要你来预估，比如：表格容器距离浏览器顶部和底部的距离“和”
+            //width: 1140, //默认最大宽度
+            loading: false, //是否显示加载条
+            skin: 'row', //line （行边框风格） row （列边框风格）  nob （无边框风格）
+            even: true, //开启隔行背景
+        });
+
+        //监听单元格事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'setSign') {
+
+                layer.photos({
+                    photos: {
+                        "title": data.ReqTitle, //相册标题
+                        "id": 123, //相册id
+                        "start": 0, //初始显示的图片序号，默认0
+                        "data": [   //相册包含的图片，数组格式
+                            {
+                                "alt": data.ReqTitle,
+                                "pid": 666, //图片id
+                                "src": data.PicUrl, //原图地址
+                                "thumb": data.PicUrl //缩略图地址
+                            }
+                        ]
+                    }
+                    , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                });
+            } else if (obj.event === 'edit') {
+
+                Edit(data.Id);
+            } else if (obj.event === 'del') {
+
+                Del(data.Id);
+
+            }
+        });
+
+        //图片上传
+        upload.render({
+            elem: '#test1'
+            , url: '/UploadFile/UpImage'
+            , data: { width: 100, height: 100, mode: "Cut" }
+            , done: function (res) {
+                //上传成功
+                if (res.code === 0) {
+                    $("#PicUrl").val(res.data.OriginalPath);
+                    $("#imgShow").attr("src", res.data.OriginalPath);
+                }
+
+            }
+            , error: function () {
+                layer.msg("网络错误");
+            }
+        });
+
+        //上传
+        upload.render({
+            elem: '#test2'
+            , url: '/UploadFile/UpVideoOrAudio'
+            , exts: 'arm|mp3|mp4' //只允许上传压缩文件
+            , done: function (res) {
+                //上传成功
+            
+                    $("#MediaUrl").val(res.data.OriginalPath);
+         
+
+            }
+            , error: function () {
+                layer.msg("网络错误");
+            }
+        });
+
+        //监听提交
+        form.on('submit(submit)', function (data) {
+
+            if (obj.typeMsg == 1) {
+                if (data.field.ReqContent.length == 0) {
+                    layer.msg("请输入关注时回复的文本");
+                    return false;
+                }
+
+                data.field.PicUrl = "";
+                data.field.ReqTitle = "";
+                data.field.MediaUrl = "";
+                data.field.Remark = "";
+
+            } else if (obj.typeMsg == 2) {
+
+                if (data.field.PicUrl.length == 0) {
+                    layer.msg("请输入关注时回复的图片");
+                    return false;
+                }
+
+                data.field.ReqContent = "";
+                data.field.ReqTitle = "";
+                data.field.MediaUrl = "";
+                data.field.Remark = "";
+
+            } else if (obj.typeMsg == 4) {
+
+                if (data.field.ReqTitle.length == 0) {
+                    layer.msg("请输入关注时回复的语音标题");
+                    return false;
+                }
+
+                if (data.field.MediaUrl.length == 0) {
+                    layer.msg("请输入关注时回复的语音链接");
+                    return false;
+                }
+
+                if (data.field.Remark.length == 0) {
+                    layer.msg("请输入关注时回复的语音描述");
+                    return false;
+                }
+
+                data.field.ReqContent = "";
+                data.field.PicUrl = "";
+
+            }
+
+            data.field.token = store.get("token");
+            data.field.typeMsg = obj.typeMsg;
+            data.field.requstType = obj.requstType;
+
+
+            $.ajax({
+                url: '/WXMessage/AddAttention',
+                data: data.field,
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                success: function (json) {
+
+                    if (json.code === 0) {
+                        layer.msg(json.msg);
+                    }
+                    else {
+                        layer.msg(json.msg);
+                    }
+                },
+                error: function (msg) {
+                    layer.msg("网络异常");
+                }
+            })
+            return false;
+        });
+    });
+
+    function reloadTable(obj, data) {
+        obj.reload({
+            url: `/WXMessage/GetAttentionData`, //请求地址
+            method: 'post', //请求方式
+            where: data
+        });
+    }
+
+
+    function addTeletext() {
+
+        var len = $("tbody>tr").length;
+
+        if (len >= 8) {
+            layer.msg("图文数据最多添加八条");
+            return
+        };
+
+        var rId = $("#RId").val();
+
+        layer.open({
+            type: 2,
+            title: "编辑图文",
+            area: ['50%', '98%'],
+            content: '/admin/wxMessage/AddTeletext.html?rId=' + rId,
+            end: function () {
+
+            }
+
+        });
+    }
+
+    function Edit(obj) {
+
+        layer.open({
+            type: 2,
+            title: "编辑图文",
+            area: ['50%', '98%'],
+            content: '/admin/wxMessage/EditTeletext.html?id=' + obj,
+            end: function () {
+
+            }
+        });
+
+    }
+
+
+    function Del(id) {
+        //询问框
+        layer.confirm('您确定要删除这条数据？', {
+            btn: ['是的', '不是'] //按钮
+        }, function () {
+            $.post('/WXMessage/DelTeletext', { id: id, token: store.get('token') }, function (data) {
+                if (data.code == 0) {
+                    layer.msg(data.msg);
+                    obj.getAttentionData();
+                } else {
+                    layer.msg(data.msg);
+                }
+            });
+        });
+
+    }
+
+    function close(json) {
+        layer.msg(json.msg);
+        layer.closeAll();
+        obj.typeMsg = 3;
+        obj.getAttentionData();
+    }
+
+    function closeSub(msg) {
+        layer.msg(msg, function () {
+            layer.closeAll();
+        });
+      
+    }
+</script>
+<script type="text/html" id="tplPicUrl">
+    <img src="{{d.PicUrl}}" alt="图片" style="max-width: 100%;  max-height: 100%;" />
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+

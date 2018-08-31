@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>用户列表</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style=" margin:40px;">
+            <blockquote class="layui-elem-quote">
+                <form class="layui-form">
+                    <div style="display:flex">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" placeholder="输入名字或电话" class="layui-input">
+                            </div>
+                        </div>
+                        <!--<div class="layui-form-item">
+                            <label class="layui-form-label">电话</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="number" autocomplete="off" placeholder="支持模糊查询" class="layui-input">
+                            </div>
+                        </div>-->
+                        <!--<div class="layui-form-item">
+                            <label class="layui-form-label">关注时间</label>
+                            <div style="display:flex">
+                                <input type="text" name="date" id="starttime" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                <span style=" width: 50px;text-align: center;height: 38px;line-height: 38px;font-size: 20px;">-</span>
+                                <input type="text" name="date" id="endtime" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>-->
+                        <div class="layui-form-item" style="margin-left:20px;">
+                            <div class="layui-input-inline">
+                                <!--<button type="submit" lay-submit class="layui-btn" lay-filter="search">查询</button>-->
+                                <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                                <a class="layui-btn search_btn" id="search_btn" lay-submit lay-filter="btnSearch">搜索</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+            </blockquote>
+
+            <div class="layui-card">
+                <div class="layui-card-header">用户列表</div>
+                <div class="layui-card-body">
+                    <table id="userListTable" lay-filter="userList"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        layui.use(["layer", "table", "laydate", "form"], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                table = layui.table,
+                laydate = layui.laydate,
+                form = layui.form;
+
+            //laydate.render({
+            //    elem: '#starttime'
+            //});
+            //laydate.render({
+            //    elem: '#endtime'
+            //});
+            //渲染表格
+            var tables = table.render({
+                elem: "#userListTable",
+                cellMinWidth: 80,
+                url: "/WXUser/GetUserList",
+                where: {
+                    token: store.get('token'),
+                    name: $("input[name='name']").val(),
+                },
+                size: "lg",
+                page: true,
+                loading: true,
+                cols: [[
+                    { field: 'name', title: '用户名', align: 'center', width: "8%" },
+                    { field: 'tel', title: '电话', align: 'center', width: "10%", },
+                    { field: 'pidName', title: '推荐人', align: 'center', width: "8%", },
+                    { field: 'total_score', title: '总积分', align: 'center', width: "6%", sort: true, event: "total_score", },
+                    { field: 'total_product_count', title: '总产品数', align: 'center', width: "6%", event: "total_product_count", },
+                    { field: 'total_pay', title: '已提现积分', align: 'center', width: "6%", event: "total_pay", },
+                    { field: 'firstlevel_child', title: '一级用户', align: 'center', width: "10%", event: "firstlevel_child", },
+                    { field: 'secondlevel_child', title: '二级用户', align: 'center', width: "10%", event: "secondlevel_child", },
+                    { field: 'add_time', title: '关注时间', align: 'center', width: "10%" },
+                    { title: "操作", align: 'center', toolbar: '#toolbar', }
+                ]],
+                done: function (res, curr, count) {
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    console.log(res);
+                    //得到当前页码
+                    console.log(curr);
+                    store.set("user_curr", curr);
+                    //得到数据总量
+                    currData = res.data;
+                    //showSelect(currData);
+                }
+            });
+
+            $("#search_btn").click(function () {
+                tables.reload({
+                    where: {
+                        token: store.get("token"), name: $("input[name='name']").val()
+                    },
+                    page: {
+                        curr: 1
+                    }
+                });
+            })
+
+            form.on('checkbox(state)', function (obj) {
+                //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+                $.get("/wxuser/ChangeState", { token: store.get('token'), id: obj.value }, function (res) {
+                    if (res.code !=0) {
+                        layer.msg("修改失败");
+                    }
+                })
+            });
+
+            table.on('tool(userList)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                var tr = obj.tr;
+                var title = "";
+                var area = ["100%", "100%"];
+                var url;
+                switch (layEvent) {
+                    case "Detail":
+                        break;
+                    case "total_product_count":
+                        if (data.total_product_count=0) {
+                            layer.msg("该用户没有购买过产品");
+                            return;
+                        }
+                         title = "用户产品列表";
+                        area = ["100%", "100%"];
+                        url = "/wxuser/user_product.html?id=" + data.id;
+                        break;
+                    case "total_score":
+                    case "total_pay":
+                        title = "用户积分记录表";
+                        area = ["100%", "100%"];
+                        url = "/wxuser/user_score.html?id=" + data.id;
+                        break;
+                    case "firstlevel_child":
+                    case "secondlevel_child":
+                        title = "用户下级用户";
+                        area = ["100%", "100%"];
+                        url = "/wxuser/user_child.html?id=" + data.id;
+                        break;
+                }
+                var obj = {
+                    title:title,
+                    type: 2,
+                    area: area,
+                    content: url,
+                    end: function () {
+                        tables.reload({
+                            where: {
+                                token: store.get("token"), name: $("input[name='name']").val()
+                            },
+                            page: {
+                                curr: store.get("user_curr")
+                            }
+                        });
+                    }
+                };
+                layer.open(obj);
+            });
+
+        });
+    </script>
+    <script type="text/html" id="toolbar">
+        <!--<a class="layui-btn layui-btn-sm" lay-event="Edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="Delete">删除</a>
+        <a class="layui-btn layui-btn-sm" lay-event="Detail">预览</a>-->
+    </script>
+    <script type="text/html" id="state">
+        <input type="checkbox" name="state" value="{{d.id}}" lay-skin="switch" lay-text="正常|冻结" lay-filter="state" {{ d.state == 1? 'checked' : '' }}>
+    </script>
+</body>
+</html>

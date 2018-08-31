@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+  <!--后台登录-->
+  <object type="UI.Controllers.LoginController,UI" singleton="false" >
+    <property name="administratorService" ref="AdministratorService" />
+  </object>
+
+  <!--微信用户管理-->
+  <object type="UI.Controllers.WxUserController,UI" singleton="false" >
+    <property name="wx_userService" ref="Wx_userService" />
+    <property name="userService" ref="UserService" />
+    <property name="user_score_recordService" ref="User_score_recordService" />
+    <property name="config_ruleService" ref="Config_ruleService" />
+  </object>
+
+  <!--微信授权控制器-->
+  <object type="UI.Controllers.OAuth2Controller,UI" singleton="false" >
+    <property name="wx_userService" ref="Wx_userService" />
+    <property name="config_ruleService" ref="Config_ruleService" />
+    <property name="user_score_recordService" ref="User_score_recordService" />
+  </object>
+
+  <!--微信自定义回复控制器-->
+  <object type="UI.Controllers.WXMessageController,UI" singleton="false" >
+    <property name="wx_request_ruleService" ref="Wx_RequestRuleService" />
+    <property name="wx_request_contentService" ref="Wx_RequestContentService" />
+  </object>
+
+  <!--微信支付控制器-->
+  <object type="UI.Controllers.TenPayV3Controller,UI" singleton="false" >
+    <property name="orderService" ref="OrderService" />
+    <property name="userService" ref="UserService" />
+    <property name="productService" ref="ProductService" />
+    <property name="user_score_recordService" ref="User_score_recordService" />
+  </object>
+
+  <!--角色管理-->
+  <object type="UI.Controllers.RoleController,UI" singleton="false" >
+    <property name="roleService" ref="RoleService" />
+    <property name="actionService" ref="ActionService" />
+  </object>
+
+  <!--管理员管理-->
+  <object type="UI.Controllers.AdminController,UI" singleton="false" >
+    <property name="administratorService" ref="AdministratorService" />
+    <property name="actionService" ref="ActionService" />
+    <property name="roleService" ref="RoleService" />
+  </object>
+
+  <!--产品管理-->
+  <object type="UI.Controllers.ProductController,UI" singleton="false" >
+    <property name="productService" ref="ProductService" />
+  </object>
+
+  <!--订单管理-->
+  <object type="UI.Controllers.OrderController,UI" singleton="false" >
+    <property name="orderService" ref="OrderService" />
+    <property name="userService" ref="UserService" />
+    <property name="productService" ref="ProductService" />
+    <property name="user_score_recordService" ref="User_score_recordService" />
+  </object>
+
+  <!--广告图管理-->
+  <object type="UI.Controllers.BannerController,UI" singleton="false" >
+    <property name="bannerService" ref="BannerService" />
+    <property name="productService" ref="ProductService" />
+  </object>
+
+  <!--系统日志管理-->
+  <object type="UI.Controllers.SystemLogController,UI" singleton="false" >
+    <property name="system_logService" ref="System_logService" />
+  </object>
+
+  <!--系统消息管理-->
+  <object type="UI.Controllers.SystemMsgController,UI" singleton="false" >
+    <property name="system_msg_recordService" ref="System_msg_recordService" />
+  </object>
+
+  <!--用户消息管理-->
+  <object type="UI.Controllers.UserMsgController,UI" singleton="false" >
+    <property name="user_msg_recordService" ref="User_msg_recordService" />
+  </object>
+
+  <!--配置和规则管理-->
+  <object type="UI.Controllers.ConfigAndRuleController,UI" singleton="false" >
+    <property name="config_ruleService" ref="Config_ruleService" />
+  </object>
+  
+  <!--前端页面控制器-->
+  <!--产品和首页-->
+  <object type="UI.Areas.WeChat.Controllers.ProductsController,UI" singleton="false" >
+    <property name="productService" ref="ProductService" />
+    <property name="bannerService" ref="BannerService" />
+  </object>
+
+  <!--积分-->
+  <object type="UI.Areas.WeChat.Controllers.ScoreController,UI" singleton="false" >
+    <property name="user_score_recordService" ref="User_score_recordService" />
+    <property name="userService" ref="UserService" />
+    <property name="user_addressService" ref="User_addressService" />
+    <property name="config_ruleService" ref="Config_ruleService" />
+  </object>
+
+  <!--订单处理-->
+  <object type="UI.Areas.WeChat.Controllers.OrdersController,UI" singleton="false" >
+    <property name="orderService" ref="OrderService" />
+    <property name="config_ruleService" ref="Config_ruleService" />
+  </object>
+
+  <!--个人中心-->
+  <object type="UI.Areas.WeChat.Controllers.UserCenterController,UI" singleton="false" >
+    <property name="wx_userService" ref="Wx_userService" />
+    <property name="user_addressService" ref="User_addressService" />
+    <property name="system_msg_recordService" ref="System_msg_recordService" />
+    <property name="user_msg_recordService" ref="User_msg_recordService" />
+  </object>
+  
+ 
+  <!--intentionally do NOT register the AccountController or the ValuesController with the container; demonstrates that the underlying
+  default controller factory will properly (attempt to!) resolve all controllers not registered with Spring.NET
+  using its default controller resolution behavoir-->
+  <!--<object type="Spring.Mvc4QuickStart.Controllers.AccountController, Spring.Mvc4QuickStart" singleton="false" />-->
+  <!--<object type="Spring.Mvc4QuickStart.Controllers.ValuesController, Spring.Mvc4QuickStart" singleton="false" />-->
+</objects>

@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加积分记录</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+    <div class="container" style="padding-top:20px;padding-right:20px;">
+        <form class="layui-form" lay-filter="addRoleForm">
+            <div class="layui-form-item">
+                <input type="hidden" name="user_id" value="" />
+                <label class="layui-form-label">积分</label>
+                <div class="layui-input-block">
+                    <input type="number" name="score" lay-verify="required" autocomplete="off" placeholder="请输入积分" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">记录类型</label>
+                <div class="layui-input-block">
+                    <select id="remark" name="remark" lay-verify="required">
+                        <option value="0" selected="">系统赠送</option>
+                        <option value="1">一级用户购买赠送</option>
+                        <option value="7">二级用户购买赠送</option>
+                        <option value="2">产品直接收益</option>
+                        <option value="3">一级用户产品间接收益</option>
+                        <option value="4">二级用户产品间接收益</option>
+                        <option value="5">用户提现</option>
+                        <option value="6">系统扣除积分</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">积分类型</label>
+                <div class="layui-input-block">
+                    <select id="type" name="type" lay-verify="required">
+                        <option value="0" selected="">收益</option>
+                        <option value="1">提现</option>
+                        <option value="2" >系统扣除</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">原因</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入原因" class="layui-textarea" name="source_name"lay-verify="required"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="addscore">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        var user_id = getParameters("id").id;
+        layui.use(['form',], function () {
+            var form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate, $ = layui.jquery;
+            $("input[name='user_id']").val(user_id);
+            //自定义验证规则
+            form.verify({
+                checkRate: function (value) {
+                    if (value < 0) {
+                        return "请输入大于0的数";
+                    }
+                },
+            });
+
+            //监听提交
+            form.on('submit(addscore)', function (data) {
+                var index = layer.load(1);
+                $.post("/wxuser/AddUserScoreRecord", { token: store.get("token"), data: JSON.stringify(data.field) }, function (res) {
+                    layer.close(index);
+                    if (res.code == 0) {
+                        layer.msg('添加成功', { icon: 1 }, function (index) {
+                            window.parent.afterClose($("#type").val());
+                        });
+                    } else {
+                        top.layer.msg('添加失败', { icon: 2 });
+                    }
+                    //console.log();
+                })
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

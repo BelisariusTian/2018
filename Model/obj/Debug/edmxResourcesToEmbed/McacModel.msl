@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="mcaaModelStoreContainer" CdmEntityContainer="mcaaEntities">
+    <EntitySetMapping Name="action">
+      <EntityTypeMapping TypeName="mcaaModel.action">
+        <MappingFragment StoreEntitySet="action">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="http_method" ColumnName="http_method" />
+          <ScalarProperty Name="action_icon" ColumnName="action_icon" />
+          <ScalarProperty Name="action_name" ColumnName="action_name" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="pid" ColumnName="pid" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="del_flag" ColumnName="del_flag" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="mod_time" ColumnName="mod_time" />
+          <ScalarProperty Name="add_admin" ColumnName="add_admin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="administrator">
+      <EntityTypeMapping TypeName="mcaaModel.administrator">
+        <MappingFragment StoreEntitySet="administrator">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="login_account" ColumnName="login_account" />
+          <ScalarProperty Name="login_pwd" ColumnName="login_pwd" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="head_protrait" ColumnName="head_protrait" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="del_flag" ColumnName="del_flag" />
+          <ScalarProperty Name="mod_time" ColumnName="mod_time" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="last_login_time" ColumnName="last_login_time" />
+          <ScalarProperty Name="last_login_IP_address" ColumnName="last_login_IP_address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="banner">
+      <EntityTypeMapping TypeName="mcaaModel.banner">
+        <MappingFragment StoreEntitySet="banner">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="img_url" ColumnName="img_url" />
+          <ScalarProperty Name="link_address" ColumnName="link_address" />
+          <ScalarProperty Name="thumbnail_url" ColumnName="thumbnail_url" />
+          <ScalarProperty Name="del_flag" ColumnName="del_flag" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="add_admin" ColumnName="add_admin" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="config_rule">
+      <EntityTypeMapping TypeName="mcaaModel.config_rule">
+        <MappingFragment StoreEntitySet="config_rule">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="add_admin" ColumnName="add_admin" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="msg_log">
+      <EntityTypeMapping TypeName="mcaaModel.msg_log">
+        <MappingFragment StoreEntitySet="msg_log">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="send_name" ColumnName="send_name" />
+          <ScalarProperty Name="receive_name" ColumnName="receive_name" />
+          <ScalarProperty Name="send_id" ColumnName="send_id" />
+          <ScalarProperty Name="receive_id" ColumnName="receive_id" />
+          <ScalarProperty Name="msg_content" ColumnName="msg_content" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="msg_error_log" ColumnName="msg_error_log" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="order">
+      <EntityTypeMapping TypeName="mcaaModel.order">
+        <MappingFragment StoreEntitySet="order">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="product_id" ColumnName="product_id" />
+          <ScalarProperty Name="count" ColumnName="count" />
+          <ScalarProperty Name="order_money" ColumnName="order_money" />
+          <ScalarProperty Name="pay_state" ColumnName="pay_state" />
+          <ScalarProperty Name="order_state" ColumnName="order_state" />
+          <ScalarProperty Name="pay_account" ColumnName="pay_account" />
+          <ScalarProperty Name="order_number" ColumnName="order_number" />
+          <ScalarProperty Name="refund_number" ColumnName="refund_number" />
+          <ScalarProperty Name="pay_time" ColumnName="pay_time" />
+          <ScalarProperty Name="user_remark" ColumnName="user_remark" />
+          <ScalarProperty Name="admin_remark" ColumnName="admin_remark" />
+          <ScalarProperty Name="wx_order_num" ColumnName="wx_order_num" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="product">
+      <EntityTypeMapping TypeName="mcaaModel.product">
+        <MappingFragment StoreEntitySet="product">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="period_time" ColumnName="period_time" />
+          <ScalarProperty Name="Calculate_the_force" ColumnName="Calculate_the_force" />
+          <ScalarProperty Name="total_score" ColumnName="total_score" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="mod_time" ColumnName="mod_time" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="unit" ColumnName="unit" />
+          <ScalarProperty Name="first_level_referral_bonuses" ColumnName="first_level_referral_bonuses" />
+          <ScalarProperty Name="second_level_referral_bonuses" ColumnName="second_level_referral_bonuses" />
+          <ScalarProperty Name="first_level_earnings_bonuses" ColumnName="first_level_earnings_bonuses" />
+          <ScalarProperty Name="second_level_earnings_bonuses" ColumnName="second_level_earnings_bonuses" />
+          <ScalarProperty Name="product_img" ColumnName="product_img" />
+          <ScalarProperty Name="product_introduct" ColumnName="product_introduct" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="del_flag" ColumnName="del_flag" />
+          <ScalarProperty Name="product_count" ColumnName="product_count" />
+          <ScalarProperty Name="product_sold_count" ColumnName="product_sold_count" />
+          <ScalarProperty Name="product_inventory_count" ColumnName="product_inventory_count" />
+          <ScalarProperty Name="add_admin" ColumnName="add_admin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="role">
+      <EntityTypeMapping TypeName="mcaaModel.role">
+        <MappingFragment StoreEntitySet="role">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="role_name" ColumnName="role_name" />
+          <ScalarProperty Name="role_icon" ColumnName="role_icon" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="mod_time" ColumnName="mod_time" />
+          <ScalarProperty Name="add_admin" ColumnName="add_admin" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="del_flag" ColumnName="del_flag" />
+          <ScalarProperty Name="state" ColumnName="state" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="system_log">
+      <EntityTypeMapping TypeName="mcaaModel.system_log">
+        <MappingFragment StoreEntitySet="system_log">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="content" ColumnName="content" />
+          <ScalarProperty Name="page_url" ColumnName="page_url" />
+          <ScalarProperty Name="add_name" ColumnName="add_name" />
+          <ScalarProperty Name="ip_address" ColumnName="ip_address" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="system_msg_record">
+      <EntityTypeMapping TypeName="mcaaModel.system_msg_record">
+        <MappingFragment StoreEntitySet="system_msg_record">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="content" ColumnName="content" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="mod_time" ColumnName="mod_time" />
+          <ScalarProperty Name="del_flag" ColumnName="del_flag" />
+          <ScalarProperty Name="read_count" ColumnName="read_count" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user">
+      <EntityTypeMapping TypeName="mcaaModel.user">
+        <MappingFragment StoreEntitySet="user">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="tel" ColumnName="tel" />
+          <ScalarProperty Name="sex" ColumnName="sex" />
+          <ScalarProperty Name="pid" ColumnName="pid" />
+          <ScalarProperty Name="total_score" ColumnName="total_score" />
+          <ScalarProperty Name="usable_score" ColumnName="usable_score" />
+          <ScalarProperty Name="yet_use_score" ColumnName="yet_use_score" />
+          <ScalarProperty Name="total_pay" ColumnName="total_pay" />
+          <ScalarProperty Name="total_product_count" ColumnName="total_product_count" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="isbuy" ColumnName="isbuy" />
+          <ScalarProperty Name="qr_code" ColumnName="qr_code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_address">
+      <EntityTypeMapping TypeName="mcaaModel.user_address">
+        <MappingFragment StoreEntitySet="user_address">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="del_flag" ColumnName="del_flag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_msg_record">
+      <EntityTypeMapping TypeName="mcaaModel.user_msg_record">
+        <MappingFragment StoreEntitySet="user_msg_record">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="msg_type" ColumnName="msg_type" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="msg_content" ColumnName="msg_content" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+          <ScalarProperty Name="msg_pid" ColumnName="msg_pid" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="isread" ColumnName="isread" />
+          <ScalarProperty Name="read_count" ColumnName="read_count" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_product">
+      <EntityTypeMapping TypeName="mcaaModel.user_product">
+        <MappingFragment StoreEntitySet="user_product">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="product_id" ColumnName="product_id" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="end_time" ColumnName="end_time" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="order_id" ColumnName="order_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_score_record">
+      <EntityTypeMapping TypeName="mcaaModel.user_score_record">
+        <MappingFragment StoreEntitySet="user_score_record">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="score" ColumnName="score" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="source_name" ColumnName="source_name" />
+          <ScalarProperty Name="source_id" ColumnName="source_id" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="order_id" ColumnName="order_id" />
+          <ScalarProperty Name="rollout_address_id" ColumnName="rollout_address_id" />
+          <ScalarProperty Name="admin_remark" ColumnName="admin_remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="wx_request_content">
+      <EntityTypeMapping TypeName="mcaaModel.wx_request_content">
+        <MappingFragment StoreEntitySet="wx_request_content">
+          <ScalarProperty Name="req_title" ColumnName="req_title" />
+          <ScalarProperty Name="req_content" ColumnName="req_content" />
+          <ScalarProperty Name="detail_url" ColumnName="detail_url" />
+          <ScalarProperty Name="pic_url" ColumnName="pic_url" />
+          <ScalarProperty Name="media_url" ColumnName="media_url" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="rule_id" ColumnName="rule_id" />
+          <ScalarProperty Name="type_msg" ColumnName="type_msg" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="wx_request_rule">
+      <EntityTypeMapping TypeName="mcaaModel.wx_request_rule">
+        <MappingFragment StoreEntitySet="wx_request_rule">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="rule_name" ColumnName="rule_name" />
+          <ScalarProperty Name="req_keywords" ColumnName="req_keywords" />
+          <ScalarProperty Name="request_type" ColumnName="request_type" />
+          <ScalarProperty Name="response_type" ColumnName="response_type" />
+          <ScalarProperty Name="sort" ColumnName="sort" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="wx_user">
+      <EntityTypeMapping TypeName="mcaaModel.wx_user">
+        <MappingFragment StoreEntitySet="wx_user">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="gzh_openid" ColumnName="gzh_openid" />
+          <ScalarProperty Name="unionid" ColumnName="unionid" />
+          <ScalarProperty Name="xcx_openid" ColumnName="xcx_openid" />
+          <ScalarProperty Name="groupid" ColumnName="groupid" />
+          <ScalarProperty Name="nickname" ColumnName="nickname" />
+          <ScalarProperty Name="wx_head_protrait" ColumnName="wx_head_protrait" />
+          <ScalarProperty Name="sex" ColumnName="sex" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="country" ColumnName="country" />
+          <ScalarProperty Name="language" ColumnName="language" />
+          <ScalarProperty Name="add_time" ColumnName="add_time" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="unsubscribe_time" ColumnName="unsubscribe_time" />
+          <ScalarProperty Name="province" ColumnName="province" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="admin_role" TypeName="mcaaModel.admin_role" StoreEntitySet="admin_role">
+      <EndProperty Name="administrator">
+        <ScalarProperty Name="id" ColumnName="admin_id" />
+      </EndProperty>
+      <EndProperty Name="role">
+        <ScalarProperty Name="id" ColumnName="role_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="role_action" TypeName="mcaaModel.role_action" StoreEntitySet="role_action">
+      <EndProperty Name="action">
+        <ScalarProperty Name="id" ColumnName="action_id" />
+      </EndProperty>
+      <EndProperty Name="role">
+        <ScalarProperty Name="id" ColumnName="role_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>文本消息</title>
+    <link href="/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="/css/menu.css" rel="stylesheet" />
+    <link href="/css/common.css" rel="stylesheet" />
+    <script src="/Lib/layui/layui.all.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/menu.js"></script>
+</head>
+<body layadmin-themealias="default">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style=" margin:40px;">
+            <blockquote class="layui-elem-quote layui-card">
+                <div class="layui-form layui-col-space15">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input searchVal" name="search" placeholder="请输入搜索的内容" />
+                        </div>
+                        <a class="layui-btn search_btn" id="search_btn" lay-submit lay-filter="btnSearch">搜索</a>
+                    </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn layui-btn-normal addCategory_btn" id="btnAdd" onclick="active.Add()">添加</a>
+                    </div>
+                </div>
+            </blockquote>
+            <div class="layui-card">
+                <div class="layui-card-header">微信文本回复</div>
+                <div class="layui-card-body">
+                    <table id="dataList" lay-filter="dataList"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    var table = layui.table; //获取table模块
+    var form = layui.form; //获取form模块
+    var laydate = layui.laydate; //日期选择
+    var tableIns, searchData = { token: store.get('token'), RequestType:2, ResponseType:1, search:""}; //table 和搜索数据
+    var jQuery = $ = layui.jquery, layer = layui.layer;
+    var active = { //定义一个变量来装方法
+        Add:  ()=> {
+            layer.open({
+                title: "添加文字回复",
+                type: 2,
+                area: ['50%', '60%'],
+                content: '/admin/wxMessage/AddText.html',
+                end: function () {
+                     
+                }
+            });
+        }
+    };
+
+    form.render(); //更新全部
+    //加载数据
+    tableIns = table.render({
+        url: '/WXMessage/GetKeywordData', //请求地址
+        method: 'post', //请求方式
+         where: searchData,
+        cols: [
+            [
+                { field: 'keywords', title: '关键字' }, //edit 开启编辑  , edit: 'text'
+                { field: 'ReqContent', title: '消息内容' },
+                { field: '', title: '操作', toolbar: '#titleTpl' } //toolbar 操作工具栏
+            ]
+        ],
+        initSort: { //初始排序
+            field: 'AddTime', //排序字段，对应 cols 设定的各字段名
+            type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+        },
+        elem: '#dataList', //要渲染的容器
+        id: 'dataList', //容器id，方便取数据
+        height: "full", //高度将始终铺满，无论浏览器尺寸如何。这是一个特定的语法格式，其中 full 是固定的，而 差值 则是一个数值，这需要你来预估，比如：表格容器距离浏览器顶部和底部的距离“和”
+        //width: 1140, //默认最大宽度
+        loading: false, //是否显示加载条
+        skin: 'row', //line （行边框风格） row （列边框风格）  nob （无边框风格）
+        even: true, //开启隔行背景
+        page: true, //是否显示分页
+        limits: [10, 20, 30],
+        limit: 10, //每页默认显示的数量
+        done: function (res, curr, count) {
+            if (res.code <= -6) {
+                layer.msg(res.msg, {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                    location.href = "/admin/login.html";
+                });
+            }
+        }
+    });
+
+
+    //搜索事件
+    form.on("submit(btnSearch)", function (data) {
+  
+        searchData.search = data.field.search;
+        reloadTable(tableIns, searchData);
+        return false;
+    });
+
+
+
+
+    //监听工具条
+    table.on('tool(dataList)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'del') {
+
+            Delete(data.Id)
+
+        } else if (obj.event === 'edit') {
+            Edit(data.Id);
+
+        } 
+    });
+
+
+    //子窗体需要调用本窗体的方法
+    function closeAll(data) {
+        if (data.code == 0) {
+            layer.closeAll();
+            layer.msg(data.msg, function () {
+                setTimeout(function () { reloadTable(tableIns, searchData); }, 1000);
+            });
+        } else {
+            layer.msg(data.msg);
+        }
+    }
+
+    function closeSub(msg) {
+        layer.msg(msg, function () {
+            layer.closeAll();
+        });
+       
+    }
+
+
+    function reloadTable(obj, data) {
+        obj.reload({
+            url: `/WXMessage/GetKeywordData`, //请求地址
+            method: 'post', //请求方式
+            where: data
+        });
+    }
+
+    function Edit(obj) {
+        var obj = {
+            titel:"修改关键字回复",
+            type: 2,
+            area: ['50%', '60%'],
+            content: '/admin/wxMessage/EditText.html?id=' + obj,
+            end: function () {
+             //   setTimeout(function () { reloadTable(tableIns, searchData); }, 2000);
+            }
+        }
+        layer.open(obj);
+    }
+
+    function Delete(obj) {
+        //询问框
+        layer.confirm('您确定要删除这条数据？', {
+            btn: ['是的', '不是'] //按钮
+        }, function () {
+            $.post('/WXMessage/DelKeyword', { id: obj, token: store.get('token') }, function (data) {
+                if (data.code == 0) {
+                    layer.msg(data.msg, function () {
+                        reloadTable(tableIns, searchData);
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            });
+        });
+    }
+</script>
+<script type="text/html" id="titleTpl">
+    <a href="javascript:;" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>

@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>用户提现申请记录表</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style=" margin:40px;">
+            <blockquote class="layui-elem-quote layui-card">
+                <div class="layui-form layui-col-space15">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input " id="search" placeholder="请输入用户名称" />
+                        </div>
+                        <div class="layui-input-inline">
+                            <select id="day" lay-verify="required">
+                                <option value="1">1天内</option>
+                                <option value="7" selected="">7天内</option>
+                                <option value="30">30天内</option>
+                                <option value="60">60天内</option>
+                            </select>
+                        </div>
+
+                        <div class="layui-input-inline">
+                            <select id="state" lay-verify="required">
+                                <option value="4">提现成功</option>
+                                <option value="2" selected="">等待处理</option>
+                                <option value="3">提现失败</option>
+                            </select>
+                        </div>
+                        <a class="layui-btn search_btn" id="search_btn" lay-submit lay-filter="btnSearch">搜索</a>
+                    </div>
+                    <!--<div class="layui-inline">
+                        <a class="layui-btn " id="btnAdd"><i class="layui-icon">&#xe608;</i> 添加</a>
+                    </div>-->
+                </div>
+            </blockquote>
+            <div class="layui-card">
+                <div class="layui-card-header">用户提现申请记录表</div>
+                <div class="layui-card-body">
+                    <table id="use_app_socre_List" lay-filter="use_app_socre_List"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        layui.use(["layer", "table", "form"], function () {
+            var $ = layui.jquery, table = layui.table, form = layui.form, layer = layui.layer;
+            //$("#type").val(option[value]);
+            form.render('select')
+
+            tables = table.render({
+                elem: "#use_app_socre_List",
+                url: "/WXUser/UserApplyScoreList",
+                where: { token: store.get('token'), state: $("#state").val() },
+                size: "lg",
+                page: true,
+                loading: true,
+                cols: [[
+                    { field: 'add_time', title: '申请时间', align: 'center', width: "15%" },
+                    { field: 'name', title: '提现用户', align: 'center', width: "15%" },
+                    { field: 'score', title: '提现数量', align: 'center', width: "10%" },
+                    { field: 'address', title: '提现地址', align: 'center', width: "30%" },
+                    { field: 'state_name', title: '状态', align: 'center', width: "10%" },
+                    { title: "操作", align: 'center', toolbar: '#toolbar' }
+                ]],
+                done: function (res, curr, count) {
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    //console.log(res);
+                    //得到当前页码
+                    //console.log(curr);
+                    store.set(`user_appscoreid_curr`, curr);
+                    //得到数据总量
+                    currData = res.data;
+                    //showSelect(currData);
+                }
+            });
+
+            table.on('tool(use_app_socre_List)', function (obj) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                var tr = obj.tr;
+                switch (layEvent) {
+                    case "fail":
+                        changeApplyState(data.id, 3);
+                        break;
+                    case "success":
+                        changeApplyState(data.id, 4);
+                        break;
+                    case "wait":
+                        changeApplyState(data.id, 2);
+                        break;
+                }
+            });
+
+            $("#search_btn").on('click', function () {
+                tables.reload({
+                    where: { token: store.get('token'), name: $("#search").val(), day: $("#day").val(), state: $("#state").val() },
+                    page: {
+                        curr: 1
+                    }
+                })
+            });
+
+            function changeApplyState(id, state) {
+                $.get("/wxuser/ChangeUserApplyState", { token: store.get('token'), id: id, state: state }, function (res) {
+                    if (res.code == 0) {
+                        layer.msg(res.msg, { time: 1000, icon: 6 }, function () {
+                            tables.reload({
+                                where: { token: store.get('token'), state: $("#state").val() },
+                                page: {
+                                    curr: store.get("user_appscoreid_curr")
+                                }
+                            });
+                        })
+                        if (state == 4) {
+                            $.get("/wxuser/AfterApplySuccess", { token: store.get('token'), id: res.data.user_id, sid: res.data.sid }, function (res) {
+                                if (res.code!= 0) {
+                                    layer.msg(res.msg); 
+                                } 
+                            });
+                        }
+                    } else {
+                        layer.msg(res.msg, { time: 500, icon: 5 }, function () { });
+                    }
+                })
+            }
+
+        });
+    </script>
+
+    <script type="text/html" id="toolbar">
+        <!--<a class="layui-btn layui-btn-sm" lay-event="Edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="Delete">删除</a>-->
+        <!--<a class="layui-btn layui-btn-sm" lay-event="Detail">预览</a>-->
+
+        {{#  if(d.state!=4){ }}
+        <div class="layui-btn-group">
+            <button class="layui-btn" lay-event="fail">提现失败</button>
+            <button class="layui-btn layui-btn-danger" lay-event="success">提现成功</button>
+            <!--<button class="layui-btn" lay-event="wait">等待处理</button>-->
+        </div>
+        {{#  } else { }}
+        
+        {{#  } }}
+    </script>
+</body>
+</html>

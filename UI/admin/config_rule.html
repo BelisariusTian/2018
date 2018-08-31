@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>配置与规则</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+    <!--<div style="margin: 0 auto; margin-top: 50px; width: 96%;">
+        <blockquote class="layui-elem-quote">
+            <button type="button" class="layui-btn layui-btn-small" id="Add"><i class="fa fa-plus" aria-hidden="true"></i> 添加</button>
+        </blockquote>
+        <fieldset class="layui-elem-field">
+            <legend>配置或规则列表</legend>
+            <div class="layui-field-box layui-form">
+                <table id="config_ruleTable" lay-filter="config_rule"></table>
+            </div>
+        </fieldset>
+    </div>-->
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style=" margin:40px;">
+            <blockquote class="layui-elem-quote layui-card">
+                <div class="layui-form layui-col-space15">
+                    <div class="layui-inline">
+                        <a class="layui-btn " id="Add"><i class="layui-icon">&#xe608;</i> 添加</a>
+                        <a class="layui-btn " id="GiveScore"><i class="layui-icon">&#xe608;</i>结算积分</a>
+                    </div>
+                </div>
+            </blockquote>
+            <div class="layui-card">
+                <div class="layui-card-header">配置或规则列表</div>
+                <div class="layui-card-body">
+                    <table id="config_ruleTable" lay-filter="config_rule"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        var closeAll;
+        layui.use(['layer', 'form', 'table'], function () {
+            var layer = layui.layer, form = layui.form, $ = layui.jquery, table = layui.table;
+
+             tables = table.render({
+                elem: "#config_ruleTable",
+                cellMinWidth: 80,
+                url: "/ConfigAndRule/GetConfig_ruleList",
+                where: { token: store.get('token') },
+                size: "lg",
+                page: true,
+                loading: true,
+                cols: [[
+                    { field: 'name', title: '名称', align: 'center', width: "20%" },
+                    { field: 'value', title: '值', align: 'center', width: "15%", edit: 'text', },
+                    { field: 'add_time', title: '添加时间', align: 'center', width: "20%" },
+                    { field: 'add_admin', title: '添加人', align: 'center', width: "15%" },
+                    { field: 'state', title: '是否启用', align: 'center', templet: "#state", width: "10%" },
+                    { field: 'remark', title: '备注', align: 'center', width: "20%",edit: 'text' },
+                    //{ title: "操作", align: 'center', toolbar: '#toolbar', }
+                ]],
+                done: function (res, curr, count) {
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    console.log(res);
+                    //得到当前页码
+                    console.log(curr);
+                    store.set("config_rule_curr", curr);
+                    //得到数据总量
+                    currData = res.data;
+                    //showSelect(currData);
+                }
+            });
+
+            //子窗体需要调用本窗体的方法
+            closeAll = function (data) {
+                if (data.code == 0) {
+                    layer.closeAll();
+                    layer.msg(data.msg, { icon: 6, time: 500 }, function () {
+                        // location.href = "/admin/adminmanagement/index.html";
+                        setTimeout(function () { reloadTable(tables); }, 2000);
+                    });
+                } else {
+                    layer.msg(data.msg, { icon: 5 });
+                }
+            }
+
+            //子窗体需要调用本窗体的方法
+            function close(msg) {
+                layer.msg(msg, function () {
+                    layer.closeAll();
+                });
+            }
+            function reloadTable(obj) {
+                obj.reload({
+                    url: "/ConfigAndRule/GetConfig_ruleList", //请求地址
+                    where: { token:store.get("token")},
+                    page:{
+                        curr: store.get("config_rule_curr")
+                    }
+                });
+            }
+
+            //监听单元格编辑
+            table.on('edit(config_rule)', function (obj) {
+                var value = obj.value, //得到修改后的值
+                    data = obj.data, //得到所在行所有键值
+                    field = obj.field; //得到字段
+                if (value == "") {
+                    return layui.msg("值不能为空");
+                }
+                editConfig_rule(data.id, data.value, data.state, data.remark);
+            });
+
+            function editConfig_rule(id, value, state,remark) {
+                $.post('/ConfigAndRule/EditConfig_rule', { token: store.get('token'), id: id, value: value, state: state, remark: remark}, function (res) {
+                    if (res.code !== 0) {
+                        layer.msg(res.msg, { icon: 5, time: 500 }, function () {
+                            tables.reload({
+                                page: {
+                                    curr: store.get("config_rule_curr")
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+
+            //监听状态切换
+            form.on('switch(stateChange)', function (obj) {
+                //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+                var state = obj.elem.checked ? 0 : 1;
+                editConfig_rule(obj.value, null, state);
+            });
+
+
+            //添加新规则
+            $("#Add").on("click", function () {
+                layer.open({
+                    title: '添加',
+                    type: 2,
+                    area: ['60%', '50%'],
+                    maxmin: false,
+                    content: '/admin/addconfig_rule.html',
+                    end: function () {
+                        tables.reload();
+                    }
+                });
+            });
+
+            $("#GiveScore").on("click", function () {
+                var index = layer.load(1)
+                $.get("/home/ExcuateCalculate_earnings", { token: store.get('token') }, function (res) {
+                    layer.close(index); 
+                    layer.msg(res.msg);
+                })
+            });
+
+        });
+    </script>
+
+    <script type="text/html" id="toolbar">
+        <!--<a class="layui-btn layui-btn-sm" lay-event="Edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="Delete">删除</a>-->
+        <!--<a class="layui-btn layui-btn-sm" lay-event="Detail">预览</a>-->
+    </script>
+    <script type="text/html" id="state">
+        <input type="checkbox" name="state" value="{{d.id}}" lay-skin="switch" lay-text="yes|no" lay-filter="stateChange" {{ d.state == 0? 'checked' : '' }}>
+    </script>
+</body>
+</html>

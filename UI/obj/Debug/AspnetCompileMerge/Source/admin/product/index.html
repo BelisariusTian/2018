@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style=" margin:40px;">
+            <blockquote class="layui-elem-quote layui-card">
+                <div class="layui-form layui-col-space15">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input " name="search" placeholder="请输入产品名称" />
+                        </div>
+                        <a class="layui-btn search_btn" id="search_btn" lay-submit lay-filter="btnSearch">搜索</a>
+                    </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn " id="btnAdd"><i class="layui-icon">&#xe608;</i> 添加</a>
+                    </div>
+                </div>
+            </blockquote>
+            <div class="layui-card">
+                <div class="layui-card-header">产品列表</div>
+                <div class="layui-card-body">
+                    <table id="productList" lay-filter="productList"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/layui/layui.js"></script>
+    <script>
+        var closeAll;
+        layui.use(['table', 'layer'], function () {
+            var table = layui.table, $ = layui.jquery, layer = layui.layer;
+            searchData = $("input[name='search']").val();
+            
+            //表格渲染
+            tables = table.render({
+                elem: "#productList",
+                url: "/product/GetProductList",
+                where: { token: store.get("token"), search: $("input[name='search']").val() },
+                page: true,
+                skin: "1",
+                limit: 20,
+                loading: true,
+                limits: [10, 20, 30],
+                cols: [[
+                    { field: 'name', title: '名称', align: "center", edit: 'text', resize: false },
+                    { field: 'Calculate_the_force', title: '算力（每小时产生多少积分）', sort: true, align: "center", edit: 'text' },
+                    { field: 'period_time', title: '周期(运行多少天）', align: "center", edit: 'text'  },
+                    { field: 'price', title: '价格', align: "center", sort: true, edit: 'text' },
+                    { field: 'first_level_referral_bonuses', title: '一级推荐奖励', sort: true, align: "center", edit: 'text' },
+                    { field: 'second_level_referral_bonuses', title: '二级推荐奖励', align: "center", edit: 'text' },
+                    { field: 'first_level_earnings_bonuses', title: '一级每日收益奖励', sort: true, align: "center", edit: 'text' },
+                    { field: 'second_level_earnings_bonuses', title: '二级每日收益奖励', align: "center", edit: 'text' },
+                    //{ field: 'product_img', title: '图片', align: "center", },
+                    //{ field: 'add_time', title: '添加时间', align: "center", },
+                    //{ field: 'add_admin', title: '添加人', align: "center", },
+                    { field: 'sort', title: '排序', align: "center", edit: 'text' },
+                    { title: '操作', align: "center", templet: "#tool", },
+                ]],
+                done: function (res, curr, count) {
+                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    console.log(res);
+                    //得到当前页码
+                    console.log(curr);
+                    store.set("product_curr", curr);
+                    //得到数据总量
+                    currData = res.data;
+                    //showSelect(currData);
+                }
+            });
+            //监听工具条
+            table.on('tool(productList)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    Delete(data.id)
+                } else if (obj.event === 'edit') {
+                    Edit(data.id);
+                } else if (obj.event === 'detail') {
+                    Detail(data.id)
+                }
+            });
+
+            $("#search_btn").click(function () {
+                tables.reload({
+                    where: {
+                        token: store.get("token"), search: $("input[name='search']").val()
+                    },
+                    page: {
+                        curr: 1
+                    }
+                });
+            })
+
+            //添加产品
+            $("#btnAdd").on("click", function () {
+                var obj = {
+                    title: "添加产品",
+                    type: 2,
+                    area: ['100%', '100%'],
+                    content: '/admin/product/add.html',
+                    end: function () {
+                        //    location.href = "/admin/adminmanagement/index.html";
+                    }
+                };
+                layer.open(obj);
+            })
+
+            //监听单元格编辑
+            table.on('edit(productList)', function (obj) {
+                var value = obj.value, //得到修改后的值
+                    data = obj.data, //得到所在行所有键值
+                    field = obj.field; //得到字段
+                //layer.msg('[id: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+                editRole(field, value, data.id);
+            });
+
+            function editRole(field, value, id) {
+                $.post('/product/editproductbyfiled/', { token: store.get('token'), field: field, value: value, id: id }, function (res) {
+                    if (res.code !== 0) {
+                        layer.msg(res.msg, { icon: 5 }, function () {
+                            //setTimeout(function () { reloadTable(tables, searchData); }, 2000);
+                            tables.reload({
+                                where: { token: store.get("token"), search: $("input[name='search']").val()},
+                                page: {
+                                    curr: store.get("product_curr")
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+
+
+            //子窗体需要调用本窗体的方法
+            closeAll = function (data) {
+                layer.closeAll();
+                setTimeout(function () { reloadTable(tables, searchData); }, 1000);
+            }
+
+            //子窗体需要调用本窗体的方法
+            function close(msg) {
+                layer.msg(msg, function () {
+                    layer.closeAll();
+                });
+            }
+            function reloadTable(obj, data) {
+                obj.reload({
+                    url: "/product/GetProductList",
+                    where: { token: store.get("token"), search: $("input[name='search']").val() },
+                    page: {
+                        curr: store.get("product_curr")
+                    }
+                });
+            }
+
+            function Edit(obj) {
+                var obj = {
+                    title: "编辑",
+                    type: 2,
+                    area: ['100%', '100%'],
+                    content: '/admin/product/edit.html?id=' + obj,
+                    end: function () {
+                       
+                    }
+                }
+                layer.open(obj);
+            }
+
+            function Detail(obj) {
+                var obj = {
+                    title: "详情",
+                    type: 2,
+                    area: ['100%', '100%'],
+                    content: '/admin/product/detail.html?id=' + obj,
+                    end: function () {
+                        setTimeout(function () { reloadTable(tables, searchData); }, 2000);
+                        //  location.href = "/admin/adminmanagement/index.html";
+                    }
+                }
+                layer.open(obj);
+            }
+
+            function Delete(id) {
+                //询问框
+                layer.confirm('您确定要删除这条数据？', {
+                    btn: ['是的', '不是'] //按钮
+                }, function () {
+                    $.get('/product/Delproduct', { id: id, token: store.get("token") }, function (data) {
+                        if (data.code == 0) {
+                            layer.msg(data.msg, { icon: 6, time: 1500 }, function () {
+                                tables.reload({
+                                    where: {
+                                        token: store.get("token"), search: $("input[name='search']").val()
+                                    },
+                                    page: {
+                                        curr: store.get("product_curr")
+                                    }
+                                })
+                            });
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    });
+                }, function () {
+                    return;
+                });
+            }
+
+        });
+    </script>
+    <script type="text/html" id="tool">
+        <!--<a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>-->
+        <a  class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a  class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+</body>
+</html>

@@ -1,0 +1,605 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="mcaaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="action">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="url" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="http_method" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="action_icon" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="action_name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="type" Type="int" Nullable="false" />
+    <Property Name="pid" Type="int" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="del_flag" Type="int" Nullable="false" />
+    <Property Name="remark" Type="nvarchar(max)" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="mod_time" Type="datetime" Nullable="false" />
+    <Property Name="add_admin" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="admin_role">
+    <Key>
+      <PropertyRef Name="admin_id" />
+      <PropertyRef Name="role_id" />
+    </Key>
+    <Property Name="admin_id" Type="int" Nullable="false" />
+    <Property Name="role_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="administrator">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="login_account" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="login_pwd" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="head_protrait" Type="nvarchar" MaxLength="200" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="del_flag" Type="int" Nullable="false" />
+    <Property Name="mod_time" Type="datetime" />
+    <Property Name="remark" Type="nvarchar(max)" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="last_login_time" Type="datetime" />
+    <Property Name="last_login_IP_address" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="banner">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="img_url" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="link_address" Type="nvarchar" MaxLength="200" />
+    <Property Name="thumbnail_url" Type="nvarchar" MaxLength="200" />
+    <Property Name="del_flag" Type="int" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="add_time" Type="datetime" />
+    <Property Name="add_admin" Type="nvarchar" MaxLength="50" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="remark" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="config_rule">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="value" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="add_admin" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="remark" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="msg_log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="send_name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="receive_name" Type="nvarchar" MaxLength="200" />
+    <Property Name="send_id" Type="int" />
+    <Property Name="receive_id" Type="int" />
+    <Property Name="msg_content" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="msg_error_log" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="order">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="product_id" Type="int" Nullable="false" />
+    <Property Name="count" Type="int" Nullable="false" />
+    <Property Name="order_money" Type="money" Nullable="false" />
+    <Property Name="pay_state" Type="int" Nullable="false" />
+    <Property Name="order_state" Type="int" Nullable="false" />
+    <Property Name="pay_account" Type="nvarchar" MaxLength="200" />
+    <Property Name="order_number" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="refund_number" Type="nvarchar" MaxLength="200" />
+    <Property Name="pay_time" Type="datetime" />
+    <Property Name="user_remark" Type="nvarchar" MaxLength="500" />
+    <Property Name="admin_remark" Type="nvarchar" MaxLength="500" />
+    <Property Name="wx_order_num" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="period_time" Type="int" Nullable="false" />
+    <Property Name="Calculate_the_force" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="total_score" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="mod_time" Type="datetime" Nullable="false" />
+    <Property Name="price" Type="money" Nullable="false" />
+    <Property Name="unit" Type="nvarchar" MaxLength="20" />
+    <Property Name="first_level_referral_bonuses" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="second_level_referral_bonuses" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="first_level_earnings_bonuses" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="second_level_earnings_bonuses" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="product_img" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="product_introduct" Type="nvarchar" MaxLength="500" />
+    <Property Name="remark" Type="nvarchar(max)" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="del_flag" Type="int" Nullable="false" />
+    <Property Name="product_count" Type="int" Nullable="false" />
+    <Property Name="product_sold_count" Type="int" Nullable="false" />
+    <Property Name="product_inventory_count" Type="int" Nullable="false" />
+    <Property Name="add_admin" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="role_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="role_icon" Type="nvarchar" MaxLength="200" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="mod_time" Type="datetime" Nullable="false" />
+    <Property Name="add_admin" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="remark" Type="nvarchar(max)" />
+    <Property Name="del_flag" Type="int" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="role_action">
+    <Key>
+      <PropertyRef Name="role_id" />
+      <PropertyRef Name="action_id" />
+    </Key>
+    <Property Name="role_id" Type="int" Nullable="false" />
+    <Property Name="action_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="system_log">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="type" Type="int" Nullable="false" />
+    <Property Name="content" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="page_url" Type="nvarchar" MaxLength="200" />
+    <Property Name="add_name" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ip_address" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="system_msg_record">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="type" Type="int" Nullable="false" />
+    <Property Name="admin_id" Type="int" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" />
+    <Property Name="content" Type="nvarchar(max)" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="remark" Type="nvarchar" MaxLength="500" />
+    <Property Name="mod_time" Type="datetime" />
+    <Property Name="del_flag" Type="int" Nullable="false" />
+    <Property Name="read_count" Type="int" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="200" />
+    <Property Name="tel" Type="nvarchar" MaxLength="50" />
+    <Property Name="sex" Type="int" Nullable="false" />
+    <Property Name="pid" Type="int" Nullable="false" />
+    <Property Name="total_score" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="usable_score" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="yet_use_score" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="total_pay" Type="money" Nullable="false" />
+    <Property Name="total_product_count" Type="int" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="isbuy" Type="int" Nullable="false" />
+    <Property Name="qr_code" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="user_address">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="del_flag" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user_msg_record">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="msg_type" Type="int" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="100" />
+    <Property Name="msg_content" Type="nvarchar(max)" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="admin_id" Type="int" />
+    <Property Name="msg_pid" Type="int" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="isread" Type="int" Nullable="false" />
+    <Property Name="read_count" Type="int" Nullable="false" />
+    <Property Name="remark" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="user_product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="product_id" Type="int" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="end_time" Type="datetime" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="order_id" Type="int" />
+  </EntityType>
+  <EntityType Name="user_score_record">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="score" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+    <Property Name="type" Type="int" Nullable="false" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="source_name" Type="nvarchar" MaxLength="100" />
+    <Property Name="source_id" Type="int" />
+    <Property Name="remark" Type="nvarchar" MaxLength="500" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="order_id" Type="int" />
+    <Property Name="rollout_address_id" Type="int" />
+    <Property Name="admin_remark" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="wx_request_content">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="req_title" Type="nvarchar" MaxLength="100" />
+    <Property Name="req_content" Type="nvarchar(max)" />
+    <Property Name="detail_url" Type="nvarchar" MaxLength="200" />
+    <Property Name="pic_url" Type="nvarchar" MaxLength="200" />
+    <Property Name="media_url" Type="nvarchar" MaxLength="200" />
+    <Property Name="remark" Type="nvarchar(max)" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="rule_id" Type="int" Nullable="false" />
+    <Property Name="type_msg" Type="int" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="wx_request_rule">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="rule_name" Type="nvarchar" MaxLength="100" />
+    <Property Name="req_keywords" Type="nvarchar(max)" />
+    <Property Name="request_type" Type="int" Nullable="false" />
+    <Property Name="response_type" Type="int" Nullable="false" />
+    <Property Name="sort" Type="int" Nullable="false" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="wx_user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="gzh_openid" Type="nvarchar" MaxLength="200" />
+    <Property Name="unionid" Type="nvarchar" MaxLength="200" />
+    <Property Name="xcx_openid" Type="nvarchar" MaxLength="200" />
+    <Property Name="groupid" Type="nvarchar" MaxLength="200" />
+    <Property Name="nickname" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="wx_head_protrait" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="sex" Type="int" Nullable="false" />
+    <Property Name="city" Type="nvarchar" MaxLength="100" />
+    <Property Name="country" Type="nvarchar" MaxLength="100" />
+    <Property Name="language" Type="nvarchar" MaxLength="100" />
+    <Property Name="add_time" Type="datetime" Nullable="false" />
+    <Property Name="remark" Type="nvarchar" MaxLength="500" />
+    <Property Name="state" Type="int" Nullable="false" />
+    <Property Name="unsubscribe_time" Type="datetime" />
+    <Property Name="province" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_ADMIN_RO_REFERENCE_ADMINIST">
+    <End Role="administrator" Type="Self.administrator" Multiplicity="1" />
+    <End Role="admin_role" Type="Self.admin_role" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="administrator">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="admin_role">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ADMIN_RO_REFERENCE_ROLE">
+    <End Role="role" Type="Self.role" Multiplicity="1" />
+    <End Role="admin_role" Type="Self.admin_role" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="role">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="admin_role">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ORDER_REFERENCE_PRODUCT">
+    <End Role="product" Type="Self.product" Multiplicity="1" />
+    <End Role="order" Type="Self.order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="order">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_order_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="order" Type="Self.order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="order">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ROLE_ACT_REFERENCE_ACTION">
+    <End Role="action" Type="Self.action" Multiplicity="1" />
+    <End Role="role_action" Type="Self.role_action" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="action">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="role_action">
+        <PropertyRef Name="action_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ROLE_ACT_REFERENCE_ROLE">
+    <End Role="role" Type="Self.role" Multiplicity="1" />
+    <End Role="role_action" Type="Self.role_action" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="role">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="role_action">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYSTEM_M_REFERENCE_ADMINIST">
+    <End Role="administrator" Type="Self.administrator" Multiplicity="0..1" />
+    <End Role="system_msg_record" Type="Self.system_msg_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="administrator">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="system_msg_record">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_address_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="user_address" Type="Self.user_address" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_address">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_msg_record_user">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="user_msg_record" Type="Self.user_msg_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_msg_record">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_MSG_REFERENCE_ADMINIST">
+    <End Role="administrator" Type="Self.administrator" Multiplicity="0..1" />
+    <End Role="user_msg_record" Type="Self.user_msg_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="administrator">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_msg_record">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_PRO_REFERENCE_PRODUCT">
+    <End Role="product" Type="Self.product" Multiplicity="1" />
+    <End Role="user_product" Type="Self.user_product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_product">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_product_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="user_product" Type="Self.user_product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_product">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_SCO_REFERENCE_ORDER">
+    <End Role="order" Type="Self.order" Multiplicity="0..1" />
+    <End Role="user_score_record" Type="Self.user_score_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="order">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_score_record">
+        <PropertyRef Name="order_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USER_SCO_REFERENCE_USER_ADD">
+    <End Role="user_address" Type="Self.user_address" Multiplicity="0..1" />
+    <End Role="user_score_record" Type="Self.user_score_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_address">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_score_record">
+        <PropertyRef Name="rollout_address_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_score_record_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="user_score_record" Type="Self.user_score_record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_score_record">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user_wx_user">
+    <End Role="wx_user" Type="Self.wx_user" Multiplicity="1" />
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="wx_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_wx_request_content_wx_request_rule">
+    <End Role="wx_request_rule" Type="Self.wx_request_rule" Multiplicity="1" />
+    <End Role="wx_request_content" Type="Self.wx_request_content" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="wx_request_rule">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="wx_request_content">
+        <PropertyRef Name="rule_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="mcaaModelStoreContainer">
+    <EntitySet Name="action" EntityType="Self.action" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="admin_role" EntityType="Self.admin_role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="administrator" EntityType="Self.administrator" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="banner" EntityType="Self.banner" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="config_rule" EntityType="Self.config_rule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="msg_log" EntityType="Self.msg_log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="role_action" EntityType="Self.role_action" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="system_log" EntityType="Self.system_log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="system_msg_record" EntityType="Self.system_msg_record" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_address" EntityType="Self.user_address" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_msg_record" EntityType="Self.user_msg_record" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_product" EntityType="Self.user_product" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_score_record" EntityType="Self.user_score_record" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wx_request_content" EntityType="Self.wx_request_content" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wx_request_rule" EntityType="Self.wx_request_rule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wx_user" EntityType="Self.wx_user" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ADMIN_RO_REFERENCE_ADMINIST" Association="Self.FK_ADMIN_RO_REFERENCE_ADMINIST">
+      <End Role="administrator" EntitySet="administrator" />
+      <End Role="admin_role" EntitySet="admin_role" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ADMIN_RO_REFERENCE_ROLE" Association="Self.FK_ADMIN_RO_REFERENCE_ROLE">
+      <End Role="role" EntitySet="role" />
+      <End Role="admin_role" EntitySet="admin_role" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ORDER_REFERENCE_PRODUCT" Association="Self.FK_ORDER_REFERENCE_PRODUCT">
+      <End Role="product" EntitySet="product" />
+      <End Role="order" EntitySet="order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_order_user" Association="Self.FK_order_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="order" EntitySet="order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ROLE_ACT_REFERENCE_ACTION" Association="Self.FK_ROLE_ACT_REFERENCE_ACTION">
+      <End Role="action" EntitySet="action" />
+      <End Role="role_action" EntitySet="role_action" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ROLE_ACT_REFERENCE_ROLE" Association="Self.FK_ROLE_ACT_REFERENCE_ROLE">
+      <End Role="role" EntitySet="role" />
+      <End Role="role_action" EntitySet="role_action" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYSTEM_M_REFERENCE_ADMINIST" Association="Self.FK_SYSTEM_M_REFERENCE_ADMINIST">
+      <End Role="administrator" EntitySet="administrator" />
+      <End Role="system_msg_record" EntitySet="system_msg_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_address_user" Association="Self.FK_user_address_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_address" EntitySet="user_address" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_msg_record_user" Association="Self.FK_user_msg_record_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_msg_record" EntitySet="user_msg_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_MSG_REFERENCE_ADMINIST" Association="Self.FK_USER_MSG_REFERENCE_ADMINIST">
+      <End Role="administrator" EntitySet="administrator" />
+      <End Role="user_msg_record" EntitySet="user_msg_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_PRO_REFERENCE_PRODUCT" Association="Self.FK_USER_PRO_REFERENCE_PRODUCT">
+      <End Role="product" EntitySet="product" />
+      <End Role="user_product" EntitySet="user_product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_product_user" Association="Self.FK_user_product_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_product" EntitySet="user_product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_SCO_REFERENCE_ORDER" Association="Self.FK_USER_SCO_REFERENCE_ORDER">
+      <End Role="order" EntitySet="order" />
+      <End Role="user_score_record" EntitySet="user_score_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USER_SCO_REFERENCE_USER_ADD" Association="Self.FK_USER_SCO_REFERENCE_USER_ADD">
+      <End Role="user_address" EntitySet="user_address" />
+      <End Role="user_score_record" EntitySet="user_score_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_score_record_user" Association="Self.FK_user_score_record_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="user_score_record" EntitySet="user_score_record" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user_wx_user" Association="Self.FK_user_wx_user">
+      <End Role="wx_user" EntitySet="wx_user" />
+      <End Role="user" EntitySet="user" />
+    </AssociationSet>
+    <AssociationSet Name="FK_wx_request_content_wx_request_rule" Association="Self.FK_wx_request_content_wx_request_rule">
+      <End Role="wx_request_rule" EntitySet="wx_request_rule" />
+      <End Role="wx_request_content" EntitySet="wx_request_content" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

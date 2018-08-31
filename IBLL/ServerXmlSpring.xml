@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+	<object name="actionService" type="BLL.actionService, BLL" singleton="false" >
+  </object>
+	<object name="administratorService" type="BLL.administratorService, BLL" singleton="false" >
+  </object>
+	<object name="bannerService" type="BLL.bannerService, BLL" singleton="false" >
+  </object>
+	<object name="config_ruleService" type="BLL.config_ruleService, BLL" singleton="false" >
+  </object>
+	<object name="msg_logService" type="BLL.msg_logService, BLL" singleton="false" >
+  </object>
+	<object name="orderService" type="BLL.orderService, BLL" singleton="false" >
+  </object>
+	<object name="productService" type="BLL.productService, BLL" singleton="false" >
+  </object>
+	<object name="roleService" type="BLL.roleService, BLL" singleton="false" >
+  </object>
+	<object name="system_logService" type="BLL.system_logService, BLL" singleton="false" >
+  </object>
+	<object name="system_msg_recordService" type="BLL.system_msg_recordService, BLL" singleton="false" >
+  </object>
+	<object name="userService" type="BLL.userService, BLL" singleton="false" >
+  </object>
+	<object name="user_addressService" type="BLL.user_addressService, BLL" singleton="false" >
+  </object>
+	<object name="user_msg_recordService" type="BLL.user_msg_recordService, BLL" singleton="false" >
+  </object>
+	<object name="user_productService" type="BLL.user_productService, BLL" singleton="false" >
+  </object>
+	<object name="user_score_recordService" type="BLL.user_score_recordService, BLL" singleton="false" >
+  </object>
+	<object name="wx_request_contentService" type="BLL.wx_request_contentService, BLL" singleton="false" >
+  </object>
+	<object name="wx_request_ruleService" type="BLL.wx_request_ruleService, BLL" singleton="false" >
+  </object>
+	<object name="wx_userService" type="BLL.wx_userService, BLL" singleton="false" >
+  </object>
+</objects>

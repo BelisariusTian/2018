@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>用户关系</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <style>
+        .li_red {
+            color:red;
+        }
+        .li_black {
+            color:black;
+        }
+       
+    </style>
+</head>
+<body>
+    <div id="nav"></div>
+
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/qs.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script>
+        var id = getParameters("id").id;
+        layui.use(["layer", "table", "laydate", "form"], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                table = layui.table,
+                laydate = layui.laydate,
+                form = layui.form;
+            init();
+            function init() {
+                $.get("/wxuser/GetParentLink", { token: store.get('token'), id: id }, function (res) {
+                    if (res.code == 0) {
+                        renderShow(res.data);
+                    } else {
+                        layer.msg("没有数据");
+                    }
+                })
+            }
+            var user_list = [];
+            var total_pay = 0;
+            function renderShow(data) {
+                var showlist = $("<ul></ul>");
+                recursion2(data, showlist);
+                $("#nav").append(showlist);
+                console.log(user_list);
+            }
+           
+            function recursion2(data, str) {
+                var color = data.isbuy == 1 ? "li_red" : "li_black";
+                var show = `${data.name}(${data.total_pay})`
+                user_list.push(data);
+             
+                if (data.children != 0 && data.children.length > 0) {
+                    var li = $("<li class="+ color+"></li>");
+                    $(li).append(show).append("<ul style='margin-left: 200px;'></ul>").appendTo(str);
+                    $.each(data.children, function (index,item) {
+                        recursion2(item, $(li).children().eq(0));
+                    }) 
+                }
+                else {
+                    $("<li class=" + color + "></li>").append(show).appendTo(str);
+                }
+               
+            }
+
+        })
+    </script>
+</body>
+</html>

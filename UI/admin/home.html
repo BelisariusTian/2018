@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>后台管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/lib/layui/css/admin.css" media="all">
+    <script src="/lib/layui/layui.js"></script>
+
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md8">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">会员数据</div>
+                            <div class="layui-card-body">
+                                <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                    <div carousel-item>
+                                        <ul class="layui-row layui-col-space10">
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>总会员数</h3>
+                                                    <p><cite id="totalCount">0</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>昨日新增会员</h3>
+                                                    <p><cite id="yesterdayCount">0</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>本周新增会员</h3>
+                                                    <p><cite id="weekCount">0</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>本月新增会员</h3>
+                                                    <p><cite id="monthCount">0</cite></p>
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">订单数据</div>
+                            <div class="layui-card-body">
+                                <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                    <div carousel-item>
+                                        <ul class="layui-row layui-col-space10">
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>订单数</h3>
+                                                    <p><cite style="color: #FF5722;" id="total_order">0</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>未完成订单</h3>
+                                                    <p><cite style="color: #FF5722;" id="total_nocomplete">0</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>待处理订单</h3>
+                                                    <p><cite style="color: #FF5722;" id="total_untreaded">0</cite></p>
+                                                </a>
+                                            </li>
+                                            <li class="layui-col-xs6">
+                                                <a href="javascript:;" class="layadmin-backlog-body">
+                                                    <h3>已完成订单</h3>
+                                                    <p><cite style="color: #FF5722;" id="total_complete">0</cite></p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">积分报告</div>
+                    <div class="layui-card-body layadmin-takerates">
+                        <div class="layui-progress" lay-showPercent="yes" id="total_score_record" lay-filter="total_score_record">
+                            <h3>收益积分占比(总用户积分/总系统积分)<!--（日同比 28% <span class="layui-edge layui-edge-top" lay-tips="增长" lay-offset="-15"></span>）--></h3>
+                            <div class="layui-progress-bar" lay-percent="0%"></div>
+                        </div>
+                        <div class="layui-progress" lay-showPercent="yes" id="total_score_record1" lay-filter="total_score_record1">
+                            <h3>提现积分占比(总提现积分/总用户积分)<!--（日同比 11% <span class="layui-edge layui-edge-bottom" lay-tips="下降" lay-offset="-15"></span>）--></h3>
+                            <div class="layui-progress-bar" lay-percent="0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="layui-card">
+                    <div class="layui-card-header">产品报告</div>
+                    <div class="layui-card-body layadmin-takerates">
+                        <div class="layui-progress" lay-showPercent="yes">
+                            <h3>CPU使用率</h3>
+                            <div class="layui-progress-bar" lay-percent="58%"></div>
+                        </div>
+                        <div class="layui-progress" lay-showPercent="yes">
+                            <h3>内存占用率</h3>
+                            <div class="layui-progress-bar layui-bg-red" lay-percent="90%"></div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+
+
+        </div>
+        <div class="layui-row " style="border:1px solid #808080;height:100%;margin-top:15px;">
+            <div id="charts" style="height: 580px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative; background: transparent;" _echarts_instance_="ec_1525512357190"></div>
+        </div>
+    </div>
+
+    <script src="/js/store.js"></script>
+    <script src="/js/echarts.js"></script>
+    <script>
+        layui.config({
+            base: '../lib/layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'index' //主入口模块
+        }).use(['index', 'console', 'element'], function () {
+            var $ = layui.jquery, element = layui.element;
+            user_init();
+            order_init();
+            score_inti();
+            link_init();
+            //用户数据初始化
+            function user_init() {
+                $.get("/wxuser/Menu_UserCount", { token: store.get('token') }, function (res) {
+                    if (res.code == 0) {
+                        $("#totalCount").html(res.data.totalCount);
+                        $("#yesterdayCount").html(res.data.yesterdayCount);
+                        $("#weekCount").html(res.data.weekCount);
+                        $("#monthCount").html(res.data.monthCount);
+                    }
+                });
+            }
+
+            function order_init() {
+                $.get("/Order/Menu_Order", { token: store.get('token') }, function (res) {
+                    if (res.code == 0) {
+                        $("#total_order").html(res.data.total_order);
+                        $("#total_nocomplete").html(res.data.total_nocomplete);
+                        $("#total_untreaded").html(res.data.total_untreaded);
+                        $("#total_complete").html(res.data.total_complete);
+                    }
+                });
+            }
+
+            function score_inti() {
+                $.get("/wxuser/Menu_Score", { token: store.get('token') }, function (res) {
+                    if (res.code == 0) {
+                        var total_systemScore = res.data.total_systemScore;
+                        var total_userScore = res.data.total_userScore;
+                        var total_applyScore = res.data.total_applyScore;
+                        var total_system_deductScore = res.data.total_system_deductScore;
+
+                        var total_score_recordPer = (total_userScore * 1.0 / total_systemScore * 1.0) * 100;
+                        var total_score_record1Per = (total_applyScore * 1.0 / total_userScore * 1.0) * 100;
+
+                        element.progress('total_score_record', `${total_score_recordPer.toFixed(6)}%`);
+                        element.progress('total_score_record1', `${total_score_record1Per.toFixed(6)}%`);
+                        //element.progress('total_score_record', '50%');
+                        //element.progress('total_score_record', '50%');
+                    }
+                });
+            }
+
+            function link_init() {
+                $.get('/wxuser/Menu_UserCountLink', {token: store.get('token') }, function (res) {
+                    if (res.code === 0) {
+                        renderCharts1(res.data);
+                        //renderCharts1(res.data);
+                    }
+                })
+            }
+
+            var renderCharts1 = function (res) {
+                var charts = echarts.init(document.getElementById('charts'));
+                var option = {
+                    title: {
+                        text: '过去30天注册用户数据趋势图',
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataZoom: {
+                                yAxisIndex: 'none'
+                            },
+                            dataView: { readOnly: false },
+                            magicType: { type: ['line', 'bar'] },
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: res.time
+                    },
+                    yAxis: {
+                        type: 'value',
+                    },
+                    series: [
+                        {
+                            name: '用户数',
+                            type: 'line',
+                            data: res.data,
+                            markPoint: {
+                                data: [
+                                    { type: 'max', name: '最大值' },
+                                    { type: 'min', name: '最小值' }
+                                ]
+                            },
+                            //markLine: {
+                            //    data: [
+                            //        { type: 'average', name: '平均值' }
+                            //    ]
+                            //}
+                        }
+                    ]
+                };
+                if (option && typeof option === "object") {
+                    charts.setOption(option, true);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

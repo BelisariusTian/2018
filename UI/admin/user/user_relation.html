@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>用户关系</title>
+    <link href="/Lib/layui/css/layui.css" rel="stylesheet" />
+    <script src="/js/store.js"></script>
+    <script src="/js/getRequestParameters.js"></script>
+    <style>
+        .li_red {
+            color:red;
+        }
+        .li_black {
+            color:black;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav"></div>
+    <button class="layui-btn" id="erportExcel">导出</button>
+    <!--
+            以下a标签不需要内容
+        -->
+    <a href="" download="这里是下载的文件名.xlsx" id="hf"></a>
+    <script src="/lib/layui/layui.js"></script>
+    <script src="/js/qs.js"></script>
+    <script src="/js/leetool.js"></script>
+    <script src="/js/FileSaver.js"></script>
+    <script src="/js/xlsx.full.min.js"></script>
+    <script>
+        var id = getParameters("id").id;
+        layui.use(["layer", "table", "laydate", "form"], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                table = layui.table,
+                laydate = layui.laydate,
+                form = layui.form;
+            init();
+            function init() {
+                $.get("/wxuser/GetParentLink", { token: store.get('token'), id: id }, function (res) {
+                    if (res.code == 0) {
+                        renderShow(res.data);
+                    } else {
+                        layer.msg("没有数据");
+                    }
+                })
+            }
+            var user_list = [];
+            var total_pay = 0;
+            function renderShow(data) {
+                var showlist = $("<ul></ul>");
+                recursion2(data, showlist);
+                $("#nav").append(showlist);
+                console.log(user_list);
+                arrayToArray(user_list);
+            }
+
+            function recursion2(data, str) {
+                var color = data.isbuy == 1 ? "li_red" : "li_black";
+                var show = `${data.name}(${data.total_pay})`
+                user_list.push(data);
+
+                if (data.children != 0 && data.children.length > 0) {
+                    var li = $("<li class=" + color + "></li>");
+                    $(li).append(show).append("<ul style='margin-left: 200px;'></ul>").appendTo(str);
+                    $.each(data.children, function (index, item) {
+                        recursion2(item, $(li).children().eq(0));
+                    })
+                }
+                else {
+                    $("<li class=" + color + "></li>").append(show).appendTo(str);
+                }
+            }
+
+            $("#erportExcel").on('click', function () {
+                if (user_list.length > 0) {
+                    downloadExl(user_list);
+                }
+                else {
+                    layer.msg("暂无数据");
+                }
+                //saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), 'test.xlsx');
+            })
+
+
+            //导出EXCEL
+            var tmpDown;
+            function downloadExl(json, type,name) {
+                var tmpdata = json[0];
+                json.unshift({});
+                var keymap = [];
+                for (var k in tmpdata) {
+                    keymap.push(k);
+                    json[0][k] = k;
+                }
+                var tmpdata = [];
+                json.map((v, i) => keymap.map((k, j) => Object.assign({}, {
+                    v: v[k],
+                    position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
+                }))).reduce((prev, next) => prev.concat(next)).forEach((v, i) => tmpdata[v.position] = {
+                    v: v.v
+                });
+                var outputPos = Object.keys(tmpdata);
+                var tmpWB = {
+                    SheetNames: ['mySheet'], //保存的表标题
+                    Sheets: {
+                        'mySheet': Object.assign({},
+                            tmpdata, //内容
+                            {
+                                '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
+                            })
+                    }
+                };
+                tmpDown = new Blob([s2ab(XLSX.write(tmpWB,
+                    { bookType: (type == undefined ? 'xlsx' : type), bookSST: false, type: 'binary' }//这里的数据是用来定义导出的格式类型
+                ))], {
+                        type: ""
+                    });
+                var href = URL.createObjectURL(tmpDown); //创建对象超链接
+                document.getElementById("hf").download = `${111}.xlsx`;
+                document.getElementById("hf").href = href; //绑定a标签
+                document.getElementById("hf").click(); //模拟点击实现下载
+                setTimeout(function () { //延时释放
+                    URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个object URL
+                }, 100);
+            }
+
+            function s2ab(s) { //字符串转字符流
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            function getCharCol(n) {
+                let temCol = '',
+                    s = '',
+                    m = 0
+                while (n > 0) {
+                    m = n % 26 + 1
+                    s = String.fromCharCode(m + 64) + s
+                    n = (n - m) / 26
+                }
+                return s
+            }
+
+
+            var wb = XLSX.utils.book_new();
+            wb.Props = {
+                Title: "",
+                Subject: "",
+                Author: "",
+                CreatedDate:new Date(2018,07,11),
+            };
+            wb.SheetNames.push("Test Sheet");
+            var ws_data = [['hello','world'],['tian','zhifu']];
+            var ws = XLSX.utils.aoa_to_sheet(user_list);
+            wb.Sheets["Test Sheet"] = ws;
+
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+            function arrayToArray(a) {
+                var data = [];
+                $.each(a, function (index, item) {
+                    var n_data = [];
+                    for (var k in item) {
+                        n_data.push(k.value);
+                    }
+                    data.push(n_data);
+                })
+            }
+        })
+    </script>
+</body>
+</html>

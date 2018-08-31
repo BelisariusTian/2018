@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title> 积分提现  </title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/leetool.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/wxCommon.js"></script>
+</head>
+<body>
+
+    <div class="Universal" id="txList">
+
+        <script  type="text/template" id="tx">
+            <div class="tx_top">
+                <p>可提积分</p>
+                <input type="hidden" name="usableScore" value="{{txList.usableScore-txList.yetUserScore-txList.sysDeduct}}" />
+                <strong>{{txList.usableScore-txList.yetUserScore-txList.sysDeduct}}</strong>
+            </div>
+
+                <div class="tx_input">
+                    <div><p>申请提现积分</p><input type="number" id="jfs"/></div>
+                    <div class="qbdz"><p>钱包地址</p><input type="text" id="adds"/><a class="" href="address-lb.html">通讯录</a></div>
+                </div>
+                <input type="hidden" name="minScore" value="{{txList.minScore}}" />
+                <input type="hidden" name="withdrawals" value="{{txList.withdrawals}}" />
+                <input type="hidden" name="rollout_address_id" id="adds_id" value="" />
+                <a class="conf" onclick="conf()">提现</a>
+                <div class="txCont">
+                    <span>提现规则</span>
+                    <p>{{txList.remark}}</p>
+                </div>
+        </script>
+
+    </div>
+
+
+    <div class="ft_height"></div>
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  提现内容
+        $.ajax({
+            url: '/WeChat/Score/UserApplyPage',
+            data: { token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('tx', { txList: json.data });
+                    document.getElementById("txList").innerHTML = result;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+        //  用户提现申请
+        function conf() {
+            var number =  parseInt($("#jfs").val());
+            var usableScore =  parseInt($("input[name='usableScore']").val());
+            var minScore = parseInt($("input[name='minScore']").val());
+            if ($("#jfs").val()==""||number==0) {
+                layer.msg("请输入提现积分");
+                return;
+            }
+
+            if (isNaN(number) || number <= 0 || !(/^\d+$/.test(number))) {
+                layer.msg("积分应该是正数");
+                return;
+            }
+
+            if (number < minScore) {
+                layer.msg("输入积分必须大于最低积分要求");
+                return;
+            }
+
+            if (number > usableScore) {
+                layer.msg("超出可提现积分");
+                return;
+            }
+            //if (usableScore - number < $("input[name='withdrawals']").val()) {
+            //    layer.msg("手续费不足，无法提现");
+            //    return;
+            //}
+
+            if ($("#adds").val() == "") {
+                layer.msg("请输入钱包地址");
+                return;
+            }
+
+            $.post(
+                '/WeChat/Score/UserApplyForScore',
+                {
+                    score: $("#jfs").val(), address: $("#adds").val(), token: store.get('token'),
+                    adds_id: $("#adds_id").val()
+                }, function (json) {
+                    layer.msg(json.msg);
+                    location.href = "tx-Record.html";
+                }
+
+            )
+        }
+
+        $.ajax({
+            url: '/WeChat/UserCenter/EditUserAddress',
+            data: { id: queryString("Id"), token: store.get('token') },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    $("#adds").val(json.data.address);
+                    $("#adds_id").val(json.data.id);
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+    </script>
+
+</body>
+</html>

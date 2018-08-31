@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>运行中</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/iconfont.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="js/tabNav.js"></script>
+    <script src="../js/wxCommon.js"></script>
+
+
+</head>
+<body>
+
+
+    <div class="Universal">
+
+        <div class="order_nav eq_nav">
+            <a class="hover" id="ye1" onclick="tabNav('ye',1,2)">
+                <p>运行中（<span id="yxCount">0</span>）</p>
+            </a>
+            <a id="ye2" onclick="tabNav('ye',2,2)">
+                <p>已过期（<span id="gqCount">0</span>）</p>
+            </a>
+        </div>
+        <div class="order_txt">
+            <div class="or_list" id="content_ye_1" style="display: block;">
+                <div id="sebList">
+                    <p id="sg"></p>
+                    <script type="text/template" id="seb">
+
+                        {{each sebList}}
+
+                        <div class="pr_list">
+                            <div class="pr_img"><a href="order-xx.html" style="display:block"><img src="{{$value.product_img}}" alt="{{$value.name}}"></a></div>
+                            <div class="pr_txt order_txt">
+                                <p>名称：<span>{{$value.name}}</span></p>
+                                <p>算力：<span>{{$value.Calculate_the_force}}</span></p>
+                                <p>开始时间：<span>{{$value.add_time}}</span></p>
+                                <p>结束时间：<span>{{$value.end_time}}</span></p>
+                                <p>总收益：<span>{{$value.total_score}}</span></p>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                    </script>
+                </div>
+
+
+            </div>
+
+            <div class="or_list" id="content_ye_2">
+
+                <div id="sebsList">
+
+                    <p id="sgr"></p>
+
+                    <script type="text/template" id="sebs">
+
+                        {{each sebsList}}
+
+                        <div class="pr_list">
+                            <div class="pr_img"><a href="order-xx.html" style="display:block"><img src="{{$value.product_img}}" alt="{{$value.name}}"></a></div>
+                            <div class="pr_txt order_txt">
+                                <p>名称：<span>{{$value.name}}</span></p>
+                                <p>算力：<span>{{$value.Calculate_the_force}}</span></p>
+                                <p>过期时间：<span>{{$value.end_time}}</span></p>
+                                <p>总收益：<span>{{$value.total_score}}</span></p>
+                            </div>
+                        </div>
+                        {{/each}}
+
+                    </script>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ft_height"></div>
+    <!--<div class="footer ord">
+        <div class="rd" style="display:flex;">
+            <div class="sltxt"><p>总算力：3000积分/24H</p> </div>
+            <div class="sytxt"><p>总收益：12</p> </div>
+        </div>
+    </div>-->
+    <div class="footer">
+        <div class="footer_nav">
+            <a href="index.html">
+                <i class="iconfont" style="font-size:33px;">&#xe6c9;</i>
+                <p>首页</p>
+            </a>
+            <a href="equipment.html">
+                <i class="iconfont">&#xe61e;</i>
+                <p>设备</p>
+            </a>
+            <a href="score.html">
+                <i class="iconfont">&#xe620;</i>
+                <p>积分</p>
+            </a>
+            <a href="me.html">
+                <i class="iconfont" style="font-size:33px;">&#xe603;</i>
+                <p>我的</p>
+            </a>
+        </div>
+    </div>
+
+
+
+    <script src="../lib/layui/layui.all.js"></script>
+    <script src="js/template-web.js"></script>
+    <script>
+
+        tool.init();
+
+        //  用户设备
+        $.ajax({
+            url: '/WeChat/UserCenter/UserProduct',
+            data: { token: store.get('token'), state: 0 },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('seb', { sebList: json.data.data });
+                    document.getElementById("sebList").innerHTML = result;
+                    $("#yxCount").text(json.count);
+                }
+                else {
+                    document.getElementById("sg").innerHTML = json.msg;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+
+        //  过期设备
+        $.ajax({
+            url: '/WeChat/UserCenter/UserProduct',
+            data: { token: store.get('token'), state: 1 },
+            type: 'Get',
+            async: false,
+            success: function (json) {
+                if (json.code === 0) {
+                    var result = template('sebs', { sebsList: json.data.data });
+                    document.getElementById("sebsList").innerHTML = result;
+                    $("#gqCount").text(json.count);
+                }
+                else {
+                    document.getElementById("sgr").innerHTML = json.msg;
+                }
+            },
+            error: function (msg) {
+                layer.alert("error");
+            }
+        })
+    </script>
+
+
+
+
+</body>
+</html>
